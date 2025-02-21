@@ -6,10 +6,13 @@ import Testimonials from "../../components/home/Testimonials";
 import Highlights from "../../components/home/Highlights";
 import FAQ from "../../components/home/FAQ";
 import About from "../../components/home/About";
+import Header from "../../components/home/Header";
+import Footer from "../../components/home/Footer";
 
 const Home: React.FC = () => {
   return (
     <>
+      <Header />
       <Hero />
       <LogoCollection />
       <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
@@ -20,6 +23,8 @@ const Home: React.FC = () => {
       <Highlights />
       <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
       <FAQ />
+      <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
+      <Footer />
     </>
   );
 };

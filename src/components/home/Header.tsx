@@ -14,7 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import SitemarkIcon from "../shared/SitemarkIcon";
+import SitemarkIcon from "../universal/SitemarkIcon";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -72,6 +72,8 @@ const AuthButtons = () => (
       variant="text"
       size="small"
       className="nunito-bold"
+      component={Link}
+      to="/sign-in"
       sx={{ color: "white", textTransform: "none" }}
     >
       Sign in
@@ -80,6 +82,8 @@ const AuthButtons = () => (
       variant="contained"
       size="small"
       className="nunito-bold"
+      component={Link}
+      to="/sign-up"
       sx={{
         backgroundColor: "white",
         color: "black",
@@ -141,6 +145,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           className="nunito-bold"
           variant="contained"
           fullWidth
+          component={Link}
+          to="/sign-up"
           sx={{
             color: "black",
             bgcolor: "rgb(245, 246, 250)",
@@ -158,6 +164,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           className="nunito-bold"
           variant="outlined"
           fullWidth
+          component={Link}
+          to="/sign-in"
           sx={{
             color: "white",
             bgcolor: "hsl(220, 30%, 6%)",

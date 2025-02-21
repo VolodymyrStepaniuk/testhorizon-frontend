@@ -1,22 +1,23 @@
-import Header from "./components/universal/Header/Header.tsx";
-import Footer from "./components/universal/Footer/Footer.tsx";
 import Home from "./pages/Home/Home.tsx";
-import Divider from "@mui/material/Divider";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./css/App.css";
+import SignIn from "./pages/Signin/SignIn.tsx";
+import SignUp from "./pages/Signup/SignUp.tsx";
+import AppTheme from "./theme/AppTheme.tsx";
+import CssBaseline from "@mui/material/CssBaseline";
 
 function App() {
   return (
-    <>
+    <AppTheme>
+      <CssBaseline enableColorScheme />
       <BrowserRouter>
-        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
         </Routes>
-        <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
-        <Footer />
       </BrowserRouter>
-    </>
+    </AppTheme>
   );
 }
 

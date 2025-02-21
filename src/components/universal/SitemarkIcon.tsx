@@ -1,5 +1,5 @@
 import SvgIcon from "@mui/material/SvgIcon";
-import logo from "../../../assets/TestHorizon.png";
+import logo from "../../assets/TestHorizon.png";
 
 export default function SitemarkIcon() {
   return (
