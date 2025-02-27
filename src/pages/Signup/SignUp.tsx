@@ -1,6 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
@@ -9,10 +10,17 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import SitemarkIcon from "../../components/universal/SitemarkIcon";
+import AppTheme from "../../theme/AppTheme";
+import AppIcon from "../../components/universal/AppIcon";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { SelectChangeEvent } from "@mui/material/Select";
+import { UNIVERSAL_VALIDATION, USER_VALIDATION } from "../../models/validation";
+import { useState } from "react";
+import { API } from "../../services/api.service";
+import { UserCreateRequest } from "../../models/user/UserCreateRequest";
+import EmailConfirmation from "../../components/signup/EmailConfirmation";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -23,11 +31,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: "auto",
-  backgroundColor: "rgba(0, 0, 0, 0.1)",
-  backdropFilter: "blur(10px)",
-  border: "1px solid hsl(220deg 20% 25% / 60%)",
-  color: "white",
-  fontFamily: "nunito-bold",
+  boxShadow:
+    "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(2),
     width: "90%",
@@ -38,20 +43,14 @@ const Card = styled(MuiCard)(({ theme }) => ({
     maxWidth: "300px",
     padding: theme.spacing(1.5),
   },
-  boxShadow:
-    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
 }));
 
 const SignUpContainer = styled(Stack)(({ theme }) => ({
-  height: "100dvh",
+  height: "calc((1 - var(--template-frame-height, 0)) * 100dvh)",
   minHeight: "100%",
   padding: theme.spacing(2),
-  overflow: "auto",
   [theme.breakpoints.up("sm")]: {
     padding: theme.spacing(4),
-  },
-  [theme.breakpoints.down("sm")]: {
-    padding: theme.spacing(1),
   },
   "&::before": {
     content: '""',
@@ -59,107 +58,168 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
     position: "absolute",
     zIndex: -1,
     inset: 0,
-    backgroundRepeat: "no-repeat",
     backgroundImage:
       "radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))",
+    backgroundRepeat: "no-repeat",
   },
 }));
 
-// Створюємо спеціальну тему для Select
-const selectTheme = createTheme({
-  components: {
-    MuiPopover: {
-      defaultProps: {
-        container: document.body,
-        disableScrollLock: true,
-      },
-      styleOverrides: {
-        root: {
-          position: "fixed",
-        },
-        paper: {
-          backgroundImage: "none",
-        },
-      },
-    },
-    MuiModal: {
-      defaultProps: {
-        disableScrollLock: true,
-        container: document.body,
-      },
-      styleOverrides: {
-        root: {
-          position: "fixed",
-        },
-      },
-    },
-  },
-});
-
 export default function SignUp() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [nameError, setNameError] = React.useState(false);
-  const [nameErrorMessage, setNameErrorMessage] = React.useState("");
-  const [role, setRole] = React.useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    authorityName: "",
+  });
+  const [formErrors, setFormErrors] = useState({
+    email: { error: false, message: "" },
+    password: { error: false, message: "" },
+    firstName: { error: false, message: "" },
+    lastName: { error: false, message: "" },
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
-  const validateInputs = () => {
-    const email = document.getElementById("email") as HTMLInputElement;
-    const password = document.getElementById("password") as HTMLInputElement;
-    const name = document.getElementById("name") as HTMLInputElement;
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
+  const validateEmail = (email: string): boolean => {
+    if (!email || !UNIVERSAL_VALIDATION.email.pattern.test(email)) {
+      setFormErrors((prev) => ({
+        ...prev,
+        email: { error: true, message: "Please enter a valid email address" },
+      }));
+      return false;
     }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage("");
-    }
-
-    if (!name.value || name.value.length < 1) {
-      setNameError(true);
-      setNameErrorMessage("Name is required.");
-      isValid = false;
-    } else {
-      setNameError(false);
-      setNameErrorMessage("");
-    }
-
-    return isValid;
+    setFormErrors((prev) => ({
+      ...prev,
+      email: { error: false, message: "" },
+    }));
+    return true;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (nameError || emailError || passwordError) {
-      event.preventDefault();
-      return;
+  const validatePassword = (password: string): boolean => {
+    if (!password || !UNIVERSAL_VALIDATION.password.pattern.test(password)) {
+      setFormErrors((prev) => ({
+        ...prev,
+        password: {
+          error: true,
+          message:
+            "Password must contain uppercase, lowercase, number and special character",
+        },
+      }));
+      return false;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    if (
+      password.length < UNIVERSAL_VALIDATION.password.minLength ||
+      password.length > UNIVERSAL_VALIDATION.password.maxLength
+    ) {
+      setFormErrors((prev) => ({
+        ...prev,
+        password: {
+          error: true,
+          message: `Password length must be between ${UNIVERSAL_VALIDATION.password.minLength} and ${UNIVERSAL_VALIDATION.password.maxLength} characters`,
+        },
+      }));
+      return false;
+    }
+    setFormErrors((prev) => ({
+      ...prev,
+      password: { error: false, message: "" },
+    }));
+    return true;
+  };
+
+  const validateName = (
+    name: string,
+    field: "firstName" | "lastName"
+  ): boolean => {
+    if (!name || !USER_VALIDATION.firstName.pattern.test(name)) {
+      setFormErrors((prev) => ({
+        ...prev,
+        [field]: {
+          error: true,
+          message: "Only letters, spaces and hyphens allowed",
+        },
+      }));
+      return false;
+    }
+    if (
+      name.length < USER_VALIDATION.firstName.minLength ||
+      name.length > USER_VALIDATION.firstName.maxLength
+    ) {
+      setFormErrors((prev) => ({
+        ...prev,
+        [field]: {
+          error: true,
+          message: `Name length must be between ${USER_VALIDATION.firstName.minLength} and ${USER_VALIDATION.firstName.maxLength} characters`,
+        },
+      }));
+      return false;
+    }
+    setFormErrors((prev) => ({
+      ...prev,
+      [field]: { error: false, message: "" },
+    }));
+    return true;
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Validate field on change
+    switch (name) {
+      case "email":
+        validateEmail(value);
+        break;
+      case "password":
+        validatePassword(value);
+        break;
+      case "firstName":
+      case "lastName":
+        validateName(value, name);
+        break;
+    }
+  };
+
+  const handleAuthorityChange = (event: SelectChangeEvent) => {
+    setFormData((prev) => ({
+      ...prev,
+      authorityName: event.target.value,
+    }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const isValid =
+      validateEmail(formData.email) &&
+      validatePassword(formData.password) &&
+      validateName(formData.firstName, "firstName") &&
+      validateName(formData.lastName, "lastName");
+
+    if (!isValid) return;
+
+    setIsLoading(true);
+    setApiError("");
+
+    try {
+      await API.auth.register(formData as UserCreateRequest);
+      setShowConfirmationDialog(true);
+    } catch (error: any) {
+      setApiError(
+        error.response?.data?.detail || "Registration failed. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <SignUpContainer direction="column" justifyContent="center">
-      <ThemeProvider theme={selectTheme}>
-        <Card variant="outlined" sx={{ transform: "none !important" }}>
+    <AppTheme>
+      <CssBaseline enableColorScheme />
+      <SignUpContainer direction="column" justifyContent="space-between">
+        <Card variant="outlined">
           <Box
             sx={{
               display: "flex",
@@ -174,78 +234,104 @@ export default function SignUp() {
               },
             }}
           >
-            <SitemarkIcon />
+            <AppIcon />
           </Box>
           <Typography
-            component="h1"
-            variant="h4"
+            component="h2"
+            variant="h2"
             sx={{
               width: "100%",
-              fontSize: {
-                xs: "1.5rem",
-                sm: "1.75rem",
-                md: "2.15rem",
-              },
+              fontWeight: 700,
               textAlign: "center",
               mt: { xs: 1, sm: 2 },
             }}
-            className="nunito-bold"
           >
             Sign up
           </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              gap: { xs: 1.5, sm: 2 },
-            }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <FormControl>
               <FormLabel
-                htmlFor="name"
-                sx={{ color: "white", mb: 0.5 }}
-                className="nunito-bold"
+                htmlFor="firstName"
+                sx={{
+                  color: "white",
+                  mb: 0.5,
+                  fontWeight: 700,
+                }}
               >
-                Full name
+                First name
               </FormLabel>
               <TextField
-                autoComplete="name"
-                name="name"
+                autoComplete="firstName"
+                name="firstName"
                 required
                 fullWidth
-                id="name"
-                placeholder="Jon Snow"
-                error={nameError}
-                helperText={nameErrorMessage}
-                color={nameError ? "error" : "primary"}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "hsl(220deg 20% 25% / 60%)" },
-                    "&:hover fieldset": {
-                      borderColor: "hsl(220deg 20% 25% / 60%)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "hsl(220deg 20% 25% / 60%)",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                    fontSize: { xs: "0.875rem", sm: "1rem" },
-                    padding: { xs: "8px 12px", sm: "16.5px 14px" },
-                  },
-                }}
-                inputProps={{ className: "nunito-regular" }}
+                id="firstName"
+                placeholder="Jon"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                error={formErrors.firstName.error}
+                helperText={formErrors.firstName.message}
+                color={formErrors.firstName.error ? "error" : "primary"}
               />
             </FormControl>
             <FormControl>
               <FormLabel
+                htmlFor="lastName"
+                sx={{
+                  color: "white",
+                  mb: 0.5,
+                  fontWeight: 700,
+                }}
+              >
+                Last name
+              </FormLabel>
+              <TextField
+                autoComplete="lastName"
+                name="lastName"
+                required
+                fullWidth
+                id="lastName"
+                placeholder="Snow"
+                value={formData.lastName}
+                onChange={handleInputChange}
+                error={formErrors.lastName.error}
+                helperText={formErrors.lastName.message}
+                color={formErrors.lastName.error ? "error" : "primary"}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel
+                sx={{
+                  color: "white",
+                  mb: 0.5,
+                  fontWeight: 700,
+                }}
+              >
+                Role
+              </FormLabel>
+              <Select
+                required
+                value={formData.authorityName}
+                onChange={handleAuthorityChange}
+                name="authorityName"
+                id="authorityName"
+              >
+                <MenuItem value="TESTER">Tester</MenuItem>
+                <MenuItem value="DEVELOPER">Developer</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel
                 htmlFor="email"
-                sx={{ color: "white", mb: 0.5 }}
-                className="nunito-bold"
+                sx={{
+                  color: "white",
+                  mb: 0.5,
+                  fontWeight: 700,
+                }}
               >
                 Email
               </FormLabel>
@@ -257,33 +343,21 @@ export default function SignUp() {
                 name="email"
                 autoComplete="email"
                 variant="outlined"
-                error={emailError}
-                helperText={emailErrorMessage}
-                color={passwordError ? "error" : "primary"}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "hsl(220deg 20% 25% / 60%)" },
-                    "&:hover fieldset": {
-                      borderColor: "hsl(220deg 20% 25% / 60%)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "hsl(220deg 20% 25% / 60%)",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                    fontSize: { xs: "0.875rem", sm: "1rem" },
-                    padding: { xs: "8px 12px", sm: "16.5px 14px" },
-                  },
-                }}
-                inputProps={{ className: "nunito-regular" }}
+                value={formData.email}
+                onChange={handleInputChange}
+                error={formErrors.email.error}
+                helperText={formErrors.email.message}
+                color={formErrors.email.error ? "error" : "primary"}
               />
             </FormControl>
             <FormControl>
               <FormLabel
                 htmlFor="password"
-                sx={{ color: "white", mb: 0.5 }}
-                className="nunito-bold"
+                sx={{
+                  color: "white",
+                  mb: 0.5,
+                  fontWeight: 700,
+                }}
               >
                 Password
               </FormLabel>
@@ -291,141 +365,60 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                placeholder="••••••"
+                placeholder="••••••••"
                 type="password"
                 id="password"
                 autoComplete="new-password"
                 variant="outlined"
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                color={passwordError ? "error" : "primary"}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "hsl(220deg 20% 25% / 60%)" },
-                    "&:hover fieldset": {
-                      borderColor: "hsl(220deg 20% 25% / 60%)",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "hsl(220deg 20% 25% / 60%)",
-                    },
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "white",
-                    fontSize: { xs: "0.875rem", sm: "1rem" },
-                    padding: { xs: "8px 12px", sm: "16.5px 14px" },
-                  },
-                }}
-                inputProps={{ className: "nunito-regular" }}
+                value={formData.password}
+                onChange={handleInputChange}
+                error={formErrors.password.error}
+                helperText={formErrors.password.message}
+                color={formErrors.password.error ? "error" : "primary"}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel
-                htmlFor="role"
-                sx={{
-                  color: "white",
-                  mb: 0.5,
-                  "&.Mui-focused": { color: "white" },
-                }}
-                className="nunito-bold"
-              >
-                Role
-              </FormLabel>
-              <Select
-                required
-                fullWidth
-                id="role"
-                name="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                sx={{
-                  color: "white",
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                  "& .MuiSelect-icon": {
-                    color: "white",
-                  },
-                  fontSize: { xs: "0.875rem", sm: "1rem" },
-                  fontFamily: "Nunito",
-                  "& .MuiSelect-select": {
-                    fontFamily: "Nunito",
-                    padding: { xs: "8px 12px", sm: "16.5px 14px" },
-                  },
-                }}
-                MenuProps={{
-                  disablePortal: false,
-                  disableScrollLock: true,
-                  slotProps: {
-                    paper: {
-                      style: {
-                        transform: "none",
-                      },
-                    },
-                  },
-                  anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "left",
-                  },
-                  transformOrigin: {
-                    vertical: "top",
-                    horizontal: "left",
-                  },
-                }}
-              >
-                <MenuItem value="developer" className="nunito-regular">
-                  Developer
-                </MenuItem>
-                <MenuItem value="tester" className="nunito-regular">
-                  Tester
-                </MenuItem>
-              </Select>
-            </FormControl>
+            {apiError && (
+              <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
+                {apiError}
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
-              className="nunito-bold"
+              disabled={isLoading}
               sx={{
-                borderRadius: "8px",
-                backgroundColor: "#FFA500",
-                bgcolor: "rgb(245, 246, 250)",
-                border: "1px solid rgb(245, 246, 250)",
-                color: "black",
-                fontSize: { xs: "0.875rem", sm: "1rem" },
-                py: { xs: 1, sm: 1.5 },
-                mt: { xs: 1, sm: 2 },
+                mt: 2,
+                fontWeight: 700,
               }}
             >
-              Sign up
+              {isLoading ? <CircularProgress size={24} /> : "Sign up"}
             </Button>
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Typography
               sx={{
-                textAlign: "center",
-                color: "white",
-                fontSize: { xs: "0.875rem", sm: "1rem" },
+                alignSelf: "center",
+                mt: { xs: 0.5, sm: 1 },
               }}
-              className="nunito-regular"
             >
               Already have an account?{" "}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                href="/sign-in/"
                 variant="body2"
-                sx={{ alignSelf: "center" }}
-                className="nunito-bold"
+                sx={{ alignSelf: "center", fontWeight: 700 }}
               >
                 Sign in
               </Link>
             </Typography>
           </Box>
         </Card>
-      </ThemeProvider>
-    </SignUpContainer>
+        <EmailConfirmation
+          open={showConfirmationDialog}
+          email={formData.email}
+          handleClose={() => setShowConfirmationDialog(false)}
+        />
+      </SignUpContainer>
+    </AppTheme>
   );
 }

@@ -1,32 +1,40 @@
-import React from "react";
-import Hero from "../../components/home/Hero";
-import LogoCollection from "../../components/home/LogoCollection";
-import Divider from "@mui/material/Divider";
-import Testimonials from "../../components/home/Testimonials";
-import Highlights from "../../components/home/Highlights";
-import FAQ from "../../components/home/FAQ";
-import About from "../../components/home/About";
-import Header from "../../components/home/Header";
-import Footer from "../../components/home/Footer";
+import { alpha } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import AppTheme from "../../theme/AppTheme";
+import SideMenu from "../../components/home/SideMenu";
+import AppNavbar from "../../components/home/AppNavbar";
+import MainGrid from "../../components/home/MainGrid";
 
-const Home: React.FC = () => {
+export default function Home() {
   return (
-    <>
-      <Header />
-      <Hero />
-      <LogoCollection />
-      <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
-      <About />
-      <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
-      <Testimonials />
-      <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
-      <Highlights />
-      <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
-      <FAQ />
-      <Divider sx={{ backgroundColor: "hsl(220deg 20% 25% / 60%)" }} />
-      <Footer />
-    </>
+    <AppTheme>
+      <CssBaseline enableColorScheme />
+      <Box sx={{ display: "flex" }}>
+        <SideMenu />
+        <AppNavbar />
+        <Box
+          component="main"
+          sx={(theme) => ({
+            flexGrow: 1,
+            backgroundColor: alpha(theme.palette.background.default, 1),
+            overflow: "auto",
+          })}
+        >
+          <Stack
+            spacing={2}
+            sx={{
+              alignItems: "center",
+              mx: 3,
+              pb: 5,
+              mt: { xs: 8, md: 0 },
+            }}
+          >
+            <MainGrid />
+          </Stack>
+        </Box>
+      </Box>
+    </AppTheme>
   );
-};
-
-export default Home;
+}

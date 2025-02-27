@@ -11,8 +11,14 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import SitemarkIcon from "../../components/universal/SitemarkIcon";
+import AppIcon from "../../components/universal/AppIcon";
 import ForgotPassword from "../../components/signin/ForgotPassword";
+import { useNavigate } from "react-router-dom";
+import { API } from "../../services/api.service";
+import { setTokensToStorage } from "../../utils/auth.utils";
+import { useAuth } from "../../contexts/AuthContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -27,7 +33,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
   backdropFilter: "blur(10px)",
   border: "1px solid hsl(220deg 20% 25% / 60%)",
   color: "white",
-  fontFamily: "nunito-bold",
+  boxShadow:
+    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(2),
     width: "90%",
@@ -38,8 +45,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
     maxWidth: "300px",
     padding: theme.spacing(1.5),
   },
-  boxShadow:
-    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
@@ -66,11 +71,16 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [open, setOpen] = React.useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const { setIsAuth, fetchUser } = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -80,16 +90,40 @@ export default function SignIn() {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!validateInputs()) {
       return;
     }
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
+
+    setIsLoading(true);
+    try {
+      const response = await API.auth.login({
+        email,
+        password,
+      });
+
+      const { access_token, refresh_token } = response.data;
+
+      setTokensToStorage(access_token, refresh_token, rememberMe);
+      setIsAuth(true);
+
+      await fetchUser();
+
+      navigate("/home");
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "Failed to sign in";
+      setEmailError(true);
+      setPasswordError(true);
+      setEmailErrorMessage(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const validateInputs = () => {
@@ -136,22 +170,17 @@ export default function SignIn() {
             },
           }}
         >
-          <SitemarkIcon />
+          <AppIcon />
         </Box>
         <Typography
-          component="h1"
-          variant="h4"
+          component="h2"
+          variant="h2"
           sx={{
             width: "100%",
-            fontSize: {
-              xs: "1.5rem",
-              sm: "1.75rem",
-              md: "2.15rem",
-            },
+            fontWeight: 700,
             textAlign: "center",
             mt: { xs: 1, sm: 2 },
           }}
-          className="nunito-bold"
         >
           Sign in
         </Typography>
@@ -172,8 +201,8 @@ export default function SignIn() {
               sx={{
                 color: "white",
                 mb: 0.5,
+                fontWeight: 700,
               }}
-              className="nunito-bold"
             >
               Email
             </FormLabel>
@@ -190,31 +219,6 @@ export default function SignIn() {
               fullWidth
               variant="outlined"
               color={emailError ? "error" : "primary"}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                },
-                "& .MuiInputBase-input": {
-                  color: "white",
-                  fontSize: {
-                    xs: "0.875rem",
-                    sm: "1rem",
-                  },
-                  padding: { xs: "8px 12px", sm: "16.5px 14px" },
-                },
-              }}
-              inputProps={{
-                className: "nunito-regular",
-                style: { color: "white" },
-              }}
             />
           </FormControl>
           <FormControl>
@@ -223,8 +227,8 @@ export default function SignIn() {
               sx={{
                 color: "white",
                 mb: 0.5,
+                fontWeight: 700,
               }}
-              className="nunito-bold"
             >
               Password
             </FormLabel>
@@ -232,63 +236,27 @@ export default function SignIn() {
               error={passwordError}
               helperText={passwordErrorMessage}
               name="password"
-              placeholder="••••••"
+              placeholder="••••••••"
               type="password"
               id="password"
               autoComplete="current-password"
+              autoFocus
               required
               fullWidth
               variant="outlined"
               color={passwordError ? "error" : "primary"}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "hsl(220deg 20% 25% / 60%)",
-                  },
-                },
-                "& .MuiInputBase-input": {
-                  color: "white",
-                  fontSize: {
-                    xs: "0.875rem",
-                    sm: "1rem",
-                  },
-                  padding: { xs: "8px 12px", sm: "16.5px 14px" },
-                },
-              }}
-              inputProps={{
-                style: { color: "white" },
-              }}
             />
           </FormControl>
           <FormControlLabel
             control={
               <Checkbox
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 value="remember"
                 color="primary"
-                sx={{
-                  color: "hsl(220deg 20% 25% / 60%)",
-                  padding: { xs: "4px", sm: "9px" },
-                }}
               />
             }
             label="Remember me"
-            sx={{
-              "& .MuiFormControlLabel-label": {
-                color: "white",
-                fontFamily: "Nunito, sans-serif",
-                fontWeight: "bold",
-                fontSize: {
-                  xs: "0.875rem",
-                  sm: "1rem",
-                },
-              },
-            }}
           />
           <ForgotPassword open={open} handleClose={handleClose} />
           <Button
@@ -296,25 +264,12 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             onClick={validateInputs}
-            className="nunito-bold"
+            disabled={isLoading}
             sx={{
-              borderRadius: "8px",
-              backgroundColor: "#FFA500",
-              bgcolor: "rgb(245, 246, 250)",
-              border: "1px solid rgb(245, 246, 250)",
-              color: "black",
-              fontSize: {
-                xs: "0.875rem",
-                sm: "1rem",
-              },
-              py: {
-                xs: 1,
-                sm: 1.5,
-              },
-              mt: { xs: 1, sm: 2 },
+              fontWeight: 700,
             }}
           >
-            Sign in
+            {isLoading ? <CircularProgress size={24} /> : "Sign in"}
           </Button>
           <Link
             component="button"
@@ -323,13 +278,9 @@ export default function SignIn() {
             variant="body2"
             sx={{
               alignSelf: "center",
-              fontSize: {
-                xs: "0.75rem",
-                sm: "0.875rem",
-              },
+              fontWeight: 600,
               mt: { xs: 0.5, sm: 1 },
             }}
-            className="nunito-bold"
           >
             Forgot your password?
           </Link>

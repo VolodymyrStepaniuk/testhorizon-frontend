@@ -37,11 +37,8 @@ export const surfacesCustomizations: Components<Theme> = {
       root: ({ theme }) => ({
         border: "none",
         borderRadius: 8,
-        "&:hover": { backgroundColor: gray[50] },
+        "&:hover": { backgroundColor: gray[800] },
         "&:focus-visible": { backgroundColor: "transparent" },
-        ...(theme.palette.mode === "dark" && {
-          "&:hover": { backgroundColor: gray[800] },
-        }),
       }),
     },
   },
@@ -61,23 +58,17 @@ export const surfacesCustomizations: Components<Theme> = {
         padding: 16,
         gap: 16,
         transition: "all 100ms ease",
-        backgroundColor: gray[50],
+        backgroundColor: gray[800],
         borderRadius: theme.shape.borderRadius,
         border: `1px solid ${theme.palette.divider}`,
         boxShadow: "none",
-        ...(theme.palette.mode === "dark" && {
-          backgroundColor: gray[800],
-        }),
         variants: [
           {
             props: { variant: "outlined" },
             style: {
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: "none",
-              background: "hsl(0, 0%, 100%)",
-              ...(theme.palette.mode === "dark" && {
-                background: alpha(gray[900], 0.4),
-              }),
+              background: alpha(gray[900], 0.4),
             },
           },
         ],

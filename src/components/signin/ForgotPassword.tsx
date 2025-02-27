@@ -6,6 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import { useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 interface ForgotPasswordProps {
   open: boolean;
@@ -16,6 +18,24 @@ export default function ForgotPassword({
   open,
   handleClose,
 }: ForgotPasswordProps) {
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      console.log("Password reset email sent to:", email);
+      handleClose();
+    } catch (error) {
+      console.error("Error sending reset email:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -23,10 +43,7 @@ export default function ForgotPassword({
       slotProps={{
         paper: {
           component: "form",
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            handleClose();
-          },
+          onSubmit: handleSubmit,
           sx: { backgroundImage: "none" },
         },
       }}
@@ -49,12 +66,16 @@ export default function ForgotPassword({
           placeholder="Email address"
           type="email"
           fullWidth
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" type="submit">
-          Continue
+        <Button onClick={handleClose} disabled={isLoading}>
+          Cancel
+        </Button>
+        <Button variant="contained" type="submit" disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} /> : "Send"}
         </Button>
       </DialogActions>
     </Dialog>

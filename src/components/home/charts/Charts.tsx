@@ -1,0 +1,34 @@
+import { Box, Grid } from "@mui/material";
+import { UserRoleProps } from "../../../constants/userProps";
+import DeveloperCharts from "./roleBasedCharts/DeveloperCharts";
+import { AuthorityName } from "../../../constants/enum/authorityNames";
+import AdminCharts from "./roleBasedCharts/AdminCharts";
+import TesterCharts from "./roleBasedCharts/TesterCharts";
+
+const Charts: React.FC<UserRoleProps> = ({ currentUserRole }) => {
+  const renderCharts = () => {
+    switch (currentUserRole) {
+      case AuthorityName.ADMIN:
+        return <AdminCharts currentUserRole={currentUserRole} />;
+      case AuthorityName.DEVELOPER:
+        return <DeveloperCharts currentUserRole={currentUserRole} />;
+      case AuthorityName.TESTER:
+        return <TesterCharts currentUserRole={currentUserRole} />;
+      default:
+        return <Box>Access Denied</Box>;
+    }
+  };
+
+  return (
+    <Grid
+      container
+      spacing={2}
+      columns={12}
+      sx={{ mb: (theme) => theme.spacing(2) }}
+    >
+      {renderCharts()}
+    </Grid>
+  );
+};
+
+export default Charts;
