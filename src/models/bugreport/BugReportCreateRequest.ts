@@ -1,4 +1,4 @@
-import { BugReportSeverity } from "../../constants/enum/bugReportSeverities";
+import { BugReportSeverity } from "../enum/bugReportSeverities";
 
 export interface BugReportCreateRequest {
   projectId: number;

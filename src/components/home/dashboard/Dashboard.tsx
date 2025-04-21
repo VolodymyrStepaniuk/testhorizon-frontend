@@ -1,8 +1,7 @@
-// Dashboard.tsx
 import React from "react";
 import { Box } from "@mui/material";
-import { UserRoleProps } from "../../../constants/userProps";
-import { AuthorityName } from "../../../constants/enum/authorityNames";
+import { UserRoleProps } from "../../../models/userProps";
+import { AuthorityName } from "../../../models/enum/authorityNames";
 import AdminDashboard from "./AdminDashboard";
 import DeveloperDashboard from "./DeveloperDashboard";
 import TesterDashboard from "./TesterDashboard";

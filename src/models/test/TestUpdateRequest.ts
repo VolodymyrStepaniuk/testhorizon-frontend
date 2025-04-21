@@ -1,4 +1,4 @@
-import { TestType } from "../../constants/enum/testTypes";
+import { TestType } from "../enum/testTypes";
 
 export interface TestUpdateRequest {
   testCaseId?: number;

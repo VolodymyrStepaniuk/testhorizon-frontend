@@ -1,4 +1,4 @@
-import { UserAuthorityName } from "../../constants/enum/userAuthorityName";
+import { UserAuthorityName } from "../enum/userAuthorityName";
 
 export interface UserCreateRequest {
   email: string;

@@ -34,7 +34,7 @@ export const surfacesCustomizations: Components<Theme> = {
   },
   MuiAccordionSummary: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: () => ({
         border: "none",
         borderRadius: 8,
         "&:hover": { backgroundColor: gray[800] },
@@ -94,6 +94,42 @@ export const surfacesCustomizations: Components<Theme> = {
     styleOverrides: {
       root: {
         padding: 0,
+      },
+    },
+  },
+  MuiDialog: {
+    styleOverrides: {
+      paper: ({ theme }) => ({
+        backgroundColor: `${gray[800]}`,
+        backgroundImage: "none",
+        borderRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+        boxShadow: theme.shadows[10],
+        color: theme.palette.text.primary,
+      }),
+    },
+  },
+  MuiDialogTitle: {
+    styleOverrides: {
+      root: {
+        padding: "16px 24px",
+        backgroundColor: "transparent",
+      },
+    },
+  },
+  MuiDialogContent: {
+    styleOverrides: {
+      root: {
+        padding: "8px 24px 16px",
+        backgroundColor: "transparent",
+      },
+    },
+  },
+  MuiDialogActions: {
+    styleOverrides: {
+      root: {
+        padding: "8px 16px 16px",
+        backgroundColor: "transparent",
       },
     },
   },

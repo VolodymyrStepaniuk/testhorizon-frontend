@@ -1,4 +1,4 @@
-import { TestCasePriority } from "../../constants/enum/testCasePriorities";
+import { TestCasePriority } from "../enum/testCasePriorities";
 
 export interface TestCaseCreateRequest {
   projectId: number;

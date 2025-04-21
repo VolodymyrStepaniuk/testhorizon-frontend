@@ -6,6 +6,7 @@ import { dataDisplayCustomizations } from "./customization/dataDisplay";
 import { inputsCustomizations } from "./customization/inputs";
 import { navigationCustomizations } from "./customization/navigation";
 import { surfacesCustomizations } from "./customization/surfaces";
+import { dataGridCustomizations } from "./customization/dataGrid";
 
 interface AppThemeProps {
   children: React.ReactNode;
@@ -30,6 +31,7 @@ export default function AppTheme(props: AppThemeProps) {
         ...navigationCustomizations,
         ...surfacesCustomizations,
         ...themeComponents,
+        ...dataGridCustomizations,
       },
     });
   }, [themeComponents]);

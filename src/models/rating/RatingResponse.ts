@@ -1,9 +1,10 @@
+import { UserInfo } from "../info/UserInfo";
 import { Links } from "../Links";
 
 export interface RatingResponse {
   id: number;
-  userId: number;
-  ratedByUserId: number;
+  user: UserInfo;
+  ratedByUser: UserInfo;
   ratingPoints: number;
   comment?: string;
   createdAt: string;

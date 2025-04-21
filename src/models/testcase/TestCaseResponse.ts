@@ -1,10 +1,12 @@
-import { TestCasePriority } from "../../constants/enum/testCasePriorities";
+import { TestCasePriority } from "../enum/testCasePriorities";
+import { ProjectInfo } from "../info/ProjectInfo";
+import { UserInfo } from "../info/UserInfo";
 import { Links } from "../Links";
 
 export interface TestCaseResponse {
   id: number;
-  projectId: number;
-  authorId: number;
+  project: ProjectInfo;
+  author: UserInfo;
   title: string;
   description: string;
   preconditions: string;

@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
-import { UserRoleProps } from "../../../constants/userProps";
+import { UserRoleProps } from "../../../models/userProps";
 import DeveloperCharts from "./roleBasedCharts/DeveloperCharts";
-import { AuthorityName } from "../../../constants/enum/authorityNames";
+import { AuthorityName } from "../../../models/enum/authorityNames";
 import AdminCharts from "./roleBasedCharts/AdminCharts";
 import TesterCharts from "./roleBasedCharts/TesterCharts";
 

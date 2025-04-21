@@ -31,7 +31,6 @@ export default function EmailConfirmation({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Переконуємось, що довжина коду відповідає вимогам валідації
     if (
       code.length !== AUTH_VALIDATION.code.maxLength ||
       code.length !== AUTH_VALIDATION.code.minLength

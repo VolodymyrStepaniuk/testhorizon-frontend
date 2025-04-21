@@ -1,11 +1,13 @@
-import { BugReportSeverity } from "../../constants/enum/bugReportSeverities";
-import { BugReportStatus } from "../../constants/enum/bugReportStatuses";
+import { BugReportSeverity } from "../enum/bugReportSeverities";
+import { BugReportStatus } from "../enum/bugReportStatuses";
+import { ProjectInfo } from "../info/ProjectInfo";
+import { UserInfo } from "../info/UserInfo";
 import { Links } from "../Links";
 
 export interface BugReportResponse {
   id: number;
-  projectId: number;
-  reporterId: number;
+  project: ProjectInfo;
+  reporter: UserInfo;
   title: string;
   description: string;
   environment: string;

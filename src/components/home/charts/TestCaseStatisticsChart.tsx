@@ -3,10 +3,12 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useTheme } from "@mui/material/styles";
-import { TestCasePriority } from "../../../constants/enum/testCasePriorities";
-import { UserRoleProps } from "../../../constants/userProps";
+import { TestCasePriority } from "../../../models/enum/testCasePriorities";
+import { UserRoleProps } from "../../../models/userProps";
 import { Box } from "@mui/material";
-import { AuthorityName } from "../../../constants/enum/authorityNames";
+import { AuthorityName } from "../../../models/enum/authorityNames";
+import { useTestCasesQuery } from "../../../queries/TestCaseQuery";
+import { formatEnumWithoutLowerUnderline } from "../../../utils/format.utils";
 
 interface TestCaseCount {
   type: TestCasePriority;
@@ -36,19 +38,34 @@ const TestCaseStatisticsChart: React.FC<UserRoleProps> = ({
     }
   };
 
-  // Тимчасові TestCaseCount дані
+  const { testCases, isLoading: isLoadingTestCase } = useTestCasesQuery();
+
   const testCounts: TestCaseCount[] = [
-    { type: TestCasePriority.LOW, count: 15 },
-    { type: TestCasePriority.MEDIUM, count: 8 },
-    { type: TestCasePriority.HIGH, count: 10 },
+    { type: TestCasePriority.LOW, count: 0 },
+    { type: TestCasePriority.MEDIUM, count: 0 },
+    { type: TestCasePriority.HIGH, count: 0 },
   ];
 
-  // Перетворюємо дані так, що кожен тип тесту стає окремою серією
+  if (testCases) {
+    testCases.forEach((testCase) => {
+      const severityCount = testCounts.find(
+        (count) => count.type === testCase.priority
+      );
+      if (severityCount) {
+        severityCount.count++;
+      }
+    });
+  }
+
   const seriesData = testCounts.map((tc) => ({
     id: tc.type,
-    label: tc.type,
+    label: formatEnumWithoutLowerUnderline(tc.type),
     data: [tc.count],
   }));
+
+  if (isLoadingTestCase) {
+    return <Box>Loading...</Box>;
+  }
 
   return (
     <Card variant="outlined" sx={{ width: "100%" }}>

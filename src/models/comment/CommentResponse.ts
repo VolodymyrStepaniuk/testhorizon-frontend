@@ -1,6 +1,6 @@
-import { CommentEntityType } from "../../constants/enum/commentEntityTypes";
+import { CommentEntityType } from "../enum/commentEntityTypes";
 import { Links } from "../Links";
-import { UserInfo } from "./UserInfo";
+import { UserInfo } from "../info/UserInfo";
 
 export interface CommentResponse {
   id: number;

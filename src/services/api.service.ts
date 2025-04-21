@@ -1,43 +1,59 @@
 import axios from "axios";
-import { apiConfig } from "../config/api.config";
+import { apiConfig } from "./api.config";
 import { UserCreateRequest } from "../models/user/UserCreateRequest";
 import { LoginRequest } from "../models/auth/LoginRequest";
 import { VerificationRequest } from "../models/auth/VerificationRequest";
-import { PasswordResetRequest } from "../models/auth/PasswordResetRequest";
-import { PasswordResetConfirmRequest } from "../models/auth/PasswordResetConfirmRequest";
+import { EmailPasswordResetRequest } from "../models/auth/EmailPasswordResetRequest";
+import { EmailPasswordResetConfirmRequest } from "../models/auth/EmailPasswordResetConfirmRequest";
 import { UserResponse } from "../models/user/UserResponse";
 import { UserUpdateRequest } from "../models/user/UserUpdateRequest";
 import { TestCaseCreateRequest } from "../models/testcase/TestCaseCreateRequest";
 import { TestCaseResponse } from "../models/testcase/TestCaseResponse";
 import { TestCaseUpdateRequest } from "../models/testcase/TestCaseUpdateRequest";
-import { TestCasePriority } from "../constants/enum/testCasePriorities";
+import { TestCasePriority } from "../models/enum/testCasePriorities";
 import { TestCreateRequest } from "../models/test/TestCreateRequest";
 import { TestUpdateRequest } from "../models/test/TestUpdateRequest";
 import { TestResponse } from "../models/test/TestResponse";
-import { TestType } from "../constants/enum/testTypes";
+import { TestType } from "../models/enum/testTypes";
 import { RatingUpdateRequest } from "../models/rating/RatingUpdateRequest";
 import { RatingResponse } from "../models/rating/RatingResponse";
 import { ProjectCreateRequest } from "../models/project/ProjectCreateRequest";
 import { ProjectUpdateRequest } from "../models/project/ProjectUpdateRequest";
 import { ProjectResponse } from "../models/project/ProjectResponse";
-import { ProjectStatus } from "../constants/enum/projectStatuses";
+import { ProjectStatus } from "../models/enum/projectStatuses";
 import { CommentCreateRequest } from "../models/comment/CommentCreateRequest";
 import { CommentUpdateRequest } from "../models/comment/CommentUpdateRequest";
 import { CommentResponse } from "../models/comment/CommentResponse";
-import { CommentEntityType } from "../constants/enum/commentEntityTypes";
+import { CommentEntityType } from "../models/enum/commentEntityTypes";
 import { BugReportCreateRequest } from "../models/bugreport/BugReportCreateRequest";
 import { BugReportUpdateRequest } from "../models/bugreport/BugReportUpdateRequest";
 import { BugReportResponse } from "../models/bugreport/BugReportResponse";
-import { BugReportSeverity } from "../constants/enum/bugReportSeverities";
-import { BugReportStatus } from "../constants/enum/bugReportStatuses";
-import { FileEntityType } from "../constants/enum/fileEntityType";
+import { BugReportSeverity } from "../models/enum/bugReportSeverities";
+import { BugReportStatus } from "../models/enum/bugReportStatuses";
+import { FileEntityType } from "../models/enum/fileEntityType";
 import { getAccessToken } from "../utils/auth.utils";
-import { PaginatedResponse } from "../types/pagination";
+import { PaginatedResponse } from "../models/pagination";
+import { UpdatePasswordRequest } from "../models/auth/UpdatePasswordRequest";
+import { FileResponse } from "../models/file/FileResponse";
+import { FeedbackCreateRequest } from "../models/feedback/FeedbackCreateRequest";
+import { FeedbackResponse } from "../models/feedback/FeedbackResponse";
+import { FeedbackUpdateRequest } from "../models/feedback/FeedbackUpdateRequest";
+import { ExportFormat } from "../models/enum/exportFormat";
+import { ExportEntityType } from "../models/enum/exportEntityTypes";
+import { NotebookCreateRequest } from "../models/notebook/NotebookCreateRequest";
+import { NotebookUpdateRequest } from "../models/notebook/NotebookUpdateRequest";
+import { NotebookResponse } from "../models/notebook/NotebookResponse";
+import { NoteCreateRequest } from "../models/notebook/note/NoteCreateRequest";
+import { NoteUpdateRequest } from "../models/notebook/note/NoteUpdateRequest";
+import { NoteResponse } from "../models/notebook/note/NoteResponse";
 
 const apiClient = axios.create({
   baseURL: apiConfig.baseURL,
   headers: {
     "Content-Type": "application/json",
+  },
+  paramsSerializer: {
+    indexes: null,
   },
 });
 
@@ -60,7 +76,7 @@ export const API = {
       const formData = new FormData();
       files.forEach((file) => formData.append("files", file));
 
-      return apiClient.post(
+      return apiClient.post<PaginatedResponse<FileResponse, "files">>(
         `${apiConfig.endpoints.files}/${entityType}/${entityId}`,
         formData,
         {
@@ -93,8 +109,17 @@ export const API = {
       ),
 
     list: (entityType: FileEntityType, entityId: number) =>
-      apiClient.get(
+      apiClient.get<PaginatedResponse<FileResponse, "files">>(
         `${apiConfig.endpoints.files}/list/${entityType}/${entityId}`
+      ),
+
+    fileByEntityTypeAndId: (
+      entityType: FileEntityType,
+      entityId: number,
+      fileName: string
+    ) =>
+      apiClient.get<FileResponse>(
+        `${apiConfig.endpoints.files}/${entityType}/${entityId}/${fileName}`
       ),
   },
   bugReports: {
@@ -121,7 +146,7 @@ export const API = {
     getAll: (params?: {
       page?: number;
       size?: number;
-      projectId?: number;
+      projectIds?: number[];
       title?: string;
       reporterId?: number;
       severityName?: BugReportSeverity;
@@ -226,15 +251,23 @@ export const API = {
         headers: { Authorization: refreshToken },
       }),
 
-    sendPasswordReset: (request: PasswordResetRequest) =>
+    sendEmailPasswordReset: (request: EmailPasswordResetRequest) =>
       apiClient.post(
-        `${apiConfig.endpoints.auth}/send-reset-password`,
+        `${apiConfig.endpoints.auth}/password-reset/request`,
         request
       ),
 
-    resetPassword: (token: string, request: PasswordResetConfirmRequest) =>
+    emailResetPassword: (
+      token: string,
+      request: EmailPasswordResetConfirmRequest
+    ) =>
       apiClient.post(
-        `${apiConfig.endpoints.auth}/reset-password?token=${token}`,
+        `${apiConfig.endpoints.auth}/password-reset/confirm?token=${token}`,
+        request
+      ),
+    updatePassword: (request: UpdatePasswordRequest) =>
+      apiClient.post(
+        `${apiConfig.endpoints.auth}/password-reset/update`,
         request
       ),
   },
@@ -257,7 +290,8 @@ export const API = {
     getAll: (params?: {
       page?: number;
       size?: number;
-      projectId?: number;
+      title?: string;
+      projectIds?: number[];
       authorId?: number;
       testCaseId?: number;
       type?: TestType;
@@ -286,7 +320,8 @@ export const API = {
     getAll: (params?: {
       page?: number;
       size?: number;
-      projectId?: number;
+      title?: string;
+      projectIds?: number[];
       authorId?: number;
       priority?: TestCasePriority;
     }) =>
@@ -335,6 +370,108 @@ export const API = {
     getTopByRating: (params: { page?: number; size?: number }) =>
       apiClient.get<PaginatedResponse<UserResponse, "users">>(
         `${apiConfig.endpoints.users}/top`,
+        { params }
+      ),
+  },
+
+  feedbacks: {
+    create: (request: FeedbackCreateRequest) =>
+      apiClient.post<FeedbackResponse>(
+        `${apiConfig.endpoints.feedbacks}`,
+        request
+      ),
+    getById: (id: number) =>
+      apiClient.get<UserResponse>(`${apiConfig.endpoints.users}/${id}`),
+    update: (id: number, request: FeedbackUpdateRequest) =>
+      apiClient.patch<FeedbackResponse>(
+        `${apiConfig.endpoints.feedbacks}/${id}`,
+        request
+      ),
+    delete: (id: number) =>
+      apiClient.delete(`${apiConfig.endpoints.feedbacks}/${id}`),
+    getAll: (params?: {
+      page?: number;
+      size?: number;
+      ownerId?: number;
+      feedbackIds?: number[];
+    }) =>
+      apiClient.get<PaginatedResponse<FeedbackResponse, "feedbacks">>(
+        apiConfig.endpoints.feedbacks,
+        { params }
+      ),
+  },
+
+  export: {
+    getExportFile: async (
+      entityType: ExportEntityType,
+      entityId: number,
+      exportFormat: ExportFormat
+    ): Promise<Blob> => {
+      const response = await apiClient.get(
+        `${apiConfig.endpoints.export}/${entityType}/${entityId}`,
+        {
+          params: { format: exportFormat },
+          responseType: "blob",
+        }
+      );
+      return response.data;
+    },
+  },
+
+  notebooks: {
+    create: (request: NotebookCreateRequest) =>
+      apiClient.post<NotebookResponse>(apiConfig.endpoints.notebooks, request),
+
+    getById: (id: number) =>
+      apiClient.get<NotebookResponse>(`${apiConfig.endpoints.notebooks}/${id}`),
+
+    update: (id: number, request: NotebookUpdateRequest) =>
+      apiClient.patch<NotebookResponse>(
+        `${apiConfig.endpoints.notebooks}/${id}`,
+        request
+      ),
+
+    delete: (id: number) =>
+      apiClient.delete(`${apiConfig.endpoints.notebooks}/${id}`),
+
+    getAll: (params?: {
+      page?: number;
+      size?: number;
+      ownerId?: number;
+      title?: string;
+    }) =>
+      apiClient.get<PaginatedResponse<NotebookResponse, "notebooks">>(
+        apiConfig.endpoints.notebooks,
+        { params }
+      ),
+  },
+  notes: {
+    create: (notebookId: number, request: NoteCreateRequest) =>
+      apiClient.post<NoteResponse>(
+        `${apiConfig.endpoints.notes}/${notebookId}`,
+        request
+      ),
+
+    getById: (id: number) =>
+      apiClient.get<NoteResponse>(`${apiConfig.endpoints.notes}/${id}`),
+
+    update: (id: number, request: NoteUpdateRequest) =>
+      apiClient.patch<NoteResponse>(
+        `${apiConfig.endpoints.notes}/${id}`,
+        request
+      ),
+
+    delete: (id: number) =>
+      apiClient.delete(`${apiConfig.endpoints.notes}/${id}`),
+
+    getAll: (params?: {
+      page?: number;
+      size?: number;
+      notebookId?: number;
+      title?: string;
+    }) =>
+      apiClient.get<PaginatedResponse<NoteResponse, "notes">>(
+        apiConfig.endpoints.notes,
         { params }
       ),
   },

@@ -167,7 +167,6 @@ export default function SignUp() {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Validate field on change
     switch (name) {
       case "email":
         validateEmail(value);

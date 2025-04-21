@@ -3,10 +3,12 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useTheme } from "@mui/material/styles";
-import { BugReportSeverity } from "../../../constants/enum/bugReportSeverities";
-import { UserRoleProps } from "../../../constants/userProps";
+import { BugReportSeverity } from "../../../models/enum/bugReportSeverities";
+import { UserRoleProps } from "../../../models/userProps";
 import { Box } from "@mui/material";
-import { AuthorityName } from "../../../constants/enum/authorityNames";
+import { AuthorityName } from "../../../models/enum/authorityNames";
+import { useBugReportsQuery } from "../../../queries/BugReportQuery";
+import { formatEnumWithoutLowerUnderline } from "../../../utils/format.utils";
 
 interface BugReportCount {
   type: BugReportSeverity;
@@ -37,20 +39,35 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
     }
   };
 
-  // Тимчасові захардкоджені дані
-  const testCounts: BugReportCount[] = [
-    { type: BugReportSeverity.LOW, count: 12 },
-    { type: BugReportSeverity.MEDIUM, count: 7 },
-    { type: BugReportSeverity.HIGH, count: 14 },
-    { type: BugReportSeverity.CRITICAL, count: 9 },
+  const { bugReports, isLoading: isLoadingBugReports } = useBugReportsQuery();
+
+  const bugReportCounts: BugReportCount[] = [
+    { type: BugReportSeverity.LOW, count: 0 },
+    { type: BugReportSeverity.MEDIUM, count: 0 },
+    { type: BugReportSeverity.HIGH, count: 0 },
+    { type: BugReportSeverity.CRITICAL, count: 0 },
   ];
 
-  // Перетворюємо дані так, що кожен тип тесту стає окремою серією
-  const seriesData = testCounts.map((tc) => ({
-    id: tc.type,
-    label: tc.type,
-    data: [tc.count],
+  if (bugReports) {
+    bugReports.forEach((report) => {
+      const severityCount = bugReportCounts.find(
+        (count) => count.type === report.severity
+      );
+      if (severityCount) {
+        severityCount.count++;
+      }
+    });
+  }
+
+  const seriesData = bugReportCounts.map((br) => ({
+    id: br.type,
+    label: formatEnumWithoutLowerUnderline(br.type),
+    data: [br.count],
   }));
+
+  if (isLoadingBugReports) {
+    return <Box>Loading...</Box>;
+  }
 
   return (
     <Card variant="outlined" sx={{ width: "100%" }}>

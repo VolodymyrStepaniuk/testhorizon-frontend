@@ -1,9 +1,9 @@
-import { CommentEntityType } from "../constants/enum/commentEntityTypes";
-import { ProjectStatus } from "../constants/enum/projectStatuses";
-import { TestCasePriority } from "../constants/enum/testCasePriorities";
-import { TestType } from "../constants/enum/testTypes";
-import { BugReportSeverity } from "../constants/enum/bugReportSeverities";
-import { BugReportStatus } from "../constants/enum/bugReportStatuses";
+import { CommentEntityType } from "./enum/commentEntityTypes";
+import { ProjectStatus } from "./enum/projectStatuses";
+import { TestCasePriority } from "./enum/testCasePriorities";
+import { TestType } from "./enum/testTypes";
+import { BugReportSeverity } from "./enum/bugReportSeverities";
+import { BugReportStatus } from "./enum/bugReportStatuses";
 
 export const UNIVERSAL_VALIDATION = {
   password: {

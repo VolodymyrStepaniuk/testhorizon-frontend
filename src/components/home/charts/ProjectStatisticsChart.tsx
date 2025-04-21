@@ -3,9 +3,12 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useTheme } from "@mui/material/styles";
-import { UserRoleProps } from "../../../constants/userProps";
+import { UserRoleProps } from "../../../models/userProps";
 import { Box } from "@mui/material";
-import { AuthorityName } from "../../../constants/enum/authorityNames";
+import { AuthorityName } from "../../../models/enum/authorityNames";
+import { useBugReportsQuery } from "../../../queries/BugReportQuery";
+import { useTestCasesQuery } from "../../../queries/TestCaseQuery";
+import { useTestsQuery } from "../../../queries/TestQuery";
 
 const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
   currentUserRole,
@@ -30,11 +33,19 @@ const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
     }
   };
 
+  const { tests, isLoading: isLoadingTest } = useTestsQuery();
+  const { testCases, isLoading: isLoadingTestCase } = useTestCasesQuery();
+  const { bugReports, isLoading: isLoadingBugReport } = useBugReportsQuery();
+
   const counts = {
-    tests: 42,
-    testCases: 128,
-    bugReports: 8,
+    tests: tests ? tests.length : 0,
+    testCases: testCases ? testCases.length : 0,
+    bugReports: bugReports ? bugReports.length : 0,
   };
+
+  if (isLoadingTest || isLoadingTestCase || isLoadingBugReport) {
+    return <Box>Loading...</Box>;
+  }
 
   return (
     <Card variant="outlined" sx={{ width: "100%" }}>

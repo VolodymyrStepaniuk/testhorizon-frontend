@@ -1,7 +1,7 @@
 export const TOKEN_KEY = "access_token";
 export const REFRESH_TOKEN_KEY = "refresh_token";
 import { jwtDecode } from "jwt-decode";
-import { AuthorityName } from "../constants/enum/authorityNames";
+import { AuthorityName } from "../models/enum/authorityNames";
 
 interface Authority {
   authority: string;

@@ -73,10 +73,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 export default function SignIn() {
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [signInError, setSignInError] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [open, setOpen] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -118,9 +119,7 @@ export default function SignIn() {
       navigate("/home");
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || "Failed to sign in";
-      setEmailError(true);
-      setPasswordError(true);
-      setEmailErrorMessage(errorMessage);
+      setSignInError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -141,9 +140,9 @@ export default function SignIn() {
       setEmailErrorMessage("");
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 8) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("Password must be at least 8 characters long.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -259,6 +258,18 @@ export default function SignIn() {
             label="Remember me"
           />
           <ForgotPassword open={open} handleClose={handleClose} />
+          {signInError && (
+            <Typography
+              variant="body2"
+              sx={{
+                color: "error.main",
+                fontWeight: 600,
+                textAlign: "center",
+              }}
+            >
+              {signInError}
+            </Typography>
+          )}
           <Button
             type="submit"
             fullWidth

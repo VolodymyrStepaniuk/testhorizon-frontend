@@ -1,4 +1,4 @@
-import { CommentEntityType } from "../../constants/enum/commentEntityTypes";
+import { CommentEntityType } from "../enum/commentEntityTypes";
 
 export interface CommentCreateRequest {
   entityType: CommentEntityType;

@@ -1,5 +1,5 @@
-import { BugReportSeverity } from "../../constants/enum/bugReportSeverities";
-import { BugReportStatus } from "../../constants/enum/bugReportStatuses";
+import { BugReportSeverity } from "../enum/bugReportSeverities";
+import { BugReportStatus } from "../enum/bugReportStatuses";
 
 export interface BugReportUpdateRequest {
   title?: string;

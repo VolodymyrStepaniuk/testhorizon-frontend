@@ -1,4 +1,4 @@
-import { ProjectStatus } from "../../constants/enum/projectStatuses";
+import { ProjectStatus } from "../enum/projectStatuses";
 
 export interface ProjectUpdateRequest {
   title?: string;

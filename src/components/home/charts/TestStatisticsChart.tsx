@@ -3,10 +3,12 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { useTheme } from "@mui/material/styles";
-import { TestType } from "../../../constants/enum/testTypes";
-import { UserRoleProps } from "../../../constants/userProps";
+import { TestType } from "../../../models/enum/testTypes";
+import { UserRoleProps } from "../../../models/userProps";
 import { Box } from "@mui/material";
-import { AuthorityName } from "../../../constants/enum/authorityNames";
+import { AuthorityName } from "../../../models/enum/authorityNames";
+import { formatEnumWithLowerUnderline } from "../../../utils/format.utils";
+import { useTestsQuery } from "../../../queries/TestQuery";
 
 interface TestCount {
   type: TestType;
@@ -38,23 +40,38 @@ const TestStatisticsChart: React.FC<UserRoleProps> = ({ currentUserRole }) => {
     }
   };
 
-  // Тимчасові захардкоджені дані
+  const { tests, isLoading: isLoadingTest } = useTestsQuery();
+
   const testCounts: TestCount[] = [
-    { type: TestType.UNIT, count: 15 },
-    { type: TestType.INTEGRATION, count: 8 },
-    { type: TestType.FUNCTIONAL, count: 10 },
-    { type: TestType.END_TO_END, count: 12 },
-    { type: TestType.ACCEPTANCE, count: 7 },
-    { type: TestType.PERFORMANCE, count: 14 },
-    { type: TestType.SMOKE, count: 9 },
+    { type: TestType.UNIT, count: 0 },
+    { type: TestType.INTEGRATION, count: 0 },
+    { type: TestType.FUNCTIONAL, count: 0 },
+    { type: TestType.END_TO_END, count: 0 },
+    { type: TestType.ACCEPTANCE, count: 0 },
+    { type: TestType.PERFORMANCE, count: 0 },
+    { type: TestType.SMOKE, count: 0 },
   ];
 
-  // Перетворюємо дані так, що кожен тип тесту стає окремою серією
-  const seriesData = testCounts.map((tc) => ({
-    id: tc.type,
-    label: tc.type,
-    data: [tc.count],
+  if (tests) {
+    tests.forEach((test) => {
+      const severityCount = testCounts.find(
+        (count) => count.type === test.type
+      );
+      if (severityCount) {
+        severityCount.count++;
+      }
+    });
+  }
+
+  const seriesData = testCounts.map((t) => ({
+    id: t.type,
+    label: formatEnumWithLowerUnderline(t.type),
+    data: [t.count],
   }));
+
+  if (isLoadingTest) {
+    return <Box>Loading...</Box>;
+  }
 
   return (
     <Card variant="outlined" sx={{ width: "100%" }}>

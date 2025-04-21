@@ -298,7 +298,7 @@ export const inputsCustomizations: Components<Theme> = {
       input: {
         padding: 0,
       },
-      root: ({ theme }) => ({
+      root: ({ theme, ownerState }) => ({
         padding: "8px 12px",
         color: theme.palette.text.primary,
         borderRadius: theme.shape.borderRadius,
@@ -312,24 +312,17 @@ export const inputsCustomizations: Components<Theme> = {
           outline: `3px solid ${alpha(brand[500], 0.5)}`,
           borderColor: brand[400],
         },
-        variants: [
-          {
-            props: {
-              size: "small",
-            },
-            style: {
-              height: "2.25rem",
-            },
-          },
-          {
-            props: {
-              size: "medium",
-            },
-            style: {
-              height: "2.5rem",
-            },
-          },
-        ],
+        ...(ownerState.multiline && {
+          height: "auto",
+        }),
+        ...(!ownerState.multiline &&
+          ownerState.size === "small" && {
+            height: "2.25rem",
+          }),
+        ...(!ownerState.multiline &&
+          ownerState.size === "medium" && {
+            height: "2.5rem",
+          }),
       }),
       notchedOutline: {
         border: "none",

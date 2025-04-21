@@ -1,11 +1,14 @@
-import { TestType } from "../../constants/enum/testTypes";
+import { TestType } from "../enum/testTypes";
+import { ProjectInfo } from "../info/ProjectInfo";
+import { TestCaseInfo } from "../info/TestCaseInfo";
+import { UserInfo } from "../info/UserInfo";
 import { Links } from "../Links";
 
 export interface TestResponse {
   id: number;
-  projectId: number;
-  testCaseId?: number;
-  authorId: number;
+  project: ProjectInfo;
+  testCase?: TestCaseInfo;
+  author: UserInfo;
   title: string;
   description?: string;
   instructions?: string;

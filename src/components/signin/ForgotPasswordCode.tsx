@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -9,18 +9,86 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import AppTheme from "../../theme/AppTheme";
 import AppIcon from "../universal/AppIcon";
+import { API } from "../../services/api.service";
+import { UNIVERSAL_VALIDATION } from "../../models/validation";
 
 const ForgotPasswordCode: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
   const [formData, setFormData] = useState({
-    code: "",
-    newPassword: "",
+    password: "",
     confirmPassword: "",
   });
+
+  const [formErrors, setFormErrors] = useState({
+    password: { error: false, message: "" },
+    confirmPassword: { error: false, message: "" },
+  });
+
   const [error, setError] = useState("");
+
+  const validatePassword = (password: string): boolean => {
+    if (!password || !UNIVERSAL_VALIDATION.password.pattern.test(password)) {
+      setFormErrors((prev) => ({
+        ...prev,
+        password: {
+          error: true,
+          message:
+            "Password must contain uppercase, lowercase, number and special character",
+        },
+      }));
+      return false;
+    }
+    if (
+      password.length < UNIVERSAL_VALIDATION.password.minLength ||
+      password.length > UNIVERSAL_VALIDATION.password.maxLength
+    ) {
+      setFormErrors((prev) => ({
+        ...prev,
+        password: {
+          error: true,
+          message: `Password length must be between ${UNIVERSAL_VALIDATION.password.minLength} and ${UNIVERSAL_VALIDATION.password.maxLength} characters`,
+        },
+      }));
+      return false;
+    }
+    setFormErrors((prev) => ({
+      ...prev,
+      password: { error: false, message: "" },
+    }));
+    return true;
+  };
+
+  const validateConfirmPassword = (
+    password: string,
+    confirmPassword: string
+  ): boolean => {
+    if (password !== confirmPassword) {
+      setFormErrors((prev) => ({
+        ...prev,
+        confirmPassword: {
+          error: true,
+          message: "Passwords do not match",
+        },
+      }));
+      return false;
+    }
+    setFormErrors((prev) => ({
+      ...prev,
+      confirmPassword: { error: false, message: "" },
+    }));
+    return true;
+  };
+
+  useEffect(() => {
+    if (!token) {
+      setError("Invalid reset link. Please request a new one.");
+    }
+  }, [token]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,33 +98,43 @@ const ForgotPasswordCode: React.FC = () => {
     }));
   };
 
-  const validateCode = (code: string): boolean => {
-    if (code.length !== 6) {
-      setError("Verification code must be exactly 6 characters long");
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (!validateCode(formData.code)) {
+    const isPasswordValid = validatePassword(formData.password);
+    const isConfirmPasswordValid = validateConfirmPassword(
+      formData.password,
+      formData.confirmPassword
+    );
+
+    if (!isPasswordValid || !isConfirmPasswordValid) {
       return;
     }
 
-    if (formData.newPassword !== formData.confirmPassword) {
-      setError("Passwords do not match");
+    if (!token) {
+      setError("Invalid reset link. Please request a new one.");
       return;
     }
 
     try {
-      // Тут можна викликати API для перевірки коду та встановлення нового паролю
-      // await authService.resetPassword(formData.code, formData.newPassword);
-      navigate("/sign-in");
-    } catch (err) {
-      setError("Failed to reset password. Please try again.");
+      await API.auth.emailResetPassword(token, {
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      });
+
+      navigate("/sign-in", {
+        state: {
+          message:
+            "Password successfully reset. Please sign in with your new password.",
+        },
+      });
+    } catch (err: any) {
+      console.error("Error resetting password:", err);
+      setError(
+        err.response?.data?.message ||
+          "Failed to reset password. Please try again."
+      );
     }
   };
 
@@ -115,25 +193,7 @@ const ForgotPasswordCode: React.FC = () => {
           >
             <FormControl fullWidth>
               <FormLabel
-                htmlFor="code"
-                sx={{ color: "white", mb: 0.5, fontWeight: 700 }}
-              >
-                Code from email
-              </FormLabel>
-              <TextField
-                autoComplete="off"
-                name="code"
-                required
-                fullWidth
-                id="code"
-                placeholder="123456"
-                value={formData.code}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <FormLabel
-                htmlFor="newPassword"
+                htmlFor="password"
                 sx={{ color: "white", mb: 0.5, fontWeight: 700 }}
               >
                 New Password
@@ -141,13 +201,16 @@ const ForgotPasswordCode: React.FC = () => {
               <TextField
                 required
                 fullWidth
-                id="newPassword"
-                placeholder="••••••"
-                name="newPassword"
+                id="password"
+                placeholder="••••••••"
+                name="password"
                 autoComplete="new-password"
                 type="password"
                 variant="outlined"
-                value={formData.newPassword}
+                value={formData.password}
+                error={formErrors.password.error}
+                helperText={formErrors.password.message}
+                color={formErrors.password.error ? "error" : "primary"}
                 onChange={handleInputChange}
               />
             </FormControl>
@@ -162,12 +225,15 @@ const ForgotPasswordCode: React.FC = () => {
                 required
                 fullWidth
                 name="confirmPassword"
-                placeholder="••••••"
+                placeholder="••••••••"
                 type="password"
                 id="confirmPassword"
                 autoComplete="new-password"
                 variant="outlined"
                 value={formData.confirmPassword}
+                error={formErrors.confirmPassword.error}
+                helperText={formErrors.confirmPassword.message}
+                color={formErrors.confirmPassword.error ? "error" : "primary"}
                 onChange={handleInputChange}
               />
             </FormControl>

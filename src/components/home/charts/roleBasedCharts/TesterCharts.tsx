@@ -4,7 +4,7 @@ import BugReportStatusStatisticsChart from "../BugReportStatusStatisticsChart";
 
 import TestCaseStatisticsChart from "../TestCaseStatisticsChart";
 import TestStatisticsChart from "../TestStatisticsChart";
-import { UserRoleProps } from "../../../../constants/userProps";
+import { UserRoleProps } from "../../../../models/userProps";
 
 const TesterCharts: React.FC<UserRoleProps> = ({ currentUserRole }) => {
   return (

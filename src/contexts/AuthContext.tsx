@@ -1,12 +1,19 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { isAuthenticated, clearTokens } from "../utils/auth.utils";
 import { API } from "../services/api.service";
 import { UserResponse } from "../models/user/UserResponse";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AuthContextType {
   isAuth: boolean;
   setIsAuth: (auth: boolean) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   user: UserResponse | null;
   fetchUser: () => Promise<void>;
   isUserLoading: boolean;
@@ -20,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuth, setIsAuth] = useState(isAuthenticated());
   const [user, setUser] = useState<UserResponse | null>(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
+  const queryClient = useQueryClient();
 
   const fetchUser = async () => {
     setIsUserLoading(true);
@@ -40,11 +48,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [isAuth]);
 
-  const logout = () => {
+  const clearAuthData = useCallback(() => {
+    queryClient.clear();
     clearTokens();
+  }, [queryClient]);
+
+  const logout = useCallback(() => {
     setIsAuth(false);
     setUser(null);
-  };
+    clearAuthData();
+    return Promise.resolve();
+  }, [clearAuthData]);
 
   return (
     <AuthContext.Provider

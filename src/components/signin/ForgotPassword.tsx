@@ -6,8 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CircularProgress } from "@mui/material";
+import { API } from "../../services/api.service";
 
 interface ForgotPasswordProps {
   open: boolean;
@@ -20,20 +21,31 @@ export default function ForgotPassword({
 }: ForgotPasswordProps) {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await API.auth.sendEmailPasswordReset({ email });
       console.log("Password reset email sent to:", email);
-      handleClose();
+      handleAnyClose();
     } catch (error) {
       console.error("Error sending reset email:", error);
     } finally {
+      alert(
+        "If an account with this email exists in our system, an email with further instructions will be sent to it."
+      );
       setIsLoading(false);
     }
+  };
+
+  const handleAnyClose = () => {
+    if (cancelButtonRef.current) {
+      cancelButtonRef.current.blur();
+    }
+    handleClose();
   };
 
   return (
@@ -71,7 +83,7 @@ export default function ForgotPassword({
         />
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button onClick={handleClose} disabled={isLoading}>
+        <Button onClick={handleAnyClose} disabled={isLoading}>
           Cancel
         </Button>
         <Button variant="contained" type="submit" disabled={isLoading}>

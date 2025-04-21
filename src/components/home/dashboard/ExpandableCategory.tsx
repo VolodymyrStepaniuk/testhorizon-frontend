@@ -10,11 +10,11 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface ExpandableCategoryProps<T> {
-  title?: React.ReactNode; // Заголовок (текст або JSX)
-  items: T[]; // Масив айтемів
+  title?: React.ReactNode;
+  items: T[];
   renderItem: (item: T) => React.ReactNode;
-  initialVisibleCount?: number; // Кількість айтемів, що показуються спочатку
-  loadStep?: number; // Кількість айтемів, що підвантажуються за один клік
+  initialVisibleCount?: number;
+  loadStep?: number;
 }
 
 const ExpandableCategory = <T extends { id: number }>({
@@ -47,7 +47,6 @@ const ExpandableCategory = <T extends { id: number }>({
         </Box>
       )}
 
-      {/* Контейнер списку з заокругленням */}
       <Paper
         elevation={0}
         sx={{
@@ -71,7 +70,6 @@ const ExpandableCategory = <T extends { id: number }>({
         </List>
       </Paper>
 
-      {/* Стрілочка розташована відразу після списку */}
       {showLoadMore && (
         <Box sx={{ textAlign: "center" }}>
           <IconButton

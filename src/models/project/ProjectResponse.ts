@@ -1,9 +1,10 @@
-import { ProjectStatus } from "../../constants/enum/projectStatuses";
+import { ProjectStatus } from "../enum/projectStatuses";
+import { UserInfo } from "../info/UserInfo";
 import { Links } from "../Links";
 
 export interface ProjectResponse {
   id: number;
-  ownerId: number;
+  owner: UserInfo;
   title: string;
   description: string;
   instructions?: string;
