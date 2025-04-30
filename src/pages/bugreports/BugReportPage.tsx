@@ -10,12 +10,14 @@ import { AuthorityName } from "../../models/enum/authorityNames";
 import BugReportDetails from "../../components/bugreports/general/BugReportDetails";
 import BugReportHeader from "../../components/bugreports/general/header/BugReportHeader";
 import BugReportTabs from "../../components/bugreports/general/tabs/BugReportTabs";
+import { useTranslation } from "react-i18next";
 
 const BugReportPage: React.FC = () => {
   const [bugReport, setBugReport] = useState<BugReportResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  const { t } = useTranslation();
 
   const { id } = useParams<{ id: string }>();
 
@@ -56,13 +58,13 @@ const BugReportPage: React.FC = () => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching bug report data:", err);
-        setError("Failed to load bug report data. Please try again later.");
+        setError(t("bugReportPages.details.loadError"));
         setLoading(false);
       }
     };
 
     fetchBugReportData();
-  }, [id]);
+  }, [id, t]);
 
   if (loading) {
     return (
@@ -76,7 +78,7 @@ const BugReportPage: React.FC = () => {
       >
         <CircularProgress />
         <Typography variant="h6" sx={{ ml: 2 }}>
-          Loading bug report data...
+          {t("bugReportPages.details.loading")}
         </Typography>
       </Box>
     );
@@ -93,9 +95,7 @@ const BugReportPage: React.FC = () => {
   if (!bugReport) {
     return (
       <Box sx={{ p: 3 }}>
-        <Alert severity="info">
-          Bug report not found or no longer available.
-        </Alert>
+        <Alert severity="info">{t("bugReportPages.details.notFound")}</Alert>
       </Box>
     );
   }

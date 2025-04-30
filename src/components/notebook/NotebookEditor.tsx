@@ -14,6 +14,7 @@ import { FiSave, FiHome } from "react-icons/fi";
 import { NotebookCreateRequest } from "../../models/notebook/NotebookCreateRequest";
 import { NotebookResponse } from "../../models/notebook/NotebookResponse";
 import { API } from "../../services/api.service";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   notebook?: NotebookResponse;
@@ -32,6 +33,7 @@ const NotebookEditor: React.FC<Props> = ({
   const [title, setTitle] = useState(notebook?.title || "");
   const [description, setDescription] = useState(notebook?.description || "");
   const [saving, setSaving] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (notebook) {
@@ -81,11 +83,13 @@ const NotebookEditor: React.FC<Props> = ({
               onClick={onHome}
               sx={{ textTransform: "none" }}
             >
-              Notebooks
+              {t("notebook.navigation.notebooks")}
             </Button>
           )}
           <Typography color="text.primary" variant="body2">
-            {isNew ? "Create Notebook" : "Edit Notebook"}
+            {isNew
+              ? t("notebook.editor.createTitle")
+              : t("notebook.editor.editTitle")}
           </Typography>
         </Breadcrumbs>
       </Box>
@@ -100,8 +104,8 @@ const NotebookEditor: React.FC<Props> = ({
         }}
       >
         <TextField
-          label="Title"
-          placeholder="Enter a title for your notebook"
+          label={t("notebook.editor.titleLabel")}
+          placeholder={t("notebook.editor.titlePlaceholder")}
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -116,8 +120,8 @@ const NotebookEditor: React.FC<Props> = ({
         <Divider sx={{ my: 1 }} />
 
         <TextField
-          label="Description"
-          placeholder="Add a description for your notebook (optional)"
+          label={t("notebook.editor.descriptionLabel")}
+          placeholder={t("notebook.editor.descriptionPlaceholder")}
           fullWidth
           multiline
           minRows={4}
@@ -136,7 +140,7 @@ const NotebookEditor: React.FC<Props> = ({
 
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button variant="outlined" onClick={onCancel}>
-            Cancel
+            {t("notebook.editor.cancel")}
           </Button>
 
           <Button
@@ -151,7 +155,7 @@ const NotebookEditor: React.FC<Props> = ({
             onClick={handleSave}
             disabled={!title.trim() || saving}
           >
-            {saving ? "Saving..." : "Save Notebook"}
+            {saving ? t("notebook.editor.saving") : t("notebook.editor.save")}
           </Button>
         </Box>
       </Card>

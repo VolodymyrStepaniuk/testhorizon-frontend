@@ -19,7 +19,8 @@ import { API } from "../../../../services/api.service";
 import { ProjectResponse } from "../../../../models/project/ProjectResponse";
 import { ProjectUpdateRequest } from "../../../../models/project/ProjectUpdateRequest";
 import { ProjectStatus } from "../../../../models/enum/projectStatuses";
-import { formatEnumWithoutLowerUnderline } from "../../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../../../utils/i18n.utils";
 
 interface UpdateProjectDialogProps {
   open: boolean;
@@ -34,6 +35,7 @@ const UpdateProjectDialog: React.FC<UpdateProjectDialogProps> = ({
   project,
   onProjectUpdated,
 }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ProjectUpdateRequest>({
     title: project.title,
     description: project.description,
@@ -71,20 +73,20 @@ const UpdateProjectDialog: React.FC<UpdateProjectDialogProps> = ({
       onClose();
     } catch (err) {
       setIsSubmitting(false);
-      setError("Failed to update project. Please try again.");
+      setError(t("projects.update.error"));
       console.error("Error updating project:", err);
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Edit Project</DialogTitle>
+      <DialogTitle>{t("projects.update.title")}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             <TextField
               name="title"
-              label="Project Title"
+              label={t("projects.update.projectTitle")}
               value={formData.title}
               onChange={handleInputChange}
               fullWidth
@@ -93,7 +95,7 @@ const UpdateProjectDialog: React.FC<UpdateProjectDialogProps> = ({
 
             <TextField
               name="description"
-              label="Description"
+              label={t("projects.update.description")}
               value={formData.description}
               onChange={handleInputChange}
               multiline
@@ -102,18 +104,20 @@ const UpdateProjectDialog: React.FC<UpdateProjectDialogProps> = ({
             />
 
             <FormControl fullWidth>
-              <InputLabel id="status-label">Status</InputLabel>
+              <InputLabel id="status-label">
+                {t("projects.update.status")}
+              </InputLabel>
               <Select
                 labelId="status-label"
                 name="status"
                 value={formData.status}
                 onChange={handleSelectChange}
-                label="Status"
+                label={t("projects.update.status")}
                 required
               >
                 {Object.values(ProjectStatus).map((status) => (
                   <MenuItem key={status} value={status}>
-                    {formatEnumWithoutLowerUnderline(status)}
+                    {translateEnum("enums.project.status", status)}
                   </MenuItem>
                 ))}
               </Select>
@@ -121,7 +125,7 @@ const UpdateProjectDialog: React.FC<UpdateProjectDialogProps> = ({
 
             <TextField
               name="instructions"
-              label="Instructions"
+              label={t("projects.update.instructions")}
               value={formData.instructions}
               onChange={handleInputChange}
               multiline
@@ -134,7 +138,7 @@ const UpdateProjectDialog: React.FC<UpdateProjectDialogProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t("projects.update.cancel")}
           </Button>
           <Button
             type="submit"
@@ -143,7 +147,9 @@ const UpdateProjectDialog: React.FC<UpdateProjectDialogProps> = ({
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            {isSubmitting ? "Updating..." : "Update Project"}
+            {isSubmitting
+              ? t("projects.update.updating")
+              : t("projects.update.update")}
           </Button>
         </DialogActions>
       </form>

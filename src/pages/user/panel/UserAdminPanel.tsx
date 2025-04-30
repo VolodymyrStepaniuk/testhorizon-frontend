@@ -9,6 +9,7 @@ import { AuthorityName } from "../../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../../utils/auth.utils";
 import NotificationSnackbar from "../../../components/universal/notification/NotificationSnackbar";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const UserAdminPanel: React.FC = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
@@ -20,14 +21,13 @@ const UserAdminPanel: React.FC = () => {
     severity: "success" | "error" | "info" | "warning";
   }>({ open: false, message: "", severity: "success" });
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  // Check if user is admin
   const authorities = getAutoritiesFromToken();
   const currentUserRole = authorities[0] as AuthorityName;
   const isAdmin = currentUserRole === AuthorityName.ADMIN;
 
   useEffect(() => {
-    // Redirect if not admin
     if (!isAdmin) {
       navigate("/home");
       return;
@@ -45,7 +45,7 @@ const UserAdminPanel: React.FC = () => {
       }
     } catch (error) {
       console.error("Failed to fetch users:", error);
-      showNotification("Failed to load users", "error");
+      showNotification(t("userAdmin.panel.notifications.loadError"), "error");
     } finally {
       setLoading(false);
     }
@@ -54,17 +54,26 @@ const UserAdminPanel: React.FC = () => {
   const handleUserCreated = () => {
     fetchUsers();
     setCreateDialogOpen(false);
-    showNotification("User created successfully", "success");
+    showNotification(
+      t("userAdmin.panel.notifications.createSuccess"),
+      "success"
+    );
   };
 
   const handleUserUpdated = () => {
     fetchUsers();
-    showNotification("User updated successfully", "success");
+    showNotification(
+      t("userAdmin.panel.notifications.updateSuccess"),
+      "success"
+    );
   };
 
   const handleUserDeleted = () => {
     fetchUsers();
-    showNotification("User deleted successfully", "success");
+    showNotification(
+      t("userAdmin.panel.notifications.deleteSuccess"),
+      "success"
+    );
   };
 
   const showNotification = (
@@ -99,7 +108,7 @@ const UserAdminPanel: React.FC = () => {
             }}
           >
             <Typography variant="h4" component="h1">
-              User Management
+              {t("userAdmin.panel.title")}
             </Typography>
             <Button
               variant="contained"
@@ -107,7 +116,7 @@ const UserAdminPanel: React.FC = () => {
               startIcon={<Add />}
               onClick={() => setCreateDialogOpen(true)}
             >
-              Add New User
+              {t("userAdmin.panel.addButton")}
             </Button>
           </Box>
 

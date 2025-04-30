@@ -10,12 +10,14 @@ import ProjectDetails from "../../components/projects/general/ProjectDetails";
 import ProjectTabs from "../../components/projects/general/tabs/ProjectTabs";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import { AuthorityName } from "../../models/enum/authorityNames";
+import { useTranslation } from "react-i18next";
 
 const ProjectDetailsPage: React.FC = () => {
   const [project, setProject] = useState<ProjectResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  const { t } = useTranslation();
 
   const { id } = useParams<{ id: string }>();
 
@@ -56,13 +58,13 @@ const ProjectDetailsPage: React.FC = () => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching project data:", err);
-        setError("Failed to load project data. Please try again later.");
+        setError(t("projectPages.details.loadError"));
         setLoading(false);
       }
     };
 
     fetchProjectData();
-  }, [id]);
+  }, [id, t]);
 
   if (loading) {
     return (
@@ -76,7 +78,7 @@ const ProjectDetailsPage: React.FC = () => {
       >
         <CircularProgress />
         <Typography variant="h6" sx={{ ml: 2 }}>
-          Loading project data...
+          {t("projectPages.details.loading")}
         </Typography>
       </Box>
     );
@@ -93,7 +95,7 @@ const ProjectDetailsPage: React.FC = () => {
   if (!project) {
     return (
       <Box sx={{ p: 3 }}>
-        <Alert severity="info">Project not found or no longer available.</Alert>
+        <Alert severity="info">{t("projectPages.details.notFound")}</Alert>
       </Box>
     );
   }

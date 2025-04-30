@@ -1,7 +1,10 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const NotFoundPage: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <Box
       sx={{
@@ -25,10 +28,7 @@ const NotFoundPage: React.FC = () => {
           4<span>0</span>4
         </Typography>
 
-        <Typography sx={{ mb: 3 }}>
-          The page you are looking for might have been removed, had its name
-          changed or is temporarily unavailable.
-        </Typography>
+        <Typography sx={{ mb: 3 }}>{t("notFound.description")}</Typography>
 
         <Button
           variant="contained"
@@ -40,7 +40,7 @@ const NotFoundPage: React.FC = () => {
             fontWeight: 700,
           }}
         >
-          Home Page
+          {t("notFound.homeButton")}
         </Button>
       </Box>
     </Box>

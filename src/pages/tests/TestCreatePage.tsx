@@ -11,12 +11,10 @@ import {
   FormControl,
   Paper,
   CircularProgress,
-  Alert,
-  IconButton,
   Autocomplete,
+  InputLabel,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { FiUpload, FiTrash2 } from "react-icons/fi";
 import { formatEnumWithLowerUnderline } from "../../utils/format.utils";
 import { TestType } from "../../models/enum/testTypes";
 import { ProjectInfo } from "../../models/info/ProjectInfo";
@@ -25,6 +23,8 @@ import { API } from "../../services/api.service";
 import { TestCreateRequest } from "../../models/test/TestCreateRequest";
 import { FileEntityType } from "../../models/enum/fileEntityType";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import FileAttachmentUploader from "../../components/universal/file/FileAttachmentUploader";
 
 interface FormData {
   project: ProjectInfo | null;
@@ -42,20 +42,10 @@ const StyledPaper = styled(Paper)(() => ({
   marginBottom: "2rem",
 }));
 
-const UploadBox = styled(Box)(() => ({
-  border: "2px dashed #ccc",
-  borderRadius: "8px",
-  padding: "2rem",
-  textAlign: "center",
-  cursor: "pointer",
-  transition: "border 0.3s ease",
-  "&:hover": {
-    border: "2px dashed #1976d2",
-  },
-}));
-
 const TestCreatePage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<FormData>({
     project: null,
     testCase: null,
@@ -140,23 +130,23 @@ const TestCreatePage: React.FC = () => {
 
     switch (name) {
       case "project":
-        newErrors.project = !value ? "Project is required" : "";
+        newErrors.project = !value ? t("testPages.create.projectRequired") : "";
         break;
       case "title":
         newErrors.title = !value
-          ? "Title is required"
+          ? t("testPages.create.titleRequired")
           : value.length > 100
-          ? "Title must be less than 100 characters"
+          ? t("testPages.create.titleLength")
           : "";
         break;
       case "githubUrl":
         {
           if (!value) {
-            newErrors.githubUrl = "GitHub URL is required";
+            newErrors.githubUrl = t("testPages.create.githubUrlRequired");
           } else {
             const urlPattern = /^https?:\/\/github\.com\/.+/i;
             newErrors.githubUrl = !urlPattern.test(value)
-              ? "Please enter a valid GitHub URL"
+              ? t("testPages.create.githubUrlInvalid")
               : "";
           }
         }
@@ -231,7 +221,7 @@ const TestCreatePage: React.FC = () => {
           align="center"
           sx={{ mb: 2, fontWeight: "bold" }}
         >
-          Create new Test
+          {t("testPages.create.title")}
         </Typography>
 
         <form onSubmit={handleSubmit}>
@@ -239,7 +229,7 @@ const TestCreatePage: React.FC = () => {
             {/* Project */}
             <Grid item xs={12} md={6}>
               <Typography variant="subtitle1" gutterBottom>
-                Project Name
+                {t("testPages.create.projectName")}
               </Typography>
               <Autocomplete
                 options={projects}
@@ -269,7 +259,7 @@ const TestCreatePage: React.FC = () => {
                     <TextField
                       {...newParams}
                       variant="outlined"
-                      placeholder="Select a project"
+                      placeholder={t("testPages.create.selectProject")}
                       error={!!errors.project}
                       helperText={errors.project}
                     />
@@ -281,7 +271,7 @@ const TestCreatePage: React.FC = () => {
             {/* Test Case */}
             <Grid item xs={12} md={6}>
               <Typography variant="subtitle1" gutterBottom>
-                Test Case
+                {t("testPages.create.testCase")}
               </Typography>
               <Autocomplete
                 options={testCases}
@@ -311,7 +301,7 @@ const TestCreatePage: React.FC = () => {
                     <TextField
                       {...newParams}
                       variant="outlined"
-                      placeholder="Optional test case"
+                      placeholder={t("testPages.create.optionalTestCase")}
                     />
                   );
                 }}
@@ -321,13 +311,13 @@ const TestCreatePage: React.FC = () => {
             {/* Title */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Title
+                {t("testPages.create.testTitle")}
               </Typography>
               <TextField
                 fullWidth
                 variant="outlined"
                 name="title"
-                placeholder="Enter title"
+                placeholder={t("testPages.create.titlePlaceholder")}
                 value={formData.title}
                 onChange={handleInputChange}
                 error={!!errors.title}
@@ -339,7 +329,7 @@ const TestCreatePage: React.FC = () => {
             {/* Description */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Description
+                {t("testPages.create.description")}
               </Typography>
               <TextField
                 fullWidth
@@ -347,7 +337,7 @@ const TestCreatePage: React.FC = () => {
                 multiline
                 rows={6}
                 name="description"
-                placeholder="Enter test description here..."
+                placeholder={t("testPages.create.descriptionPlaceholder")}
                 value={formData.description}
                 onChange={handleInputChange}
               />
@@ -356,7 +346,7 @@ const TestCreatePage: React.FC = () => {
             {/* Instructions */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Instructions
+                {t("testPages.create.instructions")}
               </Typography>
               <TextField
                 fullWidth
@@ -364,7 +354,7 @@ const TestCreatePage: React.FC = () => {
                 multiline
                 rows={8}
                 name="instructions"
-                placeholder="Enter test instructions here..."
+                placeholder={t("testPages.create.instructionsPlaceholder")}
                 value={formData.instructions}
                 onChange={handleInputChange}
               />
@@ -373,13 +363,13 @@ const TestCreatePage: React.FC = () => {
             {/* GitHub URL */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                GitHub URL
+                {t("testPages.create.githubUrl")}
               </Typography>
               <TextField
                 fullWidth
                 variant="outlined"
                 name="githubUrl"
-                placeholder="Enter GitHub URL"
+                placeholder={t("testPages.create.githubUrlPlaceholder")}
                 value={formData.githubUrl}
                 onChange={handleInputChange}
                 error={!!errors.githubUrl}
@@ -390,17 +380,21 @@ const TestCreatePage: React.FC = () => {
             {/* Test Type */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Test Type
+                {t("testPages.create.testType")}
               </Typography>
               <FormControl fullWidth variant="outlined">
+                <InputLabel id="test-type-label">
+                  {t("testPages.create.selectTestType")}
+                </InputLabel>
                 <Select
+                  labelId="test-type-label"
+                  id="testType"
                   name="testType"
                   value={formData.testType}
+                  label={t("testPages.create.selectTestType")}
                   onChange={(e) =>
                     handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
                   }
-                  displayEmpty
-                  defaultValue="Select test type"
                 >
                   {Object.values(TestType).map((typeVal) => (
                     <MenuItem key={typeVal} value={typeVal}>
@@ -412,47 +406,11 @@ const TestCreatePage: React.FC = () => {
             </Grid>
 
             {/* File Upload */}
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
-                Upload Files
-              </Typography>
-              <label htmlFor="file-upload">
-                <UploadBox>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    multiple
-                    onChange={handleFileUpload}
-                    style={{ display: "none" }}
-                  />
-                  <FiUpload size={24} style={{ marginBottom: "1rem" }} />
-                  <Typography>
-                    Drag and drop files here or click to upload
-                  </Typography>
-                </UploadBox>
-              </label>
-              {files.length > 0 && (
-                <Box mt={2}>
-                  {files.map((file, index) => (
-                    <Alert
-                      key={index}
-                      icon={false}
-                      sx={{ mb: 1 }}
-                      action={
-                        <IconButton
-                          size="small"
-                          onClick={() => removeFile(index)}
-                        >
-                          <FiTrash2 />
-                        </IconButton>
-                      }
-                    >
-                      {file.name}
-                    </Alert>
-                  ))}
-                </Box>
-              )}
-            </Grid>
+            <FileAttachmentUploader
+              files={files}
+              onFileUpload={handleFileUpload}
+              onFileRemove={removeFile}
+            />
 
             {/* Buttons */}
             <Grid item xs={12}>
@@ -462,14 +420,18 @@ const TestCreatePage: React.FC = () => {
                   onClick={handleReset}
                   disabled={loading}
                 >
-                  Reset
+                  {t("testPages.create.reset")}
                 </Button>
                 <Button
                   variant="contained"
                   type="submit"
                   disabled={loading || !isFormValid()}
                 >
-                  {loading ? <CircularProgress size={24} /> : "Submit"}
+                  {loading ? (
+                    <CircularProgress size={24} />
+                  ) : (
+                    t("testPages.create.submit")
+                  )}
                 </Button>
               </Box>
             </Grid>

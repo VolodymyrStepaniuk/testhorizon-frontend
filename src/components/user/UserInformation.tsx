@@ -12,6 +12,7 @@ import { alpha } from "@mui/system";
 import { FaEdit } from "react-icons/fa";
 import { gray } from "../../theme/themePrimitives";
 import { UserUpdateRequest } from "../../models/user/UserUpdateRequest";
+import { useTranslation } from "react-i18next";
 
 interface UserData {
   firstName: string;
@@ -42,6 +43,8 @@ const UserInformation: React.FC<UserInformationProps> = ({
   onInputChange,
   onSave,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Card
       elevation={3}
@@ -49,16 +52,18 @@ const UserInformation: React.FC<UserInformationProps> = ({
     >
       <CardContent>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-          <Typography variant="h6">Personal Details</Typography>
+          <Typography variant="h6">
+            {t("userProfile.personalDetails")}
+          </Typography>
           <Button startIcon={<FaEdit />} onClick={onToggleEdit} color="primary">
-            {editMode ? "Cancel" : "Edit"}
+            {editMode ? t("userProfile.cancel") : t("userProfile.edit")}
           </Button>
         </Box>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="First Name"
+              label={t("userProfile.firstName")}
               value={editMode ? updateRequest.firstName : userData.firstName}
               onChange={(e) => onInputChange("firstName", e)}
               disabled={!editMode}
@@ -67,7 +72,7 @@ const UserInformation: React.FC<UserInformationProps> = ({
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="Last Name"
+              label={t("userProfile.lastName")}
               value={editMode ? updateRequest.lastName : userData.lastName}
               onChange={(e) => onInputChange("lastName", e)}
               disabled={!editMode}
@@ -76,7 +81,7 @@ const UserInformation: React.FC<UserInformationProps> = ({
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Email"
+              label={t("userProfile.email")}
               value={editMode ? updateRequest.email : userData.email}
               onChange={(e) => onInputChange("email", e)}
               disabled={!editMode}
@@ -91,7 +96,7 @@ const UserInformation: React.FC<UserInformationProps> = ({
               onClick={onSave}
               disabled={loading}
             >
-              Save Changes
+              {t("userProfile.saveChanges")}
             </Button>
           </Box>
         )}

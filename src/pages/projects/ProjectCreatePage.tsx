@@ -8,15 +8,14 @@ import {
   Grid,
   Paper,
   CircularProgress,
-  Alert,
-  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
-import { FiUpload, FiTrash2 } from "react-icons/fi";
 import { API } from "../../services/api.service";
 import { ProjectCreateRequest } from "../../models/project/ProjectCreateRequest";
 import { FileEntityType } from "../../models/enum/fileEntityType";
+import { useTranslation } from "react-i18next";
+import FileAttachmentUploader from "../../components/universal/file/FileAttachmentUploader";
 
 const StyledPaper = styled(Paper)(() => ({
   padding: "2rem",
@@ -24,20 +23,10 @@ const StyledPaper = styled(Paper)(() => ({
   marginBottom: "2rem",
 }));
 
-const UploadBox = styled(Box)(() => ({
-  border: "2px dashed #ccc",
-  borderRadius: "8px",
-  padding: "2rem",
-  textAlign: "center",
-  cursor: "pointer",
-  transition: "border 0.3s ease",
-  "&:hover": {
-    border: "2px dashed #1976d2",
-  },
-}));
-
 const ProjectCreatePage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<ProjectCreateRequest>({
     title: "",
     description: "",
@@ -66,16 +55,16 @@ const ProjectCreatePage: React.FC = () => {
     switch (name) {
       case "title":
         newErrors.title = !value
-          ? "Title is required"
+          ? t("projectPages.create.titleRequired")
           : value.length > 100
-          ? "Title must be less than 100 characters"
+          ? t("projectPages.create.titleLength")
           : "";
         break;
       case "githubUrl":
         newErrors.githubUrl = !value
-          ? "GitHub URL is required"
+          ? t("projectPages.create.urlRequired")
           : !isValidUrl(value)
-          ? "Please enter a valid URL"
+          ? t("projectPages.create.urlInvalid")
           : "";
         break;
       default:
@@ -152,7 +141,7 @@ const ProjectCreatePage: React.FC = () => {
           align="center"
           sx={{ mb: 2, fontWeight: "bold" }}
         >
-          Create New Project
+          {t("projectPages.create.title")}
         </Typography>
 
         <form onSubmit={handleSubmit}>
@@ -160,13 +149,13 @@ const ProjectCreatePage: React.FC = () => {
             {/* Title */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Title
+                {t("projectPages.create.projectTitle")}
               </Typography>
               <TextField
                 fullWidth
                 required
                 name="title"
-                placeholder="Project Title"
+                placeholder={t("projectPages.create.titlePlaceholder")}
                 value={formData.title}
                 onChange={handleInputChange}
                 error={!!errors.title}
@@ -177,12 +166,12 @@ const ProjectCreatePage: React.FC = () => {
             {/* Description */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Description
+                {t("projectPages.create.description")}
               </Typography>
               <TextField
                 fullWidth
                 name="description"
-                placeholder="Project Description"
+                placeholder={t("projectPages.create.descriptionPlaceholder")}
                 multiline
                 rows={4}
                 value={formData.description}
@@ -193,12 +182,12 @@ const ProjectCreatePage: React.FC = () => {
             {/* Instructions */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Instructions
+                {t("projectPages.create.instructions")}
               </Typography>
               <TextField
                 fullWidth
                 name="instructions"
-                placeholder="Project Instructions"
+                placeholder={t("projectPages.create.instructionsPlaceholder")}
                 multiline
                 rows={4}
                 value={formData.instructions || ""}
@@ -209,13 +198,13 @@ const ProjectCreatePage: React.FC = () => {
             {/* GitHub URL */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                GitHub URL
+                {t("projectPages.create.githubUrl")}
               </Typography>
               <TextField
                 fullWidth
                 required
                 name="githubUrl"
-                placeholder="https://github.com/username/repository"
+                placeholder={t("projectPages.create.urlPlaceholder")}
                 value={formData.githubUrl}
                 onChange={handleInputChange}
                 error={!!errors.githubUrl}
@@ -224,47 +213,11 @@ const ProjectCreatePage: React.FC = () => {
             </Grid>
 
             {/* File Upload */}
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
-                Upload Files
-              </Typography>
-              <label htmlFor="file-upload">
-                <UploadBox>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    multiple
-                    onChange={handleFileUpload}
-                    style={{ display: "none" }}
-                  />
-                  <FiUpload size={24} style={{ marginBottom: "1rem" }} />
-                  <Typography>
-                    Drag and drop files here or click to upload
-                  </Typography>
-                </UploadBox>
-              </label>
-              {files.length > 0 && (
-                <Box mt={2}>
-                  {files.map((file, index) => (
-                    <Alert
-                      key={index}
-                      icon={false}
-                      sx={{ mb: 1 }}
-                      action={
-                        <IconButton
-                          size="small"
-                          onClick={() => removeFile(index)}
-                        >
-                          <FiTrash2 />
-                        </IconButton>
-                      }
-                    >
-                      {file.name}
-                    </Alert>
-                  ))}
-                </Box>
-              )}
-            </Grid>
+            <FileAttachmentUploader
+              files={files}
+              onFileUpload={handleFileUpload}
+              onFileRemove={removeFile}
+            />
 
             {/* Buttons */}
             <Grid item xs={12}>
@@ -274,14 +227,18 @@ const ProjectCreatePage: React.FC = () => {
                   onClick={handleReset}
                   disabled={loading}
                 >
-                  Reset
+                  {t("projectPages.create.reset")}
                 </Button>
                 <Button
                   variant="contained"
                   type="submit"
                   disabled={loading || !isFormValid()}
                 >
-                  {loading ? <CircularProgress size={24} /> : "Create Project"}
+                  {loading ? (
+                    <CircularProgress size={24} />
+                  ) : (
+                    t("projectPages.create.submit")
+                  )}
                 </Button>
               </Box>
             </Grid>

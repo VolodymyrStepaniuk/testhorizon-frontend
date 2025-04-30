@@ -9,21 +9,24 @@ import {
   ListItemText,
 } from "@mui/material";
 import { TestCaseResponse } from "../../../../models/testcase/TestCaseResponse";
+import { useTranslation } from "react-i18next";
 
 interface OverviewTabProps {
   testCase: TestCaseResponse;
 }
 
 const OverviewTab: React.FC<OverviewTabProps> = ({ testCase }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Card variant="outlined" sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Description
+            {t("testCases.tabs.description")}
           </Typography>
           <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-            {testCase.description || "No description provided."}
+            {testCase.description || t("testCases.tabs.noDescription")}
           </Typography>
         </CardContent>
       </Card>
@@ -31,10 +34,10 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ testCase }) => {
       <Card variant="outlined" sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Preconditions
+            {t("testCases.tabs.preconditions")}
           </Typography>
           <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-            {testCase.preconditions || "No preconditions specified."}
+            {testCase.preconditions || t("testCases.tabs.noPreconditions")}
           </Typography>
         </CardContent>
       </Card>
@@ -42,10 +45,10 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ testCase }) => {
       <Card variant="outlined" sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Input Data
+            {t("testCases.tabs.inputData")}
           </Typography>
           <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-            {testCase.inputData || "No input data provided."}
+            {testCase.inputData || t("testCases.tabs.noInputData")}
           </Typography>
         </CardContent>
       </Card>
@@ -53,7 +56,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ testCase }) => {
       <Card variant="outlined">
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Test Steps
+            {t("testCases.tabs.testSteps")}
           </Typography>
           {testCase.steps && testCase.steps.length > 0 ? (
             <List>
@@ -61,7 +64,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ testCase }) => {
                 <React.Fragment key={index}>
                   <ListItem alignItems="flex-start">
                     <ListItemText
-                      primary={`Step ${index + 1}`}
+                      primary={`${t("testCases.tabs.step")} ${index + 1}`}
                       secondary={
                         <Typography
                           component="span"
@@ -79,7 +82,9 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ testCase }) => {
               ))}
             </List>
           ) : (
-            <Typography variant="body1">No test steps provided.</Typography>
+            <Typography variant="body1">
+              {t("testCases.tabs.noTestSteps")}
+            </Typography>
           )}
         </CardContent>
       </Card>

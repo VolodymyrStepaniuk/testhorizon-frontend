@@ -6,6 +6,7 @@ import { BugReportResponse } from "../../../../models/bugreport/BugReportRespons
 import { FileEntityType } from "../../../../models/enum/fileEntityType";
 import FilesTab from "../../../universal/tabs/FilesTab";
 import BugReportDescription from "./OverviewTab";
+import { useTranslation } from "react-i18next";
 
 interface BugReportTabsProps {
   bugReport: BugReportResponse;
@@ -19,6 +20,7 @@ const BugReportTabs: React.FC<BugReportTabsProps> = ({
   isReporter,
 }) => {
   const [tabValue, setTabValue] = useState(0);
+  const { t } = useTranslation();
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -32,8 +34,11 @@ const BugReportTabs: React.FC<BugReportTabsProps> = ({
         variant="scrollable"
         scrollButtons="auto"
       >
-        <Tab icon={<Description />} label="Description" />
-        <Tab icon={<InsertDriveFile />} label="Attachments" />
+        <Tab icon={<Description />} label={t("bugReports.tabs.description")} />
+        <Tab
+          icon={<InsertDriveFile />}
+          label={t("bugReports.tabs.attachments")}
+        />
       </Tabs>
 
       <TabPanel value={tabValue} index={0}>

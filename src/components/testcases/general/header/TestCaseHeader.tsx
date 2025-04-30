@@ -8,9 +8,10 @@ import ProjectSettingsMenu from "../../../universal/menu/SettingsMenu";
 import { TestCasePriorityChip } from "../../../../theme/customization/chips";
 import DeleteTestCaseDialog from "./DeleteTestCaseDialog";
 import UpdateTestCaseDialog from "./UpdateTestCaseDialog";
-import ExportButton from "../../../universal/ExportButton";
 import { ExportEntityType } from "../../../../models/enum/exportEntityTypes";
 import RatingButton from "../../../universal/rating/RatingButton";
+import { useTranslation } from "react-i18next";
+import ExportButton from "../../../universal/file/ExportButton";
 
 interface TestCaseHeaderProps {
   testCase: TestCaseResponse;
@@ -33,6 +34,7 @@ const TestCaseHeader: React.FC<TestCaseHeaderProps> = ({
   const [currentTestCase, setCurrentTestCase] =
     useState<TestCaseResponse>(testCase);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const canModify = isAdmin || isAuthor;
   const open = Boolean(anchorEl);
@@ -77,7 +79,7 @@ const TestCaseHeader: React.FC<TestCaseHeaderProps> = ({
         variant="text"
         sx={{ mb: 2 }}
       >
-        Back
+        {t("testCases.header.back")}
       </Button>
 
       <Grid container spacing={2} alignItems="center">
@@ -119,7 +121,7 @@ const TestCaseHeader: React.FC<TestCaseHeaderProps> = ({
                 startIcon={<Settings />}
                 onClick={handleSettingsClick}
               >
-                Settings
+                {t("testCases.header.settings")}
               </Button>
               <ProjectSettingsMenu
                 anchorEl={anchorEl}

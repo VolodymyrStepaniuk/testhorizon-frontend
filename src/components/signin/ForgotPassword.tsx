@@ -9,6 +9,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { useRef, useState } from "react";
 import { CircularProgress } from "@mui/material";
 import { API } from "../../services/api.service";
+import { useTranslation } from "react-i18next";
 
 interface ForgotPasswordProps {
   open: boolean;
@@ -22,6 +23,7 @@ export default function ForgotPassword({
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
+  const { t } = useTranslation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,9 +36,7 @@ export default function ForgotPassword({
     } catch (error) {
       console.error("Error sending reset email:", error);
     } finally {
-      alert(
-        "If an account with this email exists in our system, an email with further instructions will be sent to it."
-      );
+      alert(t("forgotPassword.successMessage"));
       setIsLoading(false);
     }
   };
@@ -60,22 +60,19 @@ export default function ForgotPassword({
         },
       }}
     >
-      <DialogTitle>Reset password</DialogTitle>
+      <DialogTitle>{t("forgotPassword.title")}</DialogTitle>
       <DialogContent
         sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
       >
-        <DialogContentText>
-          Enter your account&apos;s email address, and we&apos;ll send you a
-          link to reset your password.
-        </DialogContentText>
+        <DialogContentText>{t("forgotPassword.description")}</DialogContentText>
         <OutlinedInput
           autoFocus
           required
           margin="dense"
           id="email"
           name="email"
-          label="Email address"
-          placeholder="Email address"
+          label={t("forgotPassword.emailPlaceholder")}
+          placeholder={t("forgotPassword.emailPlaceholder")}
           type="email"
           fullWidth
           value={email}
@@ -83,11 +80,19 @@ export default function ForgotPassword({
         />
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button onClick={handleAnyClose} disabled={isLoading}>
-          Cancel
+        <Button
+          onClick={handleAnyClose}
+          disabled={isLoading}
+          ref={cancelButtonRef}
+        >
+          {t("forgotPassword.cancelButton")}
         </Button>
         <Button variant="contained" type="submit" disabled={isLoading}>
-          {isLoading ? <CircularProgress size={24} /> : "Send"}
+          {isLoading ? (
+            <CircularProgress size={24} />
+          ) : (
+            t("forgotPassword.sendButton")
+          )}
         </Button>
       </DialogActions>
     </Dialog>

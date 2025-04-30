@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Grid2 } from "@mui/material"; // Ensure Grid2 is properly imported
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
 
 const whiteLogos = [
   "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/6560628e8573c43893fe0ace_Sydney-white.svg",
@@ -20,6 +21,7 @@ const logoStyle = {
 
 export default function LogoCollection() {
   const logos = whiteLogos;
+  const { t } = useTranslation(); // Add translation hook
 
   return (
     <Box id="logoCollection" sx={{ py: 4 }}>
@@ -29,7 +31,7 @@ export default function LogoCollection() {
         align="center"
         sx={{ fontWeight: 700 }}
       >
-        Companies where you can get a job after gaining experience
+        {t("logoCollection.title")}
       </Typography>
       <Grid2 container sx={{ justifyContent: "center", mt: 0.5, opacity: 0.6 }}>
         {logos.map((logo, index) => (

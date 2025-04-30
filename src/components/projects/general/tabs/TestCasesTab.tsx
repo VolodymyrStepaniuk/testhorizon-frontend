@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import TestCaseItem from "../../../universal/tabs/items/TestCaseItem";
 import { TestCaseResponse } from "../../../../models/testcase/TestCaseResponse";
+import { useTranslation } from "react-i18next";
 
 interface TestCasesTabProps {
   testCases: TestCaseResponse[];
@@ -15,10 +16,12 @@ interface TestCasesTabProps {
 }
 
 const TestCasesTab: React.FC<TestCasesTabProps> = ({ testCases, loading }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Test Cases
+        {t("projects.tabs.testCases.title")}
       </Typography>
       {loading ? (
         <CircularProgress />
@@ -32,7 +35,9 @@ const TestCasesTab: React.FC<TestCasesTabProps> = ({ testCases, loading }) => {
           ))}
         </List>
       ) : (
-        <Alert severity="info">No test cases yet.</Alert>
+        <Alert severity="info">
+          {t("projects.tabs.testCases.noTestCases")}
+        </Alert>
       )}
     </>
   );

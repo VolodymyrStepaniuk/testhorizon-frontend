@@ -46,6 +46,11 @@ import { NotebookResponse } from "../models/notebook/NotebookResponse";
 import { NoteCreateRequest } from "../models/notebook/note/NoteCreateRequest";
 import { NoteUpdateRequest } from "../models/notebook/note/NoteUpdateRequest";
 import { NoteResponse } from "../models/notebook/note/NoteResponse";
+import { AuthorityName } from "../models/enum/authorityNames";
+import { PostCategoryName } from "../models/enum/postCategoryName";
+import { PostCreateRequest } from "../models/post/PostCreateRequest";
+import { PostResponse } from "../models/post/PostResponse";
+import { PostUpdateRequest } from "../models/post/PostUpdateRequest";
 
 const apiClient = axios.create({
   baseURL: apiConfig.baseURL,
@@ -270,6 +275,11 @@ export const API = {
         `${apiConfig.endpoints.auth}/password-reset/update`,
         request
       ),
+    registerUserByAdmin: (request: UserCreateRequest) =>
+      apiClient.post<UserResponse>(
+        `${apiConfig.endpoints.auth}/register/admin`,
+        request
+      ),
   },
   tests: {
     create: (request: TestCreateRequest) =>
@@ -372,6 +382,14 @@ export const API = {
         `${apiConfig.endpoints.users}/top`,
         { params }
       ),
+    changeUserAuthority: (id: number, authority: AuthorityName) =>
+      apiClient.patch(
+        `${apiConfig.endpoints.users}/change-authority/${id}`,
+        null,
+        {
+          params: { authority },
+        }
+      ),
   },
 
   feedbacks: {
@@ -472,6 +490,34 @@ export const API = {
     }) =>
       apiClient.get<PaginatedResponse<NoteResponse, "notes">>(
         apiConfig.endpoints.notes,
+        { params }
+      ),
+  },
+  posts: {
+    create: (request: PostCreateRequest) =>
+      apiClient.post<PostResponse>(apiConfig.endpoints.posts, request),
+
+    getById: (id: number) =>
+      apiClient.get<PostResponse>(`${apiConfig.endpoints.posts}/${id}`),
+
+    update: (id: number, request: PostUpdateRequest) =>
+      apiClient.patch<PostResponse>(
+        `${apiConfig.endpoints.posts}/${id}`,
+        request
+      ),
+
+    delete: (id: number) =>
+      apiClient.delete(`${apiConfig.endpoints.posts}/${id}`),
+
+    getAll: (params?: {
+      page?: number;
+      size?: number;
+      ownerId?: number;
+      title?: string;
+      category?: PostCategoryName;
+    }) =>
+      apiClient.get<PaginatedResponse<PostResponse, "posts">>(
+        apiConfig.endpoints.posts,
         { params }
       ),
   },

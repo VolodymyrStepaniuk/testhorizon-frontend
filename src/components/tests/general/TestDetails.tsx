@@ -11,12 +11,15 @@ import {
 import { GitHub } from "@mui/icons-material";
 import { TestResponse } from "../../../models/test/TestResponse";
 import { formatDate } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface TestDetailsProps {
   test: TestResponse;
 }
 
 const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
+  const { t } = useTranslation();
+
   return (
     <Card
       variant="outlined"
@@ -27,12 +30,12 @@ const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
     >
       <CardContent sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>
-          Test Details
+          {t("tests.details.title")}
         </Typography>
         <Grid container spacing={1}>
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Author
+              {t("tests.details.author")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -50,7 +53,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Project
+              {t("tests.details.project")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -71,7 +74,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
             <>
               <Grid item xs={4}>
                 <Typography variant="body2" color="text.secondary">
-                  Test Case
+                  {t("tests.details.testCase")}
                 </Typography>
               </Grid>
               <Grid item xs={8}>
@@ -96,7 +99,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <GitHub fontSize="small" sx={{ mr: 0.5 }} />
                   <Typography variant="body2" color="text.secondary">
-                    GitHub
+                    {t("tests.details.github")}
                   </Typography>
                 </Box>
               </Grid>
@@ -119,7 +122,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
                       verticalAlign: "middle",
                     }}
                   >
-                    Repository Link
+                    {t("tests.details.repositoryLink")}
                   </Typography>
                 </Box>
               </Grid>
@@ -128,7 +131,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Created
+              {t("tests.details.created")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -139,7 +142,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({ test }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Last updated
+              {t("tests.details.lastUpdated")}
             </Typography>
           </Grid>
           <Grid item xs={8}>

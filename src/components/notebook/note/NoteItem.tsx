@@ -10,6 +10,7 @@ import {
 import { FiClock, FiEdit, FiTrash2 } from "react-icons/fi";
 import { NoteResponse } from "../../../models/notebook/note/NoteResponse";
 import { formatDate } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface NoteItemProps {
   note: NoteResponse;
@@ -24,6 +25,7 @@ const NoteItem: React.FC<NoteItemProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const { t } = useTranslation();
   const previewContent =
     note.content && note.content.length > 100
       ? `${note.content.substring(0, 100)}...`
@@ -61,7 +63,7 @@ const NoteItem: React.FC<NoteItemProps> = ({
             </Typography>
 
             <Box>
-              <Tooltip title="Edit">
+              <Tooltip title={t("notebook.note.viewer.editTooltip")}>
                 <IconButton
                   size="small"
                   onClick={(e) => {
@@ -74,7 +76,7 @@ const NoteItem: React.FC<NoteItemProps> = ({
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="Delete">
+              <Tooltip title={t("notebook.note.viewer.deleteTooltip")}>
                 <IconButton
                   size="small"
                   onClick={(e) => {

@@ -10,12 +10,15 @@ import {
 } from "@mui/material";
 import { BugReportResponse } from "../../../models/bugreport/BugReportResponse";
 import { formatDate } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface BugReportDetailsProps {
   bugReport: BugReportResponse;
 }
 
 const BugReportDetails: React.FC<BugReportDetailsProps> = ({ bugReport }) => {
+  const { t } = useTranslation();
+
   return (
     <Card
       elevation={0}
@@ -27,12 +30,12 @@ const BugReportDetails: React.FC<BugReportDetailsProps> = ({ bugReport }) => {
     >
       <CardContent sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>
-          Bug Report Details
+          {t("bugReports.details.title")}
         </Typography>
         <Grid container spacing={1}>
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Reporter
+              {t("bugReports.details.reporter")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -50,7 +53,7 @@ const BugReportDetails: React.FC<BugReportDetailsProps> = ({ bugReport }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Project
+              {t("bugReports.details.project")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -69,7 +72,7 @@ const BugReportDetails: React.FC<BugReportDetailsProps> = ({ bugReport }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Created
+              {t("bugReports.details.created")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -80,7 +83,7 @@ const BugReportDetails: React.FC<BugReportDetailsProps> = ({ bugReport }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Last updated
+              {t("bugReports.details.lastUpdated")}
             </Typography>
           </Grid>
           <Grid item xs={8}>

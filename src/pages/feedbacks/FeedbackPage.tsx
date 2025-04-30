@@ -10,6 +10,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import NotificationSnackbar from "../../components/universal/notification/NotificationSnackbar";
+import { useTranslation } from "react-i18next";
 
 const FeedbackPage: React.FC = () => {
   const [formLoading, setFormLoading] = useState<boolean>(false);
@@ -19,6 +20,7 @@ const FeedbackPage: React.FC = () => {
     message: string;
     severity: "success" | "error" | "info" | "warning";
   }>({ open: false, message: "", severity: "success" });
+  const { t } = useTranslation();
 
   const { user } = useAuth();
 
@@ -36,7 +38,7 @@ const FeedbackPage: React.FC = () => {
       await API.feedbacks.create(feedback);
       setSnackbar({
         open: true,
-        message: "Feedback submitted successfully!",
+        message: t("feedbackPage.notifications.submitSuccess"),
         severity: "success",
       });
       setRefreshTrigger((prev) => prev + 1);
@@ -44,7 +46,7 @@ const FeedbackPage: React.FC = () => {
       console.error("Failed to create feedback:", error);
       setSnackbar({
         open: true,
-        message: "Failed to submit feedback. Please try again.",
+        message: t("feedbackPage.notifications.submitError"),
         severity: "error",
       });
     } finally {
@@ -56,7 +58,7 @@ const FeedbackPage: React.FC = () => {
     setRefreshTrigger((prev) => prev + 1);
     setSnackbar({
       open: true,
-      message: "Feedback updated successfully!",
+      message: t("feedbackPage.notifications.updateSuccess"),
       severity: "success",
     });
   };
@@ -65,7 +67,7 @@ const FeedbackPage: React.FC = () => {
     setRefreshTrigger((prev) => prev + 1);
     setSnackbar({
       open: true,
-      message: "Feedback deleted successfully!",
+      message: t("feedbackPage.notifications.deleteSuccess"),
       severity: "success",
     });
   };
@@ -83,7 +85,7 @@ const FeedbackPage: React.FC = () => {
         gutterBottom
         sx={{ mb: 6, fontWeight: "bold" }}
       >
-        TestHorizon Feedback
+        {t("feedbackPage.title")}
       </Typography>
       <Divider sx={{ mb: 3 }} />
 
@@ -91,7 +93,7 @@ const FeedbackPage: React.FC = () => {
         <>
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h5" gutterBottom>
-              Submit Your Feedback
+              {t("feedbackPage.submitSection")}
             </Typography>
             <Divider sx={{ mb: 2 }} />
             <FeedbackForm

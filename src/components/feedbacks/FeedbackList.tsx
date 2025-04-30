@@ -3,6 +3,7 @@ import { Box, Pagination, Alert, CircularProgress } from "@mui/material";
 import { FeedbackResponse } from "../../models/feedback/FeedbackResponse";
 import FeedbackItem from "./FeedbackItem";
 import { UserResponse } from "../../models/user/UserResponse";
+import { useTranslation } from "react-i18next";
 
 interface FeedbackListProps {
   feedbacks: FeedbackResponse[];
@@ -29,10 +30,13 @@ const FeedbackList: React.FC<FeedbackListProps> = ({
   currentPage,
   onPageChange,
   excludeUserId,
-  emptyMessage = "No feedbacks available.",
+  emptyMessage,
   isAdmin = false,
   isFeedbackOwner,
 }) => {
+  const { t } = useTranslation();
+  const defaultEmptyMessage = t("feedbacks.noFeedbacks");
+
   const filteredFeedbacks = excludeUserId
     ? feedbacks.filter((feedback) => feedback.owner.id !== excludeUserId)
     : feedbacks;
@@ -46,7 +50,7 @@ const FeedbackList: React.FC<FeedbackListProps> = ({
   }
 
   if (filteredFeedbacks.length === 0) {
-    return <Alert severity="info">{emptyMessage}</Alert>;
+    return <Alert severity="info">{emptyMessage || defaultEmptyMessage}</Alert>;
   }
 
   return (

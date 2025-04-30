@@ -15,6 +15,7 @@ import {
 import { API } from "../../../services/api.service";
 import { FeedbackResponse } from "../../../models/feedback/FeedbackResponse";
 import { FeedbackUpdateRequest } from "../../../models/feedback/FeedbackUpdateRequest";
+import { useTranslation } from "react-i18next";
 
 interface UpdateFeedbackDialogProps {
   open: boolean;
@@ -36,6 +37,7 @@ const UpdateFeedbackDialog: React.FC<UpdateFeedbackDialogProps> = ({
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const handleCommentChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -70,14 +72,14 @@ const UpdateFeedbackDialog: React.FC<UpdateFeedbackDialogProps> = ({
       onClose();
     } catch (err) {
       setIsSubmitting(false);
-      setError("Failed to update feedback. Please try again.");
+      setError(t("feedbacks.dialogs.update.error"));
       console.error("Error updating feedback:", err);
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit Feedback</DialogTitle>
+      <DialogTitle>{t("feedbacks.dialogs.update.title")}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 1 }}>
@@ -88,7 +90,9 @@ const UpdateFeedbackDialog: React.FC<UpdateFeedbackDialogProps> = ({
                 alignItems: "center",
               }}
             >
-              <Typography component="legend">Your Rating</Typography>
+              <Typography component="legend">
+                {t("feedbacks.form.rating")}
+              </Typography>
               <Rating
                 name="feedback-rating"
                 value={formData.rating}
@@ -101,7 +105,7 @@ const UpdateFeedbackDialog: React.FC<UpdateFeedbackDialogProps> = ({
 
             <TextField
               name="comment"
-              label="Comment (Optional)"
+              label={t("feedbacks.form.comment")}
               value={formData.comment}
               onChange={handleCommentChange}
               multiline
@@ -114,7 +118,7 @@ const UpdateFeedbackDialog: React.FC<UpdateFeedbackDialogProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t("feedbacks.dialogs.update.cancel")}
           </Button>
           <Button
             type="submit"
@@ -123,7 +127,9 @@ const UpdateFeedbackDialog: React.FC<UpdateFeedbackDialogProps> = ({
             disabled={isSubmitting || formData.rating < 1}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            {isSubmitting ? "Updating..." : "Update Feedback"}
+            {isSubmitting
+              ? t("feedbacks.dialogs.update.updating")
+              : t("feedbacks.dialogs.update.updateButton")}
           </Button>
         </DialogActions>
       </form>

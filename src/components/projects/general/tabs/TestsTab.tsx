@@ -7,6 +7,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import TestItem from "../../../universal/tabs/items/TestItem";
+import { useTranslation } from "react-i18next";
 
 interface TestsTabProps {
   tests: any[];
@@ -14,10 +15,12 @@ interface TestsTabProps {
 }
 
 const TestsTab: React.FC<TestsTabProps> = ({ tests, loading }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Tests
+        {t("projects.tabs.tests.title")}
       </Typography>
       {loading ? (
         <CircularProgress />
@@ -31,7 +34,7 @@ const TestsTab: React.FC<TestsTabProps> = ({ tests, loading }) => {
           ))}
         </List>
       ) : (
-        <Alert severity="info">No tests yet.</Alert>
+        <Alert severity="info">{t("projects.tabs.tests.noTests")}</Alert>
       )}
     </>
   );

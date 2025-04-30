@@ -2,9 +2,11 @@ import React from "react";
 import { Box, CircularProgress, Container } from "@mui/material";
 import ProjectCard from "./ProjectCard";
 import { useProjectsQuery } from "../../../../queries/ProjectQuery";
+import { useTranslation } from "react-i18next";
 
 const ProjectList: React.FC = () => {
   const { projects, isLoading } = useProjectsQuery();
+  const { t } = useTranslation();
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -47,7 +49,7 @@ const ProjectList: React.FC = () => {
             ))}
           </Box>
         ) : (
-          <Box>No projects found</Box>
+          <Box>{t("projects.list.noProjects")}</Box>
         )}
       </Box>
     </Container>

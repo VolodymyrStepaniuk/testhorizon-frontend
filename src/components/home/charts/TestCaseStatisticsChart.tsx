@@ -9,6 +9,7 @@ import { Box } from "@mui/material";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import { useTestCasesQuery } from "../../../queries/TestCaseQuery";
 import { formatEnumWithoutLowerUnderline } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface TestCaseCount {
   type: TestCasePriority;
@@ -19,6 +20,7 @@ const TestCaseStatisticsChart: React.FC<UserRoleProps> = ({
   currentUserRole,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const colorPalette = [
     theme.palette.secondary.dark,
     theme.palette.secondary.main,
@@ -28,11 +30,11 @@ const TestCaseStatisticsChart: React.FC<UserRoleProps> = ({
   const renderCaptionTypography = () => {
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
-        return "Total number of test cases for all projects in the system";
+        return t("charts.testCaseStatistics.captions.admin");
       case AuthorityName.DEVELOPER:
-        return "Total number of test cases for my projects";
+        return t("charts.testCaseStatistics.captions.developer");
       case AuthorityName.TESTER:
-        return "Total number of my test cases";
+        return t("charts.testCaseStatistics.captions.tester");
       default:
         return <Box>Access Denied</Box>;
     }
@@ -64,7 +66,7 @@ const TestCaseStatisticsChart: React.FC<UserRoleProps> = ({
   }));
 
   if (isLoadingTestCase) {
-    return <Box>Loading...</Box>;
+    return <Box>{t("charts.testCaseStatistics.loading")}</Box>;
   }
 
   return (
@@ -76,7 +78,7 @@ const TestCaseStatisticsChart: React.FC<UserRoleProps> = ({
           gutterBottom
           sx={{ fontWeight: 700 }}
         >
-          Test case statistics
+          {t("charts.testCaseStatistics.title")}
         </Typography>
         <Typography
           variant="caption"
@@ -90,7 +92,7 @@ const TestCaseStatisticsChart: React.FC<UserRoleProps> = ({
           xAxis={[
             {
               scaleType: "band",
-              data: ["Test case counts"],
+              data: [t("charts.testCaseStatistics.testCaseCounts")],
             },
           ]}
           series={seriesData}

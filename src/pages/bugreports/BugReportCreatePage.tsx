@@ -11,19 +11,18 @@ import {
   Grid,
   Paper,
   CircularProgress,
-  Alert,
-  IconButton,
   Autocomplete,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
-import { FiUpload, FiTrash2 } from "react-icons/fi";
 import { BugReportCreateRequest } from "../../models/bugreport/BugReportCreateRequest";
 import { BugReportSeverity } from "../../models/enum/bugReportSeverities";
 import { API } from "../../services/api.service";
 import { ProjectInfo } from "../../models/info/ProjectInfo";
 import { FileEntityType } from "../../models/enum/fileEntityType";
-import { formatEnumWithoutLowerUnderline } from "../../utils/format.utils";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../utils/i18n.utils";
+import FileAttachmentUploader from "../../components/universal/file/FileAttachmentUploader";
 
 const StyledPaper = styled(Paper)(() => ({
   padding: "2rem",
@@ -31,20 +30,10 @@ const StyledPaper = styled(Paper)(() => ({
   marginBottom: "2rem",
 }));
 
-const UploadBox = styled(Box)(() => ({
-  border: "2px dashed #ccc",
-  borderRadius: "8px",
-  padding: "2rem",
-  textAlign: "center",
-  cursor: "pointer",
-  transition: "border 0.3s ease",
-  "&:hover": {
-    border: "2px dashed #1976d2",
-  },
-}));
-
 const BugReportCreatePage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<BugReportCreateRequest>({
     projectId: 0,
     title: "",
@@ -109,17 +98,21 @@ const BugReportCreatePage: React.FC = () => {
     switch (name) {
       case "title":
         newErrors.title = !value
-          ? "Title is required"
+          ? t("bugReportPages.create.titleRequired")
           : value.length > 100
-          ? "Title must be less than 100 characters"
+          ? t("bugReportPages.create.titleLength")
           : "";
         break;
       case "projectId":
         newErrors.projectId =
-          !value || value === 0 ? "Project is required" : "";
+          !value || value === 0
+            ? t("bugReportPages.create.projectRequired")
+            : "";
         break;
       case "description":
-        newErrors.description = !value ? "Description is required" : "";
+        newErrors.description = !value
+          ? t("bugReportPages.create.descriptionRequired")
+          : "";
         break;
       default:
         break;
@@ -197,14 +190,14 @@ const BugReportCreatePage: React.FC = () => {
           align="center"
           sx={{ mb: 2, fontWeight: "bold" }}
         >
-          Create Bug Report
+          {t("bugReportPages.create.title")}
         </Typography>
 
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Project Name
+                {t("bugReportPages.create.projectName")}
               </Typography>
               <Autocomplete
                 options={projects}
@@ -232,7 +225,7 @@ const BugReportCreatePage: React.FC = () => {
                     <TextField
                       {...newParams}
                       variant="outlined"
-                      placeholder="Select a project"
+                      placeholder={t("bugReportPages.create.selectProject")}
                       error={!!errors.projectId}
                       helperText={errors.projectId}
                     />
@@ -244,13 +237,13 @@ const BugReportCreatePage: React.FC = () => {
             {/* Title */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Title
+                {t("bugReportPages.create.bugTitle")}
               </Typography>
               <TextField
                 fullWidth
                 required
                 name="title"
-                placeholder="Bug Report Title"
+                placeholder={t("bugReportPages.create.bugTitlePlaceholder")}
                 value={formData.title}
                 onChange={handleInputChange}
                 error={!!errors.title}
@@ -261,13 +254,13 @@ const BugReportCreatePage: React.FC = () => {
             {/* Description */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Description
+                {t("bugReportPages.create.description")}
               </Typography>
               <TextField
                 fullWidth
                 required
                 name="description"
-                placeholder="Detailed Bug Description"
+                placeholder={t("bugReportPages.create.descriptionPlaceholder")}
                 multiline
                 rows={4}
                 value={formData.description}
@@ -280,13 +273,13 @@ const BugReportCreatePage: React.FC = () => {
             {/* Environment */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Environment
+                {t("bugReportPages.create.environment")}
               </Typography>
               <TextField
                 fullWidth
                 required
                 name="environment"
-                placeholder="Environment Details (OS, Browser, Version, etc.)"
+                placeholder={t("bugReportPages.create.environmentPlaceholder")}
                 multiline
                 rows={4}
                 value={formData.environment}
@@ -297,7 +290,7 @@ const BugReportCreatePage: React.FC = () => {
             {/* Severity */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Severity
+                {t("bugReportPages.create.severity")}
               </Typography>
               <FormControl fullWidth variant="outlined">
                 <Select
@@ -311,7 +304,7 @@ const BugReportCreatePage: React.FC = () => {
                 >
                   {Object.values(BugReportSeverity).map((severity) => (
                     <MenuItem key={severity} value={severity}>
-                      {formatEnumWithoutLowerUnderline(severity)}
+                      {translateEnum("enums.bugReport.severity", severity)}
                     </MenuItem>
                   ))}
                 </Select>
@@ -319,50 +312,11 @@ const BugReportCreatePage: React.FC = () => {
             </Grid>
 
             {/* File Upload */}
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
-                Upload Files
-              </Typography>
-              <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-                Attach screenshots, logs, or other relevant files
-              </Typography>
-              <label htmlFor="file-upload">
-                <UploadBox>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    multiple
-                    onChange={handleFileUpload}
-                    style={{ display: "none" }}
-                  />
-                  <FiUpload size={24} style={{ marginBottom: "1rem" }} />
-                  <Typography>
-                    Drag and drop files here or click to upload
-                  </Typography>
-                </UploadBox>
-              </label>
-              {files.length > 0 && (
-                <Box mt={2}>
-                  {files.map((file, index) => (
-                    <Alert
-                      key={index}
-                      icon={false}
-                      sx={{ mb: 1 }}
-                      action={
-                        <IconButton
-                          size="small"
-                          onClick={() => removeFile(index)}
-                        >
-                          <FiTrash2 />
-                        </IconButton>
-                      }
-                    >
-                      {file.name}
-                    </Alert>
-                  ))}
-                </Box>
-              )}
-            </Grid>
+            <FileAttachmentUploader
+              files={files}
+              onFileUpload={handleFileUpload}
+              onFileRemove={removeFile}
+            />
 
             {/* Buttons */}
             <Grid item xs={12}>
@@ -372,7 +326,7 @@ const BugReportCreatePage: React.FC = () => {
                   onClick={handleReset}
                   disabled={loading}
                 >
-                  Reset
+                  {t("bugReportPages.create.reset")}
                 </Button>
                 <Button
                   variant="contained"
@@ -382,7 +336,7 @@ const BugReportCreatePage: React.FC = () => {
                   {loading ? (
                     <CircularProgress size={24} />
                   ) : (
-                    "Submit Bug Report"
+                    t("bugReportPages.create.submit")
                   )}
                 </Button>
               </Box>

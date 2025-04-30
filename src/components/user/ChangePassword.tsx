@@ -11,6 +11,7 @@ import {
 import { alpha } from "@mui/system";
 import { gray } from "../../theme/themePrimitives";
 import { UpdatePasswordRequest } from "../../models/auth/UpdatePasswordRequest";
+import { useTranslation } from "react-i18next";
 
 interface ChangePasswordProps {
   passwordData: UpdatePasswordRequest;
@@ -30,6 +31,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({
   onPasswordChange,
   onSavePassword,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Card
       elevation={3}
@@ -37,14 +40,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({
     >
       <CardContent>
         <Typography variant="h6" gutterBottom align="center">
-          Change Password
+          {t("userProfile.changePassword.title")}
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
               fullWidth
               type="password"
-              label="Current Password"
+              label={t("userProfile.changePassword.currentPassword")}
               value={passwordData.oldPassword}
               onChange={(e) => onPasswordChange("oldPassword", e)}
               required
@@ -55,14 +58,14 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({
             <TextField
               fullWidth
               type="password"
-              label="New Password"
+              label={t("userProfile.changePassword.newPassword")}
               value={passwordData.newPassword}
               onChange={(e) => onPasswordChange("newPassword", e)}
               required
               error={passwordErrors.newPassword}
               helperText={
                 passwordErrors.newPassword
-                  ? "Password must be at least 6 characters"
+                  ? t("userProfile.changePassword.validation.passwordLength")
                   : ""
               }
               sx={{ mb: 2 }}
@@ -72,13 +75,15 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({
             <TextField
               fullWidth
               type="password"
-              label="Confirm New Password"
+              label={t("userProfile.changePassword.confirmPassword")}
               value={passwordData.confirmPassword}
               onChange={(e) => onPasswordChange("confirmPassword", e)}
               required
               error={passwordErrors.confirmPassword}
               helperText={
-                passwordErrors.confirmPassword ? "Passwords do not match" : ""
+                passwordErrors.confirmPassword
+                  ? t("userProfile.changePassword.validation.passwordMismatch")
+                  : ""
               }
               sx={{ mb: 2 }}
             />
@@ -91,7 +96,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({
             onClick={onSavePassword}
             disabled={loading}
           >
-            Update Password
+            {t("userProfile.changePassword.updatePassword")}
           </Button>
         </Box>
       </CardContent>

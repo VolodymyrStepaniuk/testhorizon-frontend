@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { UserResponse } from "../../../models/user/UserResponse";
 import { API } from "../../../services/api.service";
+import { useTranslation } from "react-i18next";
 
 interface DeleteUserDialogProps {
   open: boolean;
@@ -25,6 +26,7 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
   onClose,
   onUserDeleted,
 }) => {
+  const { t } = useTranslation();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,19 +38,21 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
       onUserDeleted();
     } catch (err) {
       console.error("Error deleting user:", err);
-      setError("Failed to delete user. Please try again.");
+      setError(t("userAdmin.deleteDialog.error"));
       setIsDeleting(false);
     }
   };
 
   return (
     <Dialog open={open} onClose={!isDeleting ? onClose : undefined}>
-      <DialogTitle>Delete User</DialogTitle>
+      <DialogTitle>{t("userAdmin.deleteDialog.title")}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to delete the user "{user.firstName}{" "}
-          {user.lastName}" with email "{user.email}"? This action cannot be
-          undone.
+          {t("userAdmin.deleteDialog.confirmMessage", {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+          })}
         </DialogContentText>
         {error && (
           <Alert severity="error" sx={{ mt: 2 }}>
@@ -58,7 +62,7 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isDeleting}>
-          Cancel
+          {t("userAdmin.deleteDialog.cancel")}
         </Button>
         <Button
           onClick={handleDelete}
@@ -67,7 +71,9 @@ const DeleteUserDialog: React.FC<DeleteUserDialogProps> = ({
           disabled={isDeleting}
           endIcon={isDeleting ? <CircularProgress size={20} /> : null}
         >
-          {isDeleting ? "Deleting..." : "Delete User"}
+          {isDeleting
+            ? t("userAdmin.deleteDialog.deletingButton")
+            : t("userAdmin.deleteDialog.deleteButton")}
         </Button>
       </DialogActions>
     </Dialog>

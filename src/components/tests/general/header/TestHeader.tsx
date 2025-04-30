@@ -9,8 +9,9 @@ import UpdateTestDialog from "./UpdateTestDialog";
 import ProjectSettingsMenu from "../../../universal/menu/SettingsMenu";
 import { TestTypeChip } from "../../../../theme/customization/chips";
 import { ExportEntityType } from "../../../../models/enum/exportEntityTypes";
-import ExportButton from "../../../universal/ExportButton";
 import RatingButton from "../../../universal/rating/RatingButton";
+import { useTranslation } from "react-i18next";
+import ExportButton from "../../../universal/file/ExportButton";
 
 interface TestHeaderProps {
   test: TestResponse;
@@ -32,6 +33,7 @@ const TestHeader: React.FC<TestHeaderProps> = ({
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
   const [currentTest, setCurrentTest] = useState<TestResponse>(test);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const canModify = isAdmin || isAuthor;
   const open = Boolean(anchorEl);
@@ -75,7 +77,7 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         variant="text"
         sx={{ mb: 2 }}
       >
-        Back
+        {t("tests.header.back")}
       </Button>
 
       <Grid container spacing={2} alignItems="center">
@@ -117,7 +119,7 @@ const TestHeader: React.FC<TestHeaderProps> = ({
                 startIcon={<Settings />}
                 onClick={handleSettingsClick}
               >
-                Settings
+                {t("tests.header.settings")}
               </Button>
               <ProjectSettingsMenu
                 anchorEl={anchorEl}

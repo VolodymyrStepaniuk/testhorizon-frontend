@@ -16,6 +16,7 @@ import {
 import { FiPlus } from "react-icons/fi";
 import NotebookItem from "./NotebookItem";
 import { NotebookResponse } from "../../models/notebook/NotebookResponse";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   notebooks: NotebookResponse[];
@@ -39,6 +40,7 @@ const NotebookList: React.FC<Props> = ({
     null
   );
   const [isDeleting, setIsDeleting] = useState(false);
+  const { t } = useTranslation();
 
   const handleDeleteClick = (id: number) => {
     const notebook = notebooks.find((nb) => nb.id === id);
@@ -84,14 +86,14 @@ const NotebookList: React.FC<Props> = ({
           alignItems: "center",
         }}
       >
-        <Typography variant="h6">My Notebooks</Typography>
+        <Typography variant="h6">{t("notebook.list.title")}</Typography>
         <Button
           variant="contained"
           startIcon={<FiPlus />}
           onClick={onNew}
           size="small"
         >
-          New Notebook
+          {t("notebook.list.newButton")}
         </Button>
       </Box>
 
@@ -103,7 +105,7 @@ const NotebookList: React.FC<Props> = ({
         </Box>
       ) : notebooks.length === 0 ? (
         <Alert severity="info" sx={{ mt: 2 }}>
-          No notebooks found. Create your first notebook to get started!
+          {t("notebook.list.empty")}
         </Alert>
       ) : (
         <Box
@@ -138,11 +140,13 @@ const NotebookList: React.FC<Props> = ({
         onClose={() => !isDeleting && setDeleteDialogOpen(false)}
         PaperProps={{ sx: { borderRadius: 1 } }}
       >
-        <DialogTitle>Delete Notebook</DialogTitle>
+        <DialogTitle>{t("notebook.list.deleteDialog.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {targetNotebook &&
-              `Are you sure you want to delete the notebook "${targetNotebook.title}"? This will also delete all notes inside this notebook. This action cannot be undone.`}
+              t("notebook.list.deleteDialog.message", {
+                title: targetNotebook.title,
+              })}
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
@@ -150,7 +154,7 @@ const NotebookList: React.FC<Props> = ({
             onClick={() => setDeleteDialogOpen(false)}
             disabled={isDeleting}
           >
-            Cancel
+            {t("notebook.list.deleteDialog.cancel")}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
@@ -158,7 +162,9 @@ const NotebookList: React.FC<Props> = ({
             variant="contained"
             disabled={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting
+              ? t("notebook.list.deleteDialog.deleting")
+              : t("notebook.list.deleteDialog.delete")}
           </Button>
         </DialogActions>
       </Dialog>

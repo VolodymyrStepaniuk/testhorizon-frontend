@@ -11,12 +11,15 @@ import {
 import { GitHub } from "@mui/icons-material";
 import { ProjectResponse } from "../../../models/project/ProjectResponse";
 import { formatDate } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface ProjectDetailsProps {
   project: ProjectResponse;
 }
 
 const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
+  const { t } = useTranslation();
+
   return (
     <Card
       variant="outlined"
@@ -27,12 +30,12 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
     >
       <CardContent sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>
-          Project Details
+          {t("projects.details.title")}
         </Typography>
         <Grid container spacing={1}>
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Owner
+              {t("projects.details.owner")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -77,7 +80,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                       verticalAlign: "middle",
                     }}
                   >
-                    Repository Link
+                    {t("projects.details.repositoryLink")}
                   </Typography>
                 </Box>
               </Grid>
@@ -86,7 +89,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Created
+              {t("projects.details.created")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -97,7 +100,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Last updated
+              {t("projects.details.lastUpdated")}
             </Typography>
           </Grid>
           <Grid item xs={8}>

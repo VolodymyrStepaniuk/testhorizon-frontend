@@ -15,6 +15,7 @@ import { Add, Delete } from "@mui/icons-material";
 import { API } from "../../../services/api.service";
 import { FileEntityType } from "../../../models/enum/fileEntityType";
 import FileItem from "./items/FileItem";
+import { useTranslation } from "react-i18next";
 
 interface FilesTabProps {
   entityId: number;
@@ -39,6 +40,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
   const [files, setFiles] = useState<FileData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const canDeleteFiles = isAdmin || isOwner;
 
@@ -99,7 +101,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
       setError(null);
     } catch (err) {
       console.error("Error fetching files:", err);
-      setError("Failed to load files");
+      setError(t("files.loadError"));
     } finally {
       setLoading(false);
     }
@@ -121,7 +123,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
         fetchFiles();
       } catch (err) {
         console.error("Error uploading files:", err);
-        setError("Failed to upload files");
+        setError(t("files.uploadError"));
         setLoading(false);
       }
     }
@@ -136,7 +138,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
       fetchFiles();
     } catch (err) {
       console.error("Error deleting file:", err);
-      setError("Failed to delete file");
+      setError(t("files.deleteError"));
       setLoading(false);
     }
   };
@@ -150,7 +152,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
-        <Typography variant="h6">Files</Typography>
+        <Typography variant="h6">{t("files.title")}</Typography>
         <div>
           <input
             type="file"
@@ -165,7 +167,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
             onClick={triggerFileUpload}
             disabled={loading}
           >
-            Upload File
+            {t("files.upload")}
           </Button>
         </div>
       </Box>
@@ -190,7 +192,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
                     />
                   </Box>
                   {canDeleteFiles && (
-                    <Tooltip title="Delete file">
+                    <Tooltip title={t("files.deleteTooltip")}>
                       <IconButton
                         color="error"
                         onClick={() => handleFileDelete(file.name)}
@@ -207,7 +209,7 @@ const FilesTab: React.FC<FilesTabProps> = ({
           </List>
         </Paper>
       ) : (
-        <Alert severity="info">No files uploaded yet.</Alert>
+        <Alert severity="info">{t("files.noFiles")}</Alert>
       )}
     </>
   );

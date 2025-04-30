@@ -8,8 +8,9 @@ import UpdateProjectDialog from "./UpdateProjectDialog";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { ProjectStatusChip } from "../../../../theme/customization/chips";
-import ExportButton from "../../../universal/ExportButton";
 import { ExportEntityType } from "../../../../models/enum/exportEntityTypes";
+import { useTranslation } from "react-i18next";
+import ExportButton from "../../../universal/file/ExportButton";
 
 interface ProjectHeaderProps {
   project: ProjectResponse;
@@ -30,6 +31,7 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
   const canModifyProject = isAdmin || isOwner;
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSettingsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -61,7 +63,7 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
         variant="text"
         sx={{ mb: 2 }}
       >
-        Back
+        {t("projects.header.back")}
       </Button>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} md={8}>
@@ -94,7 +96,7 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
                 startIcon={<Settings />}
                 onClick={handleSettingsClick}
               >
-                Settings
+                {t("projects.header.settings")}
               </Button>
               <ProjectSettingsMenu
                 anchorEl={anchorEl}

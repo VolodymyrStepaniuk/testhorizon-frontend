@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { UserRoleProps } from "../../../models/userProps";
 import DeveloperCharts from "./roleBasedCharts/DeveloperCharts";
 import { AuthorityName } from "../../../models/enum/authorityNames";
@@ -14,8 +14,6 @@ const Charts: React.FC<UserRoleProps> = ({ currentUserRole }) => {
         return <DeveloperCharts currentUserRole={currentUserRole} />;
       case AuthorityName.TESTER:
         return <TesterCharts currentUserRole={currentUserRole} />;
-      default:
-        return <Box>Access Denied</Box>;
     }
   };
 

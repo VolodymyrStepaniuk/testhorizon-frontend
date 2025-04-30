@@ -12,6 +12,7 @@ import { AUTH_VALIDATION } from "../../models/validation";
 import { API } from "../../services/api.service";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface EmailConfirmationProps {
   email: string;
@@ -28,6 +29,7 @@ export default function EmailConfirmation({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,7 +51,7 @@ export default function EmailConfirmation({
       navigate("/sign-in");
     } catch (error: any) {
       setError(
-        error.response?.data?.detail || "Verification failed. Please try again."
+        error.response?.data?.detail || t("emailConfirmation.defaultError")
       );
     } finally {
       setIsLoading(false);
@@ -68,13 +70,12 @@ export default function EmailConfirmation({
         },
       }}
     >
-      <DialogTitle>Email Confirmation</DialogTitle>
+      <DialogTitle>{t("emailConfirmation.title")}</DialogTitle>
       <DialogContent
         sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
       >
         <DialogContentText>
-          Please enter the 6-digit confirmation code sent to your email address
-          to complete your account registration.
+          {t("emailConfirmation.description")}
         </DialogContentText>
         {error && (
           <Alert severity="error" sx={{ width: "100%" }}>
@@ -87,7 +88,7 @@ export default function EmailConfirmation({
           margin="dense"
           id="confirmation-code"
           name="confirmation-code"
-          placeholder="Enter 6-digit code"
+          placeholder={t("emailConfirmation.placeholder")}
           type="text"
           inputProps={{ maxLength: 6 }}
           fullWidth
@@ -97,7 +98,7 @@ export default function EmailConfirmation({
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
         <Button onClick={handleClose} disabled={isLoading}>
-          Cancel
+          {t("emailConfirmation.cancelButton")}
         </Button>
         <Button
           variant="contained"
@@ -113,7 +114,11 @@ export default function EmailConfirmation({
             },
           }}
         >
-          {isLoading ? <CircularProgress size={24} /> : "Confirm"}
+          {isLoading ? (
+            <CircularProgress size={24} />
+          ) : (
+            t("emailConfirmation.confirmButton")
+          )}
         </Button>
       </DialogActions>
     </Dialog>

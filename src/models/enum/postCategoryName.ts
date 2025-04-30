@@ -1,0 +1,10 @@
+export const PostCategoryName = {
+  QUALITY_ASSURANCE: "QUALITY_ASSURANCE",
+  AUTOMATION_QA: "AUTOMATION_QA",
+  MANUAL_TESTING: "MANUAL_TESTING",
+  PERFORMANCE_TESTING: "PERFORMANCE_TESTING",
+  SECURITY_TESTING: "SECURITY_TESTING",
+  TEST_MANAGEMENT: "TEST_MANAGEMENT",
+} as const;
+export type PostCategoryName =
+  (typeof PostCategoryName)[keyof typeof PostCategoryName];

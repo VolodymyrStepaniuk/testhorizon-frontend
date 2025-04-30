@@ -23,6 +23,7 @@ import {
 import { UserAuthorityName } from "../../../models/enum/userAuthorityName";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import { formatEnumWithoutLowerUnderline } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface CreateUserDialogProps {
   open: boolean;
@@ -35,6 +36,7 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
   onClose,
   onUserCreated,
 }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<UserCreateRequest>({
     firstName: "",
     lastName: "",
@@ -101,14 +103,13 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
     setError(null);
 
     try {
-      await API.auth.register(formData);
+      await API.auth.registerUserByAdmin(formData);
       onUserCreated();
       resetForm();
     } catch (err: any) {
       console.error("Error creating user:", err);
       setError(
-        err.response?.data?.message ||
-          "Failed to create user. Please try again."
+        err.response?.data?.message || t("userAdmin.createDialog.error")
       );
     } finally {
       setIsSubmitting(false);
@@ -138,47 +139,57 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Create New User</DialogTitle>
+      <DialogTitle>{t("userAdmin.createDialog.title")}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             <TextField
               name="firstName"
-              label="First Name"
+              label={t("userAdmin.createDialog.firstName")}
               value={formData.firstName}
               onChange={handleInputChange}
               fullWidth
               required
               error={formErrors.firstName}
-              helperText={formErrors.firstName ? "First name is required" : ""}
+              helperText={
+                formErrors.firstName
+                  ? t("userAdmin.createDialog.firstNameError")
+                  : ""
+              }
             />
 
             <TextField
               name="lastName"
-              label="Last Name"
+              label={t("userAdmin.createDialog.lastName")}
               value={formData.lastName}
               onChange={handleInputChange}
               fullWidth
               required
               error={formErrors.lastName}
-              helperText={formErrors.lastName ? "Last name is required" : ""}
+              helperText={
+                formErrors.lastName
+                  ? t("userAdmin.createDialog.lastNameError")
+                  : ""
+              }
             />
 
             <TextField
               name="email"
-              label="Email"
+              label={t("userAdmin.createDialog.email")}
               type="email"
               value={formData.email}
               onChange={handleInputChange}
               fullWidth
               required
               error={formErrors.email}
-              helperText={formErrors.email ? "Valid email is required" : ""}
+              helperText={
+                formErrors.email ? t("userAdmin.createDialog.emailError") : ""
+              }
             />
 
             <TextField
               name="password"
-              label="Password"
+              label={t("userAdmin.createDialog.password")}
               type="password"
               value={formData.password}
               onChange={handleInputChange}
@@ -187,19 +198,23 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
               error={formErrors.password}
               helperText={
                 formErrors.password
-                  ? `Password must be at least ${UNIVERSAL_VALIDATION.password.minLength} characters`
+                  ? t("userAdmin.createDialog.passwordError", {
+                      min: UNIVERSAL_VALIDATION.password.minLength,
+                    })
                   : ""
               }
             />
 
             <FormControl fullWidth>
-              <InputLabel id="user-role-label">User Role</InputLabel>
+              <InputLabel id="user-role-label">
+                {t("userAdmin.createDialog.userRole")}
+              </InputLabel>
               <Select
                 labelId="user-role-label"
                 id="user-role"
                 name="authorityName"
                 value={formData.authorityName}
-                label="User Role"
+                label={t("userAdmin.createDialog.userRole")}
                 onChange={handleInputChange as any}
               >
                 {userRoles.map((role) => (
@@ -215,7 +230,7 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} disabled={isSubmitting}>
-            Cancel
+            {t("userAdmin.createDialog.cancel")}
           </Button>
           <Button
             type="submit"
@@ -224,7 +239,9 @@ const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            {isSubmitting ? "Creating..." : "Create User"}
+            {isSubmitting
+              ? t("userAdmin.createDialog.creatingButton")
+              : t("userAdmin.createDialog.createButton")}
           </Button>
         </DialogActions>
       </form>

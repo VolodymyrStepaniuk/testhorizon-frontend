@@ -4,6 +4,7 @@ import { FeedbackResponse } from "../../models/feedback/FeedbackResponse";
 import { UserResponse } from "../../models/user/UserResponse";
 import FeedbackList from "./FeedbackList";
 import { API } from "../../services/api.service";
+import { useTranslation } from "react-i18next";
 
 interface UserFeedbacksProps {
   currentUser: UserResponse;
@@ -24,6 +25,7 @@ const UserFeedbacks: React.FC<UserFeedbacksProps> = ({
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchUserFeedbacks = async () => {
@@ -62,7 +64,7 @@ const UserFeedbacks: React.FC<UserFeedbacksProps> = ({
   return (
     <Paper sx={{ p: 3, mb: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Your Feedbacks
+        {t("feedbacks.userFeedbacks")}
       </Typography>
       <Divider sx={{ mb: 2 }} />
       <FeedbackList
@@ -74,7 +76,7 @@ const UserFeedbacks: React.FC<UserFeedbacksProps> = ({
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={setCurrentPage}
-        emptyMessage="You haven't submitted any feedback yet."
+        emptyMessage={t("feedbacks.noUserFeedbacks")}
         isAdmin={isAdmin}
         isFeedbackOwner={isFeedbackOwner}
       />

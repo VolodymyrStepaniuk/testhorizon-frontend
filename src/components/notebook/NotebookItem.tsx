@@ -10,6 +10,7 @@ import {
 import { FiTrash2, FiEdit, FiClock } from "react-icons/fi";
 import { NotebookResponse } from "../../models/notebook/NotebookResponse";
 import { formatDate } from "../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface NotebookItemProps {
   notebook: NotebookResponse;
@@ -24,6 +25,8 @@ const NotebookItem: React.FC<NotebookItemProps> = ({
   onDelete,
   onEdit,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ mb: 2 }}>
       <Card
@@ -56,7 +59,7 @@ const NotebookItem: React.FC<NotebookItemProps> = ({
             </Typography>
 
             <Box>
-              <Tooltip title="Edit">
+              <Tooltip title={t("settingsMenu.edit")}>
                 <IconButton
                   size="small"
                   onClick={(e) => {
@@ -69,7 +72,7 @@ const NotebookItem: React.FC<NotebookItemProps> = ({
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="Delete">
+              <Tooltip title={t("settingsMenu.delete")}>
                 <IconButton
                   size="small"
                   onClick={(e) => {
@@ -94,7 +97,7 @@ const NotebookItem: React.FC<NotebookItemProps> = ({
           <Box display="flex" alignItems="center" mt={1}>
             <FiClock style={{ marginRight: 4 }} size={14} color="gray" />
             <Typography variant="caption" color="text.secondary">
-              {formatDate(notebook.updatedAt)}
+              {t("notebook.common.updated")} {formatDate(notebook.updatedAt)}
             </Typography>
           </Box>
         </CardContent>

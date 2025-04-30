@@ -1,4 +1,5 @@
 import { DataGrid, GridColDef, GridValidRowModel } from "@mui/x-data-grid";
+import { useTranslation } from "react-i18next";
 
 interface CustomizedDataGridProps {
   rows: readonly GridValidRowModel[];
@@ -11,6 +12,8 @@ const CustomizedDataGrid = ({
   columns,
   isLoading,
 }: CustomizedDataGridProps) => {
+  const { t } = useTranslation();
+
   return (
     <DataGrid
       checkboxSelection
@@ -24,6 +27,14 @@ const CustomizedDataGrid = ({
         pagination: { paginationModel: { pageSize: 20 } },
       }}
       pageSizeOptions={[10, 20, 50]}
+      localeText={{
+        MuiTablePagination: {
+          labelRowsPerPage: t("dataGrid.rowsPerPage"),
+          labelDisplayedRows: ({ from, to, count }) =>
+            t("dataGrid.pageStatus", { from, to, count }),
+        },
+        footerRowSelected: (count) => t("dataGrid.rowsSelected", { count }),
+      }}
       disableColumnResize
       density="compact"
       slotProps={{

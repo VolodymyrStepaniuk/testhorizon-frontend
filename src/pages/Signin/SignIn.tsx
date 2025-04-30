@@ -19,6 +19,7 @@ import { setTokensToStorage } from "../../utils/auth.utils";
 import { useAuth } from "../../contexts/AuthContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -79,6 +80,7 @@ export default function SignIn() {
   const [open, setOpen] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const { setIsAuth, fetchUser } = useAuth();
@@ -118,7 +120,8 @@ export default function SignIn() {
 
       navigate("/home");
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Failed to sign in";
+      const errorMessage =
+        error.response?.data?.message || t("signIn.errors.default");
       setSignInError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -133,7 +136,7 @@ export default function SignIn() {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
+      setEmailErrorMessage(t("signIn.validation.emailRequired"));
       isValid = false;
     } else {
       setEmailError(false);
@@ -142,7 +145,7 @@ export default function SignIn() {
 
     if (!password.value || password.value.length < 8) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 8 characters long.");
+      setPasswordErrorMessage(t("signIn.validation.passwordRequired"));
       isValid = false;
     } else {
       setPasswordError(false);
@@ -181,7 +184,7 @@ export default function SignIn() {
             mt: { xs: 1, sm: 2 },
           }}
         >
-          Sign in
+          {t("signIn.title")}
         </Typography>
         <Box
           component="form"
@@ -203,7 +206,7 @@ export default function SignIn() {
                 fontWeight: 700,
               }}
             >
-              Email
+              {t("signIn.email")}
             </FormLabel>
             <TextField
               error={emailError}
@@ -211,7 +214,7 @@ export default function SignIn() {
               id="email"
               type="email"
               name="email"
-              placeholder="your@email.com"
+              placeholder={t("signIn.emailPlaceholder")}
               autoComplete="email"
               autoFocus
               required
@@ -229,13 +232,13 @@ export default function SignIn() {
                 fontWeight: 700,
               }}
             >
-              Password
+              {t("signIn.password")}
             </FormLabel>
             <TextField
               error={passwordError}
               helperText={passwordErrorMessage}
               name="password"
-              placeholder="••••••••"
+              placeholder={t("signIn.passwordPlaceholder")}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -255,7 +258,7 @@ export default function SignIn() {
                 color="primary"
               />
             }
-            label="Remember me"
+            label={t("signIn.rememberMe")}
           />
           <ForgotPassword open={open} handleClose={handleClose} />
           {signInError && (
@@ -280,7 +283,11 @@ export default function SignIn() {
               fontWeight: 700,
             }}
           >
-            {isLoading ? <CircularProgress size={24} /> : "Sign in"}
+            {isLoading ? (
+              <CircularProgress size={24} />
+            ) : (
+              t("signIn.signInButton")
+            )}
           </Button>
           <Link
             component="button"
@@ -293,7 +300,7 @@ export default function SignIn() {
               mt: { xs: 0.5, sm: 1 },
             }}
           >
-            Forgot your password?
+            {t("signIn.forgotPassword")}
           </Link>
         </Box>
       </Card>

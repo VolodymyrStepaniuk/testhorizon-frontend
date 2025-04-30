@@ -7,6 +7,7 @@ import EditUserDialog from "./EditUserDialog";
 import DeleteUserDialog from "./DeleteUserDialog";
 import { useAuth } from "../../../contexts/AuthContext";
 import { formatDate } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface UserDataGridProps {
   users: UserResponse[];
@@ -25,6 +26,7 @@ const UserDataGrid: React.FC<UserDataGridProps> = ({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const { user: currentUser } = useAuth();
+  const { t } = useTranslation();
 
   const handleEditClick = (user: UserResponse) => {
     setSelectedUser(user);
@@ -39,29 +41,40 @@ const UserDataGrid: React.FC<UserDataGridProps> = ({
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "ID",
+      headerName: t("userAdmin.dataGrid.id"),
       flex: 0.5,
     },
     {
       field: "firstName",
-      headerName: "First Name",
+      headerName: t("userAdmin.dataGrid.firstName"),
       flex: 1,
       renderCell: (params: GridRenderCellParams) => params.row?.firstName ?? "",
     },
     {
       field: "lastName",
-      headerName: "Last Name",
+      headerName: t("userAdmin.dataGrid.lastName"),
       flex: 1,
       renderCell: (params: GridRenderCellParams) => params.row?.lastName ?? "",
     },
     {
+      field: "userRole",
+      headerName: t("userAdmin.dataGrid.userRole"),
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => {
+        const authorities = params.row?.authorities ?? [];
+        return authorities.length > 0
+          ? t(`enums.user.authority.${authorities[0]}`)
+          : t("userAdmin.dataGrid.noRole");
+      },
+    },
+    {
       field: "email",
-      headerName: "Email",
+      headerName: t("userAdmin.dataGrid.email"),
       flex: 1.5,
     },
     {
       field: "totalRating",
-      headerName: "Rating",
+      headerName: t("userAdmin.dataGrid.rating"),
       flex: 0.75,
       renderCell: (params: GridRenderCellParams) => {
         const rating = params.row?.totalRating ?? 0;
@@ -70,21 +83,21 @@ const UserDataGrid: React.FC<UserDataGridProps> = ({
     },
     {
       field: "createdAt",
-      headerName: "Created At",
+      headerName: t("userAdmin.dataGrid.createdAt"),
       flex: 1,
       renderCell: (params: GridRenderCellParams) =>
         params.row?.createdAt ? formatDate(params.row.createdAt) : "",
     },
     {
       field: "updatedAt",
-      headerName: "Updated At",
+      headerName: t("userAdmin.dataGrid.updatedAt"),
       flex: 1,
       renderCell: (params: GridRenderCellParams) =>
         params.row?.updatedAt ? formatDate(params.row.updatedAt) : "",
     },
     {
       field: "actions",
-      headerName: "Actions",
+      headerName: t("userAdmin.dataGrid.actions"),
       flex: 1,
       renderCell: (params: GridRenderCellParams) => {
         if (!params?.row) return null;
@@ -102,7 +115,7 @@ const UserDataGrid: React.FC<UserDataGridProps> = ({
               gap: "12px",
             }}
           >
-            <Tooltip title="Edit User">
+            <Tooltip title={t("userAdmin.dataGrid.editTooltip")}>
               <IconButton
                 size="small"
                 onClick={() => handleEditClick(params.row)}
@@ -111,7 +124,7 @@ const UserDataGrid: React.FC<UserDataGridProps> = ({
                 <Edit fontSize="small" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Delete User">
+            <Tooltip title={t("userAdmin.dataGrid.deleteTooltip")}>
               <IconButton
                 size="small"
                 color="error"
@@ -139,6 +152,13 @@ const UserDataGrid: React.FC<UserDataGridProps> = ({
           }}
           pageSizeOptions={[10, 25, 50]}
           disableRowSelectionOnClick
+          localeText={{
+            MuiTablePagination: {
+              labelRowsPerPage: t("dataGrid.rowsPerPage"),
+              labelDisplayedRows: ({ from, to, count }) =>
+                t("dataGrid.pageStatus", { from, to, count }),
+            },
+          }}
         />
       </Box>
       {selectedUser && (

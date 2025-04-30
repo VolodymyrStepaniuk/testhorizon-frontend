@@ -12,6 +12,7 @@ import {
   Avatar,
   Chip,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface UserRating {
   id: number;
@@ -63,24 +64,30 @@ const UserRatingsTableComponent: React.FC<UserRatingsTableComponentProps> = ({
   onRowsPerPageChange,
   loadingCounts,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ minWidth: 80 }}>Rank</TableCell>
-            <TableCell sx={{ minWidth: 150 }}>User</TableCell>
-            <TableCell align="center" sx={{ minWidth: 100 }}>
-              Rating
+            <TableCell sx={{ minWidth: 80 }}>
+              {t("userRatings.table.rank")}
+            </TableCell>
+            <TableCell sx={{ minWidth: 150 }}>
+              {t("userRatings.table.user")}
             </TableCell>
             <TableCell align="center" sx={{ minWidth: 100 }}>
-              Tests Created
+              {t("userRatings.table.rating")}
+            </TableCell>
+            <TableCell align="center" sx={{ minWidth: 100 }}>
+              {t("userRatings.table.testsCreated")}
             </TableCell>
             <TableCell align="center" sx={{ minWidth: 130 }}>
-              Test Cases Created
+              {t("userRatings.table.testCasesCreated")}
             </TableCell>
             <TableCell align="center" sx={{ minWidth: 130 }}>
-              Bug Reports Created
+              {t("userRatings.table.bugReportsCreated")}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -142,6 +149,10 @@ const UserRatingsTableComponent: React.FC<UserRatingsTableComponentProps> = ({
         page={page}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
+        labelRowsPerPage={t("dataGrid.rowsPerPage")}
+        labelDisplayedRows={({ from, to, count }) =>
+          t("dataGrid.pageStatus", { from, to, count })
+        }
       />
     </>
   );

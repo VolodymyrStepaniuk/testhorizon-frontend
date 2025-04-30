@@ -20,8 +20,10 @@ import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import { formatEnumWithLowerUnderline } from "../../utils/format.utils";
 import { TestType } from "../../models/enum/testTypes";
+import { useTranslation } from "react-i18next";
 
 const TestsPage: React.FC = () => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [tests, setTests] = useState<TestResponse[]>([]);
@@ -84,7 +86,7 @@ const TestsPage: React.FC = () => {
         gutterBottom
         sx={{ mb: 6, fontWeight: "bold" }}
       >
-        Tests
+        {t("testPages.list.title")}
       </Typography>
 
       <Box
@@ -99,20 +101,22 @@ const TestsPage: React.FC = () => {
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Search tests by title or description..."
+            placeholder={t("testPages.list.search")}
             value={searchTerm}
             onChange={handleSearch}
           />
           <FormControl sx={{ minWidth: 200 }} size="medium">
-            <InputLabel id="type-select-label">Test Type</InputLabel>
+            <InputLabel id="type-select-label">
+              {t("testPages.list.testType")}
+            </InputLabel>
             <Select
               labelId="type-select-label"
               id="type-select"
               value={type}
-              label="Test Type"
+              label={t("testPages.list.testType")}
               onChange={handleTypeChange}
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="">{t("testPages.list.all")}</MenuItem>
               {Object.values(TestType).map((typeVal) => (
                 <MenuItem key={typeVal} value={typeVal}>
                   {formatEnumWithLowerUnderline(typeVal)}
@@ -128,7 +132,7 @@ const TestsPage: React.FC = () => {
             href="/tests/new"
             sx={{ ml: 2, whiteSpace: "nowrap" }}
           >
-            Create New
+            {t("testPages.list.createNew")}
           </Button>
         )}
       </Box>
@@ -141,6 +145,9 @@ const TestsPage: React.FC = () => {
           minHeight="50vh"
         >
           <CircularProgress />
+          <Typography variant="h6" sx={{ ml: 2 }}>
+            {t("testPages.list.loading")}
+          </Typography>
         </Box>
       ) : (
         <>
@@ -151,7 +158,9 @@ const TestsPage: React.FC = () => {
               alignItems="center"
               minHeight="50vh"
             >
-              <Typography variant="h6">No tests found</Typography>
+              <Typography variant="h6">
+                {t("testPages.list.noTests")}
+              </Typography>
             </Box>
           ) : (
             <Box>

@@ -11,6 +11,7 @@ import {
 import { API } from "../../../../services/api.service";
 import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../../../universal/notification/NotificationSnackbar";
+import { useTranslation } from "react-i18next";
 
 interface DeleteBugReportDialogProps {
   open: boolean;
@@ -32,6 +33,7 @@ const DeleteBugReportDialog: React.FC<DeleteBugReportDialogProps> = ({
     severity: "success" | "error" | "info" | "warning";
   }>({ open: false, message: "", severity: "success" });
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -39,7 +41,7 @@ const DeleteBugReportDialog: React.FC<DeleteBugReportDialogProps> = ({
       await API.bugReports.delete(bugReportId);
       setSnackbar({
         open: true,
-        message: "Bug report deleted successfully",
+        message: t("bugReports.delete.success"),
         severity: "success",
       });
       setIsDeleting(false);
@@ -51,7 +53,7 @@ const DeleteBugReportDialog: React.FC<DeleteBugReportDialogProps> = ({
       console.error("Error deleting bug report:", err);
       setSnackbar({
         open: true,
-        message: "Failed to delete bug report. Please try again.",
+        message: t("bugReports.delete.error"),
         severity: "error",
       });
       setIsDeleting(false);
@@ -65,16 +67,15 @@ const DeleteBugReportDialog: React.FC<DeleteBugReportDialogProps> = ({
   return (
     <>
       <Dialog open={open} onClose={!isDeleting ? onClose : undefined}>
-        <DialogTitle>Delete Bug Report</DialogTitle>
+        <DialogTitle>{t("bugReports.delete.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete the bug report "{bugReportTitle}"?
-            This action cannot be undone.
+            {t("bugReports.delete.confirmation", { title: bugReportTitle })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isDeleting}>
-            Cancel
+            {t("bugReports.delete.cancel")}
           </Button>
           <Button
             onClick={handleDelete}
@@ -83,7 +84,9 @@ const DeleteBugReportDialog: React.FC<DeleteBugReportDialogProps> = ({
             disabled={isDeleting}
             endIcon={isDeleting ? <CircularProgress size={20} /> : null}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting
+              ? t("bugReports.delete.deleting")
+              : t("bugReports.delete.delete")}
           </Button>
         </DialogActions>
       </Dialog>

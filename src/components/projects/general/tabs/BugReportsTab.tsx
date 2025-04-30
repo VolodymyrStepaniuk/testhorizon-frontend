@@ -7,6 +7,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import BugReportItem from "../../../universal/tabs/items/BugReportItem";
+import { useTranslation } from "react-i18next";
 
 interface BugReportsTabProps {
   bugReports: any[];
@@ -17,10 +18,12 @@ const BugReportsTab: React.FC<BugReportsTabProps> = ({
   bugReports,
   loading,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Bug Reports
+        {t("projects.tabs.bugReports.title")}
       </Typography>
       {loading ? (
         <CircularProgress />
@@ -34,7 +37,9 @@ const BugReportsTab: React.FC<BugReportsTabProps> = ({
           ))}
         </List>
       ) : (
-        <Alert severity="info">No bugs reported yet.</Alert>
+        <Alert severity="info">
+          {t("projects.tabs.bugReports.noBugReports")}
+        </Alert>
       )}
     </>
   );

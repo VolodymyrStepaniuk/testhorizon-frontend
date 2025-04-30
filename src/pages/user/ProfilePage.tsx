@@ -14,14 +14,13 @@ import { styled } from "@mui/system";
 import { FaCamera } from "react-icons/fa";
 import { API } from "../../services/api.service";
 import { AuthorityName } from "../../models/enum/authorityNames";
-import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import { UserUpdateRequest } from "../../models/user/UserUpdateRequest";
 import { UpdatePasswordRequest } from "../../models/auth/UpdatePasswordRequest";
 import NotificationSnackbar from "../../components/universal/notification/NotificationSnackbar";
 import UserInformation from "../../components/user/UserInformation";
 import ChangePassword from "../../components/user/ChangePassword";
 import { FileEntityType } from "../../models/enum/fileEntityType";
-import { formatEnumWithoutLowerUnderline } from "../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 const ProfileWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -67,6 +66,7 @@ interface UserData {
   lastName: string;
   email: string;
   avatar: string;
+  authorities: AuthorityName[];
   userId: number;
 }
 
@@ -79,11 +79,10 @@ interface SnackbarState {
 }
 
 const UserProfile: React.FC = () => {
+  const { t } = useTranslation();
   const [editMode, setEditMode] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const authorities = getAutoritiesFromToken();
-  const currentUserRole = authorities[0] as AuthorityName;
 
   const [snackbar, setSnackbar] = useState<SnackbarState>({
     open: false,
@@ -96,6 +95,7 @@ const UserProfile: React.FC = () => {
     lastName: "",
     email: "",
     avatar: "",
+    authorities: [],
     userId: 0,
   });
 
@@ -150,6 +150,7 @@ const UserProfile: React.FC = () => {
           lastName: user.lastName || "",
           email: user.email || "",
           avatar: "",
+          authorities: user.authorities || [],
           userId: user.id,
         });
         setUpdateRequest({
@@ -208,14 +209,14 @@ const UserProfile: React.FC = () => {
       setEditMode(false);
       setSnackbar({
         open: true,
-        message: "Profile updated successfully!",
+        message: t("profilePage.profileUpdated"),
         severity: "success",
       });
     } catch (error) {
       console.error("Failed to update profile:", error);
       setSnackbar({
         open: true,
-        message: "Failed to update profile",
+        message: t("profilePage.updateFailed"),
         severity: "error",
       });
     } finally {
@@ -251,7 +252,7 @@ const UserProfile: React.FC = () => {
         await API.auth.updatePassword(passwordData);
         setSnackbar({
           open: true,
-          message: "Password updated successfully!",
+          message: t("profilePage.passwordUpdated"),
           severity: "success",
         });
         setPasswordData({
@@ -263,8 +264,7 @@ const UserProfile: React.FC = () => {
         console.error("Failed to update password:", error);
         setSnackbar({
           open: true,
-          message:
-            "Failed to update password. Please check your current password.",
+          message: t("profilePage.passwordUpdateFailed"),
           severity: "error",
         });
       } finally {
@@ -297,14 +297,14 @@ const UserProfile: React.FC = () => {
 
         setSnackbar({
           open: true,
-          message: "Profile picture updated!",
+          message: t("profilePage.profilePictureUpdated"),
           severity: "success",
         });
       } catch (error) {
         console.error("Failed to upload avatar:", error);
         setSnackbar({
           open: true,
-          message: "Failed to update profile picture",
+          message: t("profilePage.profilePictureUpdateFailed"),
           severity: "error",
         });
       } finally {
@@ -337,6 +337,9 @@ const UserProfile: React.FC = () => {
             }}
           >
             <CircularProgress />
+            <Typography variant="h6" sx={{ ml: 2 }}>
+              {t("profilePage.loading")}
+            </Typography>
           </Box>
         ) : (
           <Grid container spacing={3} justifyContent="center">
@@ -367,14 +370,14 @@ const UserProfile: React.FC = () => {
                   {userData.firstName} {userData.lastName}
                 </Typography>
                 <Typography variant="subtitle1" color="text.secondary">
-                  {formatEnumWithoutLowerUnderline(currentUserRole)}
+                  {t(`enums.user.authority.${userData.authorities[0]}`)}
                 </Typography>
               </ProfileHeader>
             </Grid>
             <Grid item xs={12} sx={{ textAlign: "center" }}>
               <Tabs value={activeTab} onChange={handleTabChange} centered>
-                <Tab label="Personal Info" />
-                <Tab label="Change Password" />
+                <Tab label={t("profilePage.personalInfo")} />
+                <Tab label={t("profilePage.changePassword")} />
               </Tabs>
             </Grid>
             {activeTab === 0 && (

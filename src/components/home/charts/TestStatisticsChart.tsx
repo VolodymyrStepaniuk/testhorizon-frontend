@@ -9,6 +9,7 @@ import { Box } from "@mui/material";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import { formatEnumWithLowerUnderline } from "../../../utils/format.utils";
 import { useTestsQuery } from "../../../queries/TestQuery";
+import { useTranslation } from "react-i18next";
 
 interface TestCount {
   type: TestType;
@@ -17,6 +18,7 @@ interface TestCount {
 
 const TestStatisticsChart: React.FC<UserRoleProps> = ({ currentUserRole }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const colorPalette = [
     theme.palette.primary.dark,
     theme.palette.primary.main,
@@ -30,11 +32,11 @@ const TestStatisticsChart: React.FC<UserRoleProps> = ({ currentUserRole }) => {
   const renderCaptionTypography = () => {
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
-        return "Total number of tests for all projects in the system";
+        return t("charts.testStatistics.captions.admin");
       case AuthorityName.DEVELOPER:
-        return "Total number of tests for my projects";
+        return t("charts.testStatistics.captions.developer");
       case AuthorityName.TESTER:
-        return "Total number of my tests";
+        return t("charts.testStatistics.captions.tester");
       default:
         return <Box>Access Denied</Box>;
     }
@@ -70,7 +72,7 @@ const TestStatisticsChart: React.FC<UserRoleProps> = ({ currentUserRole }) => {
   }));
 
   if (isLoadingTest) {
-    return <Box>Loading...</Box>;
+    return <Box>{t("charts.testStatistics.loading")}</Box>;
   }
 
   return (
@@ -82,7 +84,7 @@ const TestStatisticsChart: React.FC<UserRoleProps> = ({ currentUserRole }) => {
           gutterBottom
           sx={{ fontWeight: 700 }}
         >
-          Test statistics
+          {t("charts.testStatistics.title")}
         </Typography>
         <Typography
           variant="caption"
@@ -96,7 +98,7 @@ const TestStatisticsChart: React.FC<UserRoleProps> = ({ currentUserRole }) => {
           xAxis={[
             {
               scaleType: "band",
-              data: ["Test counts"],
+              data: [t("charts.testStatistics.testCounts")],
             },
           ]}
           series={seriesData}

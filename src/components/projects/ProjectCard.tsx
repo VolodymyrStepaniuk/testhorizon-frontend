@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { ProjectResponse } from "../../models/project/ProjectResponse";
 import { formatDate, truncateText } from "../../utils/format.utils";
 import { ProjectStatusChip } from "../../theme/customization/chips";
+import { useTranslation } from "react-i18next";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: "100%",
@@ -40,6 +41,7 @@ const ProjectCard: React.FC<ProjectResponse> = ({
   updatedAt,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleGithubClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -54,7 +56,10 @@ const ProjectCard: React.FC<ProjectResponse> = ({
   };
 
   return (
-    <StyledCard role="article" aria-label={`Project: ${title}`}>
+    <StyledCard
+      role="article"
+      aria-label={`${t("projects.card.project")}: ${title}`}
+    >
       <CardContent sx={{ p: 4 }}>
         <Box
           sx={{
@@ -106,9 +111,9 @@ const ProjectCard: React.FC<ProjectResponse> = ({
               sx={{ fontWeight: "bold", padding: "8px 16px", height: "42px" }}
               size="large"
             >
-              View Project
+              {t("projects.card.viewProject")}
             </Button>
-            <Tooltip title="View Source Code" arrow>
+            <Tooltip title={t("projects.card.viewSourceCode")} arrow>
               <IconButton
                 aria-label="GitHub repository"
                 onClick={handleGithubClick}
@@ -123,10 +128,10 @@ const ProjectCard: React.FC<ProjectResponse> = ({
 
         <Box sx={{ mt: 3, borderTop: "1px solid #e0e0e0", pt: 1 }}>
           <Typography variant="caption" color="text.secondary">
-            Created: {formatDate(createdAt)}
+            {t("projects.card.created")} {formatDate(createdAt)}
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
-            Updated: {formatDate(updatedAt)}
+            {t("projects.card.updated")} {formatDate(updatedAt)}
           </Typography>
         </Box>
       </CardContent>

@@ -15,6 +15,7 @@ import { API } from "../../../services/api.service";
 import { UserResponse } from "../../../models/user/UserResponse";
 import UserRatingsTableComponent from "../../../components/user/rating/UserRatingsTableComponent";
 import { FileEntityType } from "../../../models/enum/fileEntityType";
+import { useTranslation } from "react-i18next";
 
 interface UserRating {
   id: number;
@@ -46,6 +47,7 @@ const getRatingColor = (rating: number): string => {
 };
 
 const UserRatingsTable: React.FC = () => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState<UserRating[]>([]);
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
@@ -198,13 +200,13 @@ const UserRatingsTable: React.FC = () => {
         setLoadingCounts(false);
       } catch (err) {
         console.error("Error fetching user ratings:", err);
-        setError("Failed to load user ratings. Please try again later.");
+        setError(t("userRating.failedToLoad"));
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, t]);
 
   const handleChangePage = (_event: unknown, newPage: number): void => {
     setPage(newPage);
@@ -255,11 +257,11 @@ const UserRatingsTable: React.FC = () => {
                   gutterBottom
                   sx={{ fontWeight: "bold" }}
                 >
-                  Your Rating Profile
+                  {t("userRating.yourProfile")}
                 </Typography>
                 <Box display="flex" alignItems="center" gap={2}>
                   <Typography variant="h6" color="text.secondary">
-                    Rating:
+                    {t("userRating.rating")}
                   </Typography>
                   <Typography
                     variant="h6"
@@ -270,7 +272,7 @@ const UserRatingsTable: React.FC = () => {
                 </Box>
                 <Box display="flex" flexWrap="wrap" gap={2} mt={1}>
                   <Chip
-                    label={`Rank #${currentUser.rank}`}
+                    label={t("userRating.rank", { number: currentUser.rank })}
                     {...getRankChipProps(currentUser.rank)}
                     sx={{ fontWeight: "bold" }}
                   />
@@ -282,7 +284,7 @@ const UserRatingsTable: React.FC = () => {
       )}
 
       <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
-        User Ratings
+        {t("userRating.title")}
       </Typography>
 
       <Paper>

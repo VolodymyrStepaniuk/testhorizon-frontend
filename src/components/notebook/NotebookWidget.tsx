@@ -24,7 +24,11 @@ type NoteView =
   | { type: "view"; note: NoteResponse }
   | { type: "edit"; note: NoteResponse };
 
-const NotebookWidget: React.FC = () => {
+interface NotebookWidgetProps {
+  onOpenChange?: (isOpen: boolean) => void;
+}
+
+const NotebookWidget: React.FC<NotebookWidgetProps> = ({ onOpenChange }) => {
   const [open, setOpen] = useState(false);
   const [notebooks, setNotebooks] = useState<NotebookResponse[]>([]);
   const [loadingNotebooks, setLoadingNotebooks] = useState(false);
@@ -36,6 +40,13 @@ const NotebookWidget: React.FC = () => {
   const [noteView, setNoteView] = useState<NoteView>({ type: "list" });
   const [notes, setNotes] = useState<NoteResponse[]>([]);
   const [loadingNotes, setLoadingNotes] = useState(false);
+
+  // Notify parent component when open state changes
+  useEffect(() => {
+    if (onOpenChange) {
+      onOpenChange(open);
+    }
+  }, [open, onOpenChange]);
 
   // Load notebooks when panel opens
   useEffect(() => {

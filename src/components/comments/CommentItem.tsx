@@ -11,8 +11,9 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { formatDistance } from "date-fns";
 import { Edit, Delete, Cancel, Save } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
+import { formatDistanceLocalized } from "../../utils/format.utils";
 
 interface CommentItemProps {
   comment: {
@@ -39,6 +40,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
+  const { t } = useTranslation();
 
   const canModify = isOwner || isAdmin;
 
@@ -122,7 +124,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                       startIcon={<Cancel />}
                       onClick={handleCancelEdit}
                     >
-                      Cancel
+                      {t("comments.actions.cancel")}
                     </Button>
                     <Button
                       size="small"
@@ -131,7 +133,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                       onClick={handleSaveEdit}
                       disabled={!editedContent.trim()}
                     >
-                      Save
+                      {t("comments.actions.save")}
                     </Button>
                   </Box>
                 </Box>
@@ -151,9 +153,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                     color="text.secondary"
                     sx={{ mt: 0.5 }}
                   >
-                    {formatDistance(new Date(comment.createdAt), new Date(), {
-                      addSuffix: true,
-                    })}
+                    {formatDistanceLocalized(new Date(comment.createdAt))}
                   </Typography>
                 </>
               )}

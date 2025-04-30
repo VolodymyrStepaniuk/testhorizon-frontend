@@ -11,14 +11,28 @@ export default function GlobalNavigationGuard({
   const location = useLocation();
   const { isAuth } = useAuth();
 
-  const publicRoutes = ["/sign-in", "/sign-up", "/reset-password", "/"];
-  const isPublicRoute = publicRoutes.includes(location.pathname);
+  const publicRoutes = [
+    "/sign-in",
+    "/sign-up",
+    "/reset-password",
+    "/",
+    "/blog",
+  ];
+  const isPublicRoute =
+    publicRoutes.includes(location.pathname) ||
+    location.pathname.startsWith("/blog/");
 
   if (!isAuth && !isPublicRoute) {
     return <Navigate to="/sign-in" replace />;
   }
 
-  if (isAuth && isPublicRoute && location.pathname !== "/") {
+  if (
+    isAuth &&
+    isPublicRoute &&
+    location.pathname !== "/" &&
+    location.pathname !== "/blog" &&
+    !location.pathname.startsWith("/blog/")
+  ) {
     return <Navigate to="/home" replace />;
   }
 

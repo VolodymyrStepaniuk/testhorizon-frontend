@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 const StyledBox = styled("div")(({ theme }) => ({
   alignSelf: "center",
@@ -24,6 +25,8 @@ const StyledBox = styled("div")(({ theme }) => ({
 }));
 
 export default function Hero() {
+  const { t } = useTranslation();
+
   return (
     <Box
       id="hero"
@@ -58,7 +61,7 @@ export default function Hero() {
               fontWeight: 700,
             }}
           >
-            Test!&nbsp;Learn!&nbsp;
+            {t("hero.title")}&nbsp;
             <Typography
               component="span"
               variant="h1"
@@ -68,7 +71,7 @@ export default function Hero() {
                 fontWeight: 700,
               })}
             >
-              Become a pro!
+              {t("hero.titleHighlight")}
             </Typography>
           </Typography>
           <Typography
@@ -77,10 +80,7 @@ export default function Hero() {
               textAlign: "center",
             }}
           >
-            The automated system of educational and practical testing will help
-            you gain real experience in software testing. Practice, find bugs,
-            write reports, tests and improve your testing skills in real-world
-            scenarios!
+            {t("hero.description")}
           </Typography>
         </Stack>
         <StyledBox id="image" />

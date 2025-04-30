@@ -20,6 +20,8 @@ import { ProjectStatus } from "../../models/enum/projectStatuses";
 import { formatEnumWithoutLowerUnderline } from "../../utils/format.utils";
 import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../utils/i18n.utils";
 
 const ProjectsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -31,6 +33,7 @@ const ProjectsPage: React.FC = () => {
   const [status, setStatus] = useState<string>("");
   const authorities = getAutoritiesFromToken();
   const currentUserRole = authorities[0] as AuthorityName;
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -83,7 +86,7 @@ const ProjectsPage: React.FC = () => {
         gutterBottom
         sx={{ mb: 6, fontWeight: "bold" }}
       >
-        Projects
+        {t("projectPages.list.title")}
       </Typography>
 
       <Box
@@ -98,23 +101,25 @@ const ProjectsPage: React.FC = () => {
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Search projects by name or description..."
+            placeholder={t("projectPages.list.search")}
             value={searchTerm}
             onChange={handleSearch}
           />
           <FormControl sx={{ minWidth: 200 }} size="medium">
-            <InputLabel id="status-select-label">Status</InputLabel>
+            <InputLabel id="status-select-label">
+              {t("projectPages.list.status")}
+            </InputLabel>
             <Select
               labelId="status-select-label"
               id="status-select"
               value={status}
-              label="Status"
+              label={t("projectPages.list.status")}
               onChange={handleStatusChange}
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="">{t("projectPages.list.all")}</MenuItem>
               {Object.values(ProjectStatus).map((statusVal) => (
                 <MenuItem key={statusVal} value={statusVal}>
-                  {formatEnumWithoutLowerUnderline(statusVal)}
+                  {translateEnum("enums.project.status", statusVal)}
                 </MenuItem>
               ))}
             </Select>
@@ -127,7 +132,7 @@ const ProjectsPage: React.FC = () => {
             href="/projects/new"
             sx={{ ml: 2, whiteSpace: "nowrap" }}
           >
-            Create New
+            {t("projectPages.list.createNew")}
           </Button>
         )}
       </Box>
@@ -150,7 +155,9 @@ const ProjectsPage: React.FC = () => {
               alignItems="center"
               minHeight="50vh"
             >
-              <Typography variant="h6">No projects found</Typography>
+              <Typography variant="h6">
+                {t("projectPages.list.noProjects")}
+              </Typography>
             </Box>
           ) : (
             <Box>

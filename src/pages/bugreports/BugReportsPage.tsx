@@ -21,6 +21,8 @@ import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import { formatEnumWithLowerUnderline } from "../../utils/format.utils";
 import { BugReportSeverity } from "../../models/enum/bugReportSeverities";
 import { BugReportStatus } from "../../models/enum/bugReportStatuses";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../utils/i18n.utils";
 
 const BugReportsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -30,6 +32,8 @@ const BugReportsPage: React.FC = () => {
   const [totalItems, setTotalItems] = useState<number>(0);
   const [severity, setSeverity] = useState<string>("");
   const [status, setStatus] = useState<string>("");
+  const { t } = useTranslation();
+
   const bugsPerPage = 5;
   const authorities = getAutoritiesFromToken();
   const currentUserRole = authorities[0] as AuthorityName;
@@ -92,7 +96,7 @@ const BugReportsPage: React.FC = () => {
         gutterBottom
         sx={{ mb: 6, fontWeight: "bold" }}
       >
-        Bug Reports
+        {t("bugReportPages.list.title")}
       </Typography>
 
       <Box
@@ -107,40 +111,44 @@ const BugReportsPage: React.FC = () => {
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Search bug reports by title..."
+            placeholder={t("bugReportPages.list.search")}
             value={searchTerm}
             onChange={handleSearch}
           />
           <FormControl sx={{ minWidth: 150 }} size="medium">
-            <InputLabel id="severity-select-label">Severity</InputLabel>
+            <InputLabel id="severity-select-label">
+              {t("bugReportPages.list.severity")}
+            </InputLabel>
             <Select
               labelId="severity-select-label"
               id="severity-select"
               value={severity}
-              label="Severity"
+              label={t("bugReportPages.list.severity")}
               onChange={handleSeverityChange}
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="">{t("bugReportPages.list.all")}</MenuItem>
               {Object.values(BugReportSeverity).map((severityVal) => (
                 <MenuItem key={severityVal} value={severityVal}>
-                  {formatEnumWithLowerUnderline(severityVal)}
+                  {translateEnum("enums.bugReport.severity", severityVal)}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
           <FormControl sx={{ minWidth: 150 }} size="medium">
-            <InputLabel id="status-select-label">Status</InputLabel>
+            <InputLabel id="status-select-label">
+              {t("bugReportPages.list.status")}
+            </InputLabel>
             <Select
               labelId="status-select-label"
               id="status-select"
               value={status}
-              label="Status"
+              label={t("bugReportPages.list.status")}
               onChange={handleStatusChange}
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="">{t("bugReportPages.list.all")}</MenuItem>
               {Object.values(BugReportStatus).map((statusVal) => (
                 <MenuItem key={statusVal} value={statusVal}>
-                  {formatEnumWithLowerUnderline(statusVal)}
+                  {translateEnum("enums.bugReport.status", statusVal)}
                 </MenuItem>
               ))}
             </Select>
@@ -153,7 +161,7 @@ const BugReportsPage: React.FC = () => {
             href="/bug-reports/new"
             sx={{ ml: 2, whiteSpace: "nowrap" }}
           >
-            Create New
+            {t("bugReportPages.list.createNew")}
           </Button>
         )}
       </Box>
@@ -176,7 +184,9 @@ const BugReportsPage: React.FC = () => {
               alignItems="center"
               minHeight="50vh"
             >
-              <Typography variant="h6">No bug reports found</Typography>
+              <Typography variant="h6">
+                {t("bugReportPages.list.noBugs")}
+              </Typography>
             </Box>
           ) : (
             <Box>

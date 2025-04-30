@@ -20,10 +20,8 @@ import { BugReportResponse } from "../../../../models/bugreport/BugReportRespons
 import { BugReportUpdateRequest } from "../../../../models/bugreport/BugReportUpdateRequest";
 import { BugReportStatus } from "../../../../models/enum/bugReportStatuses";
 import { BugReportSeverity } from "../../../../models/enum/bugReportSeverities";
-import {
-  formatEnumWithLowerUnderline,
-  formatEnumWithoutLowerUnderline,
-} from "../../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../../../utils/i18n.utils";
 
 interface UpdateBugReportDialogProps {
   open: boolean;
@@ -38,6 +36,8 @@ const UpdateBugReportDialog: React.FC<UpdateBugReportDialogProps> = ({
   bugReport,
   onBugReportUpdated,
 }) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<BugReportUpdateRequest>({
     title: bugReport.title,
     description: bugReport.description,
@@ -85,20 +85,20 @@ const UpdateBugReportDialog: React.FC<UpdateBugReportDialogProps> = ({
       onClose();
     } catch (err) {
       setIsSubmitting(false);
-      setError("Failed to update bug report. Please try again.");
+      setError(t("bugReports.update.error"));
       console.error("Error updating bug report:", err);
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Edit Bug Report</DialogTitle>
+      <DialogTitle>{t("bugReports.update.title")}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             <TextField
               name="title"
-              label="Title"
+              label={t("bugReports.update.bugTitle")}
               value={formData.title}
               onChange={handleInputChange}
               fullWidth
@@ -107,7 +107,7 @@ const UpdateBugReportDialog: React.FC<UpdateBugReportDialogProps> = ({
 
             <TextField
               name="description"
-              label="Description"
+              label={t("bugReports.update.description")}
               value={formData.description}
               onChange={handleInputChange}
               multiline
@@ -118,7 +118,7 @@ const UpdateBugReportDialog: React.FC<UpdateBugReportDialogProps> = ({
 
             <TextField
               name="environment"
-              label="Environment"
+              label={t("bugReports.update.environment")}
               value={formData.environment}
               onChange={handleInputChange}
               multiline
@@ -127,36 +127,40 @@ const UpdateBugReportDialog: React.FC<UpdateBugReportDialogProps> = ({
             />
 
             <FormControl fullWidth>
-              <InputLabel id="severity-label">Severity</InputLabel>
+              <InputLabel id="severity-label">
+                {t("bugReports.update.severity")}
+              </InputLabel>
               <Select
                 labelId="severity-label"
                 name="severity"
                 value={formData.severity}
                 onChange={handleSeverityChange}
-                label="Severity"
+                label={t("bugReports.update.severity")}
                 required
               >
                 {Object.values(BugReportSeverity).map((sev) => (
                   <MenuItem key={sev} value={sev}>
-                    {formatEnumWithoutLowerUnderline(sev)}
+                    {translateEnum("enums.bugReport.severity", sev)}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
 
             <FormControl fullWidth>
-              <InputLabel id="status-label">Status</InputLabel>
+              <InputLabel id="status-label">
+                {t("bugReports.update.status")}
+              </InputLabel>
               <Select
                 labelId="status-label"
                 name="status"
                 value={formData.status}
                 onChange={handleStatusChange}
-                label="Status"
+                label={t("bugReports.update.status")}
                 required
               >
                 {Object.values(BugReportStatus).map((stat) => (
                   <MenuItem key={stat} value={stat}>
-                    {formatEnumWithLowerUnderline(stat)}
+                    {translateEnum("enums.bugReport.status", stat)}
                   </MenuItem>
                 ))}
               </Select>
@@ -167,7 +171,7 @@ const UpdateBugReportDialog: React.FC<UpdateBugReportDialogProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t("bugReports.update.cancel")}
           </Button>
           <Button
             type="submit"
@@ -176,7 +180,9 @@ const UpdateBugReportDialog: React.FC<UpdateBugReportDialogProps> = ({
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            {isSubmitting ? "Updating..." : "Update Bug Report"}
+            {isSubmitting
+              ? t("bugReports.update.updating")
+              : t("bugReports.update.update")}
           </Button>
         </DialogActions>
       </form>

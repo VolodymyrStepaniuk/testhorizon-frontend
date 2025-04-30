@@ -20,6 +20,8 @@ import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import { formatEnumWithoutLowerUnderline } from "../../utils/format.utils";
 import { TestCasePriority } from "../../models/enum/testCasePriorities";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../utils/i18n.utils";
 
 const TestCasePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -31,6 +33,7 @@ const TestCasePage: React.FC = () => {
   const testCasesPerPage = 5;
   const authorities = getAutoritiesFromToken();
   const currentUserRole = authorities[0] as AuthorityName;
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadTestCases = async () => {
@@ -84,7 +87,7 @@ const TestCasePage: React.FC = () => {
         gutterBottom
         sx={{ mb: 6, fontWeight: "bold" }}
       >
-        Test Cases
+        {t("testCasePages.list.title")}
       </Typography>
 
       <Box
@@ -99,23 +102,25 @@ const TestCasePage: React.FC = () => {
           <TextField
             fullWidth
             variant="outlined"
-            placeholder="Search test cases by title or description..."
+            placeholder={t("testCasePages.list.search")}
             value={searchTerm}
             onChange={handleSearch}
           />
           <FormControl sx={{ minWidth: 200 }} size="medium">
-            <InputLabel id="priority-select-label">Priority</InputLabel>
+            <InputLabel id="priority-select-label">
+              {t("testCasePages.list.priority")}
+            </InputLabel>
             <Select
               labelId="priority-select-label"
               id="priority-select"
               value={priority}
-              label="Priority"
+              label={t("testCasePages.list.priority")}
               onChange={handlePriorityChange}
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="">{t("testCasePages.list.all")}</MenuItem>
               {Object.values(TestCasePriority).map((priorityVal) => (
                 <MenuItem key={priorityVal} value={priorityVal}>
-                  {formatEnumWithoutLowerUnderline(priorityVal)}
+                  {translateEnum("enums.testCase.priority", priorityVal)}
                 </MenuItem>
               ))}
             </Select>
@@ -128,7 +133,7 @@ const TestCasePage: React.FC = () => {
             href="/test-cases/new"
             sx={{ ml: 2, whiteSpace: "nowrap" }}
           >
-            Create New
+            {t("testCasePages.list.createNew")}
           </Button>
         )}
       </Box>
@@ -141,6 +146,9 @@ const TestCasePage: React.FC = () => {
           minHeight="50vh"
         >
           <CircularProgress />
+          <Typography variant="h6" sx={{ ml: 2 }}>
+            {t("testCasePages.list.loading")}
+          </Typography>
         </Box>
       ) : (
         <>
@@ -151,7 +159,9 @@ const TestCasePage: React.FC = () => {
               alignItems="center"
               minHeight="50vh"
             >
-              <Typography variant="h6">No test cases found</Typography>
+              <Typography variant="h6">
+                {t("testCasePages.list.noTestCases")}
+              </Typography>
             </Box>
           ) : (
             <Box>

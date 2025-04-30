@@ -10,6 +10,7 @@ import { API } from "../../../../services/api.service";
 import { TestResponse } from "../../../../models/test/TestResponse";
 import OverviewTab from "./OverviewTab";
 import TestsTab from "./TestsTab";
+import { useTranslation } from "react-i18next";
 
 interface TestCaseTabsProps {
   testCase: TestCaseResponse;
@@ -25,6 +26,7 @@ const TestCaseTabs: React.FC<TestCaseTabsProps> = ({
   const [tabValue, setTabValue] = useState(0);
   const [tests, setTests] = useState<TestResponse[]>([]);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -56,9 +58,12 @@ const TestCaseTabs: React.FC<TestCaseTabsProps> = ({
         variant="scrollable"
         scrollButtons="auto"
       >
-        <Tab icon={<Description />} label="Overview" />
-        <Tab icon={<PlayArrowIcon />} label="Tests" />
-        <Tab icon={<InsertDriveFile />} label="Attachments" />
+        <Tab icon={<Description />} label={t("testCases.tabs.overview")} />
+        <Tab icon={<PlayArrowIcon />} label={t("testCases.tabs.tests")} />
+        <Tab
+          icon={<InsertDriveFile />}
+          label={t("testCases.tabs.attachments")}
+        />
       </Tabs>
 
       <TabPanel value={tabValue} index={0} minHeight="400px">

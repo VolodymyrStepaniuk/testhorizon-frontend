@@ -14,6 +14,7 @@ import UpdateFeedbackDialog from "./dialogs/UpdateFeedbackDialog";
 import DeleteFeedbackDialog from "./dialogs/DeleteFeedbackDialog";
 import SettingsMenu from "../universal/menu/SettingsMenu";
 import { formatDate } from "../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface FeedbackItemProps {
   feedback: FeedbackResponse;
@@ -36,6 +37,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [currentFeedback, setCurrentFeedback] =
     useState<FeedbackResponse>(feedback);
+  const { t } = useTranslation();
 
   const canModify = isAdmin || isOwner;
   const open = Boolean(anchorEl);
@@ -97,7 +99,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({
         </Typography>
 
         <Typography variant="body1" sx={{ mt: 2 }}>
-          {currentFeedback.comment || <em>No comment provided</em>}
+          {currentFeedback.comment || <em>{t("feedbacks.noComment")}</em>}
         </Typography>
       </CardContent>
 

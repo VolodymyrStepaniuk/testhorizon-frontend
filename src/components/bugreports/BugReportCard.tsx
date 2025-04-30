@@ -15,6 +15,7 @@ import {
   BugReportSeverityChip,
   BugReportStatusChip,
 } from "../../theme/customization/chips";
+import { useTranslation } from "react-i18next";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: "100%",
@@ -43,6 +44,7 @@ const BugReportCard: React.FC<BugReportResponse> = memo(
     updatedAt,
   }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleNavigateToProject = (
       e: React.MouseEvent<HTMLButtonElement>
@@ -85,11 +87,11 @@ const BugReportCard: React.FC<BugReportResponse> = memo(
           <Box sx={{ mb: 2 }}>
             {environment && (
               <Typography variant="body2" color="text.secondary" paragraph>
-                Environment: {environment}
+                {t("bugReports.card.environment")}: {environment}
               </Typography>
             )}
             <Typography variant="body2" color="text.secondary">
-              Project:{" "}
+              {t("bugReports.card.project")}:{" "}
               <Button
                 variant="text"
                 onClick={handleNavigateToProject}
@@ -127,17 +129,17 @@ const BugReportCard: React.FC<BugReportResponse> = memo(
                 sx={{ fontWeight: "bold", padding: "8px 16px", height: "42px" }}
                 size="large"
               >
-                View Bug Report
+                {t("bugReports.card.viewBugReport")}
               </Button>
             </Box>
           </Box>
 
           <Box sx={{ mt: 2, borderTop: "1px solid #e0e0e0", pt: 1 }}>
             <Typography variant="caption" color="text.secondary">
-              Created: {formatDate(createdAt)}
+              {t("bugReports.card.created")}: {formatDate(createdAt)}
             </Typography>
             <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
-              Updated: {formatDate(updatedAt)}
+              {t("bugReports.card.updated")}: {formatDate(updatedAt)}
             </Typography>
           </Box>
         </CardContent>

@@ -9,11 +9,13 @@ import { AuthorityName } from "../../../models/enum/authorityNames";
 import { useBugReportsQuery } from "../../../queries/BugReportQuery";
 import { useTestCasesQuery } from "../../../queries/TestCaseQuery";
 import { useTestsQuery } from "../../../queries/TestQuery";
+import { useTranslation } from "react-i18next";
 
 const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
   currentUserRole,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const colorPalette = [
     theme.palette.primary.dark,
     theme.palette.primary.main,
@@ -23,11 +25,11 @@ const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
   const renderCaptionTypography = () => {
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
-        return "Total number of Tests, Test Cases and Bug Reports in the system";
+        return t("charts.projectStatistics.captions.admin");
       case AuthorityName.DEVELOPER:
-        return "Total number of Tests, Test Cases and Bug Reports in my projects";
+        return t("charts.projectStatistics.captions.developer");
       case AuthorityName.TESTER:
-        return "Total number of my Tests, Test Cases and Bug Reports";
+        return t("charts.projectStatistics.captions.tester");
       default:
         return <Box>Access Denied</Box>;
     }
@@ -44,7 +46,7 @@ const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
   };
 
   if (isLoadingTest || isLoadingTestCase || isLoadingBugReport) {
-    return <Box>Loading...</Box>;
+    return <Box>{t("charts.projectStatistics.loading")}</Box>;
   }
 
   return (
@@ -56,7 +58,7 @@ const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
           gutterBottom
           sx={{ fontWeight: 700 }}
         >
-          Project statistics
+          {t("charts.projectStatistics.title")}
         </Typography>
         <Typography
           variant="caption"
@@ -70,23 +72,23 @@ const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
           xAxis={[
             {
               scaleType: "band",
-              data: ["Total counts"],
+              data: [t("charts.projectStatistics.totalCounts")],
             },
           ]}
           series={[
             {
               id: "tests",
-              label: "Tests",
+              label: t("charts.projectStatistics.tests"),
               data: [counts.tests],
             },
             {
               id: "testCases",
-              label: "Test Cases",
+              label: t("charts.projectStatistics.testCases"),
               data: [counts.testCases],
             },
             {
               id: "bugReports",
-              label: "BugReports",
+              label: t("charts.projectStatistics.bugReports"),
               data: [counts.bugReports],
             },
           ]}

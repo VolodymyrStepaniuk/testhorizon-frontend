@@ -14,6 +14,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { FileEntityType } from "../../models/enum/fileEntityType";
 import { API } from "../../services/api.service";
+import { useTranslation } from "react-i18next";
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -26,6 +27,7 @@ export default function SideMenuMobile({
 }: SideMenuMobileProps) {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -37,7 +39,6 @@ export default function SideMenuMobile({
 
   const userFullName = user ? user?.firstName + " " + user?.lastName : null;
 
-  // Function to fetch user avatar
   const fetchUserAvatar = async (userId: number) => {
     try {
       const avatarFileName = "avatar";
@@ -55,7 +56,6 @@ export default function SideMenuMobile({
     }
   };
 
-  // Fetch user avatar when user data is available
   useEffect(() => {
     if (user && user.id) {
       fetchUserAvatar(user.id);
@@ -117,7 +117,7 @@ export default function SideMenuMobile({
             startIcon={<LogoutRoundedIcon />}
             onClick={handleLogout}
           >
-            Logout
+            {t("header.logout")}
           </Button>
         </Stack>
       </Stack>

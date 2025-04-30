@@ -1,6 +1,7 @@
 import React from "react";
 import { Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 interface SettingsMenuProps {
   anchorEl: HTMLElement | null;
@@ -17,6 +18,8 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -35,13 +38,13 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         <ListItemIcon>
           <Edit fontSize="small" />
         </ListItemIcon>
-        <ListItemText>Edit</ListItemText>
+        <ListItemText>{t("settingsMenu.edit")}</ListItemText>
       </MenuItem>
       <MenuItem onClick={onDelete}>
         <ListItemIcon>
           <Delete fontSize="small" />
         </ListItemIcon>
-        <ListItemText>Delete</ListItemText>
+        <ListItemText>{t("settingsMenu.delete")}</ListItemText>
       </MenuItem>
     </Menu>
   );

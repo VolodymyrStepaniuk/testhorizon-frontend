@@ -12,15 +12,17 @@ import UpdateBugReportDialog from "./UpdateBugReportDialog";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../../../universal/notification/NotificationSnackbar";
-import ExportButton from "../../../universal/ExportButton";
+
 import { ExportEntityType } from "../../../../models/enum/exportEntityTypes";
 import RatingButton from "../../../universal/rating/RatingButton";
+import { useTranslation } from "react-i18next";
+import ExportButton from "../../../universal/file/ExportButton";
 
 interface BugReportHeaderProps {
   bugReport: BugReportResponse;
   isAdmin: boolean;
   isReporter: boolean;
-  currentUserId: number; // Add this prop to identify the current user
+  currentUserId: number;
 }
 
 const BugReportHeader: React.FC<BugReportHeaderProps> = ({
@@ -35,6 +37,8 @@ const BugReportHeader: React.FC<BugReportHeaderProps> = ({
   const [currentBugReport, setCurrentBugReport] =
     useState<BugReportResponse>(bugReport);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [notification, setNotification] = useState<{
     open: boolean;
     message: string;
@@ -70,7 +74,7 @@ const BugReportHeader: React.FC<BugReportHeaderProps> = ({
     setCurrentBugReport(updatedBugReport);
     setNotification({
       open: true,
-      message: "Bug report updated successfully",
+      message: t("bugReports.header.notifications.updateSuccess"),
       severity: "success",
     });
   };
@@ -100,7 +104,7 @@ const BugReportHeader: React.FC<BugReportHeaderProps> = ({
         variant="text"
         sx={{ mb: 2 }}
       >
-        Back
+        {t("bugReports.header.back")}
       </Button>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} md={8}>
@@ -143,7 +147,7 @@ const BugReportHeader: React.FC<BugReportHeaderProps> = ({
                 startIcon={<Settings />}
                 onClick={handleSettingsClick}
               >
-                Settings
+                {t("bugReports.header.settings")}
               </Button>
               <SettingsMenu
                 anchorEl={anchorEl}

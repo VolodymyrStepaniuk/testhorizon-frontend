@@ -4,19 +4,25 @@ import { TestCasePriority } from "../../models/enum/testCasePriorities";
 import { TestType } from "../../models/enum/testTypes";
 import { BugReportSeverity } from "../../models/enum/bugReportSeverities";
 import { BugReportStatus } from "../../models/enum/bugReportStatuses";
+import { translateEnum } from "../../utils/i18n.utils";
+import { useTranslation } from "react-i18next";
+import { formatEnumWithLowerUnderline } from "../../utils/format.utils";
 
 export const ProjectStatusChip = ({ status }: { status: ProjectStatus }) => {
+  const { t } = useTranslation();
+
   const statusMap = {
-    [ProjectStatus.ACTIVE]: { color: "success", label: "Active" },
-    [ProjectStatus.PAUSED]: { color: "warning", label: "On Hold" },
-    [ProjectStatus.INACTIVE]: { color: "primary", label: "Completed" },
+    [ProjectStatus.ACTIVE]: { color: "success" },
+    [ProjectStatus.PAUSED]: { color: "warning" },
+    [ProjectStatus.INACTIVE]: { color: "primary" },
   };
 
-  const statusInfo = statusMap[status] || { color: "default", label: status };
+  const statusInfo = statusMap[status] || { color: "default" };
+  const label = translateEnum("enums.project.status", status);
 
   return (
     <Chip
-      label={statusInfo.label}
+      label={label}
       color={
         statusInfo.color as
           | "success"
@@ -41,14 +47,8 @@ export const TestCasePriorityChip = ({
     [TestCasePriority.LOW]: "#4caf50",
   };
 
-  const priorityMap = {
-    [TestCasePriority.HIGH]: "High",
-    [TestCasePriority.MEDIUM]: "Medium",
-    [TestCasePriority.LOW]: "Low",
-  };
-
   const backgroundColor = colorMap[priority] || "#9e9e9e";
-  const label = priorityMap[priority] || priority;
+  const label = translateEnum("enums.testCase.priority", priority);
 
   return (
     <Chip
@@ -74,22 +74,12 @@ export const TestTypeChip = ({ testtype }: { testtype: TestType }) => {
     [TestType.SMOKE]: "#607d8b",
   };
 
-  const typeMap = {
-    [TestType.UNIT]: "Unit",
-    [TestType.INTEGRATION]: "Integration",
-    [TestType.FUNCTIONAL]: "Functional",
-    [TestType.END_TO_END]: "End-to-End",
-    [TestType.ACCEPTANCE]: "Acceptance",
-    [TestType.PERFORMANCE]: "Performance",
-    [TestType.SMOKE]: "Smoke",
-  };
-
   const backgroundColor = colorMap[testtype] || "#9e9e9e";
-  const label = typeMap[testtype] || testtype;
+  const label = translateEnum("test.type", testtype);
 
   return (
     <Chip
-      label={label}
+      label={formatEnumWithLowerUnderline(label)}
       size="small"
       sx={{
         backgroundColor,
@@ -112,15 +102,8 @@ export const BugReportSeverityChip = ({
     [BugReportSeverity.CRITICAL]: "#9c27b0",
   };
 
-  const severityMap = {
-    [BugReportSeverity.LOW]: "Low",
-    [BugReportSeverity.MEDIUM]: "Medium",
-    [BugReportSeverity.HIGH]: "High",
-    [BugReportSeverity.CRITICAL]: "Critical",
-  };
-
   const backgroundColor = colorMap[severity] || "#9e9e9e";
-  const label = severityMap[severity] || severity;
+  const label = translateEnum("enums.bugReport.severity", severity);
 
   return (
     <Chip
@@ -147,15 +130,8 @@ export const BugReportStatusChip = ({
     [BugReportStatus.CLOSED]: "#9e9e9e",
   };
 
-  const statusMap = {
-    [BugReportStatus.OPENED]: "Opened",
-    [BugReportStatus.IN_PROGRESS]: "In Progress",
-    [BugReportStatus.RESOLVED]: "Resolved",
-    [BugReportStatus.CLOSED]: "Closed",
-  };
-
   const backgroundColor = colorMap[status] || "#607d8b";
-  const label = statusMap[status] || status;
+  const label = translateEnum("enums.bugReport.status", status);
 
   return (
     <Chip

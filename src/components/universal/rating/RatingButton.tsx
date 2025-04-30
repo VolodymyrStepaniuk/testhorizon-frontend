@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import RatingDialog from "./RatingDialog";
+import { useTranslation } from "react-i18next";
 
 interface RatingButtonProps {
   userId: number;
-  entityType: string; // E.g., "Bug Report", "Test Case", "Test"
-  entityTitle: string; // Title of the entity for context
-  onRatingUpdated?: () => void; // Optional callback for when rating is updated
+  entityType: string;
+  entityTitle: string;
+  onRatingUpdated?: () => void;
 }
 
 const RatingButton: React.FC<RatingButtonProps> = ({
@@ -17,6 +18,7 @@ const RatingButton: React.FC<RatingButtonProps> = ({
   onRatingUpdated,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleOpenDialog = () => {
     setDialogOpen(true);
@@ -41,7 +43,7 @@ const RatingButton: React.FC<RatingButtonProps> = ({
         onClick={handleOpenDialog}
         size="medium"
       >
-        Rate User
+        {t("rating.button")}
       </Button>
 
       <RatingDialog

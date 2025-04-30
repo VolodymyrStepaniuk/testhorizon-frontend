@@ -15,13 +15,14 @@ import { NoteCreateRequest } from "../../../models/notebook/note/NoteCreateReque
 import { NoteResponse } from "../../../models/notebook/note/NoteResponse";
 import { NoteUpdateRequest } from "../../../models/notebook/note/NoteUpdateRequest";
 import { API } from "../../../services/api.service";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   notebook: { id: number; title: string };
   note: NoteResponse;
   onSaved: (n: NoteResponse) => void;
   onCancel: () => void;
-  onHome: () => void; // Add new prop for home navigation
+  onHome: () => void;
 }
 
 const NoteEditor: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const NoteEditor: React.FC<Props> = ({
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content || "");
   const [saving, setSaving] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setTitle(note.title);
@@ -79,13 +81,15 @@ const NoteEditor: React.FC<Props> = ({
             onClick={onHome}
             sx={{ textTransform: "none" }}
           >
-            Notebooks
+            {t("notebook.navigation.notebooks")}
           </Button>
           <Typography color="text.secondary" variant="body2">
             {notebook.title}
           </Typography>
           <Typography color="text.primary" variant="body2">
-            {isNew ? "New Note" : "Edit Note"}
+            {isNew
+              ? t("notebook.note.editor.createTitle")
+              : t("notebook.note.editor.editTitle")}
           </Typography>
         </Breadcrumbs>
       </Box>
@@ -100,8 +104,8 @@ const NoteEditor: React.FC<Props> = ({
         }}
       >
         <TextField
-          label="Title"
-          placeholder="Enter a title for your note"
+          label={t("notebook.note.editor.titleLabel")}
+          placeholder={t("notebook.note.editor.titlePlaceholder")}
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -116,8 +120,8 @@ const NoteEditor: React.FC<Props> = ({
         <Divider sx={{ my: 1 }} />
 
         <TextField
-          label="Content"
-          placeholder="Write your note content here..."
+          label={t("notebook.note.editor.contentLabel")}
+          placeholder={t("notebook.note.editor.contentPlaceholder")}
           fullWidth
           multiline
           minRows={10}
@@ -136,7 +140,7 @@ const NoteEditor: React.FC<Props> = ({
 
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button variant="outlined" onClick={onCancel}>
-            Cancel
+            {t("notebook.note.editor.cancel")}
           </Button>
 
           <Button
@@ -151,7 +155,9 @@ const NoteEditor: React.FC<Props> = ({
             onClick={handleSave}
             disabled={!title.trim() || saving}
           >
-            {saving ? "Saving..." : "Save Note"}
+            {saving
+              ? t("notebook.note.editor.saving")
+              : t("notebook.note.editor.save")}
           </Button>
         </Box>
       </Card>

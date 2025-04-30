@@ -10,6 +10,7 @@ import {
   FormLabel,
 } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AppTheme from "../../theme/AppTheme";
 import AppIcon from "../universal/AppIcon";
 import { API } from "../../services/api.service";
@@ -19,6 +20,8 @@ const ForgotPasswordCode: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -37,8 +40,7 @@ const ForgotPasswordCode: React.FC = () => {
         ...prev,
         password: {
           error: true,
-          message:
-            "Password must contain uppercase, lowercase, number and special character",
+          message: t("resetPassword.validation.requirementsNotMet"),
         },
       }));
       return false;
@@ -51,7 +53,10 @@ const ForgotPasswordCode: React.FC = () => {
         ...prev,
         password: {
           error: true,
-          message: `Password length must be between ${UNIVERSAL_VALIDATION.password.minLength} and ${UNIVERSAL_VALIDATION.password.maxLength} characters`,
+          message: t("resetPassword.validation.lengthError", {
+            min: UNIVERSAL_VALIDATION.password.minLength,
+            max: UNIVERSAL_VALIDATION.password.maxLength,
+          }),
         },
       }));
       return false;
@@ -72,7 +77,7 @@ const ForgotPasswordCode: React.FC = () => {
         ...prev,
         confirmPassword: {
           error: true,
-          message: "Passwords do not match",
+          message: t("resetPassword.validation.passwordMismatch"),
         },
       }));
       return false;
@@ -86,9 +91,9 @@ const ForgotPasswordCode: React.FC = () => {
 
   useEffect(() => {
     if (!token) {
-      setError("Invalid reset link. Please request a new one.");
+      setError(t("resetPassword.invalidLink"));
     }
-  }, [token]);
+  }, [token, t]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -113,28 +118,24 @@ const ForgotPasswordCode: React.FC = () => {
     }
 
     if (!token) {
-      setError("Invalid reset link. Please request a new one.");
+      setError(t("resetPassword.invalidLink"));
       return;
     }
 
     try {
       await API.auth.emailResetPassword(token, {
-        password: formData.password,
+        newPassword: formData.password,
         confirmPassword: formData.confirmPassword,
       });
 
       navigate("/sign-in", {
         state: {
-          message:
-            "Password successfully reset. Please sign in with your new password.",
+          message: t("resetPassword.success"),
         },
       });
     } catch (err: any) {
       console.error("Error resetting password:", err);
-      setError(
-        err.response?.data?.message ||
-          "Failed to reset password. Please try again."
-      );
+      setError(err.response?.data?.message || t("resetPassword.error"));
     }
   };
 
@@ -184,7 +185,7 @@ const ForgotPasswordCode: React.FC = () => {
               mt: { xs: 1, sm: 2 },
             }}
           >
-            Reset Password
+            {t("resetPassword.title")}
           </Typography>
           <Box
             component="form"
@@ -196,13 +197,13 @@ const ForgotPasswordCode: React.FC = () => {
                 htmlFor="password"
                 sx={{ color: "white", mb: 0.5, fontWeight: 700 }}
               >
-                New Password
+                {t("resetPassword.newPassword")}
               </FormLabel>
               <TextField
                 required
                 fullWidth
                 id="password"
-                placeholder="••••••••"
+                placeholder={t("resetPassword.passwordPlaceholder")}
                 name="password"
                 autoComplete="new-password"
                 type="password"
@@ -219,13 +220,13 @@ const ForgotPasswordCode: React.FC = () => {
                 htmlFor="confirmPassword"
                 sx={{ color: "white", mb: 0.5, fontWeight: 700 }}
               >
-                Repeat New Password
+                {t("resetPassword.repeatPassword")}
               </FormLabel>
               <TextField
                 required
                 fullWidth
                 name="confirmPassword"
-                placeholder="••••••••"
+                placeholder={t("resetPassword.passwordPlaceholder")}
                 type="password"
                 id="confirmPassword"
                 autoComplete="new-password"
@@ -255,7 +256,7 @@ const ForgotPasswordCode: React.FC = () => {
                 fontWeight: 700,
               }}
             >
-              Reset Password
+              {t("resetPassword.resetButton")}
             </Button>
           </Box>
         </Card>

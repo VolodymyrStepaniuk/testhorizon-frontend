@@ -12,6 +12,7 @@ import {
   CircularProgress,
   Snackbar,
   Alert,
+  Link,
 } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { API } from "../../services/api.service";
@@ -22,6 +23,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { CommentResponse } from "../../models/comment/CommentResponse";
 import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
+import { useTranslation } from "react-i18next";
+import { Link as RouterLink } from "react-router-dom";
 
 interface CommentsProps {
   entityId: number;
@@ -39,6 +42,7 @@ const Comments: React.FC<CommentsProps> = ({ entityId, entityType }) => {
     type: "success" | "error";
   } | null>(null);
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const authorities = getAutoritiesFromToken();
   const currentUserRole = authorities[0] as AuthorityName;
@@ -92,10 +96,10 @@ const Comments: React.FC<CommentsProps> = ({ entityId, entityType }) => {
     try {
       await API.comments.delete(commentId);
       setComments(comments.filter((comment) => comment.id !== commentId));
-      showNotification("Comment deleted successfully", "success");
+      showNotification(t("comments.notifications.deleteSuccess"), "success");
     } catch (err) {
       console.error("Error deleting comment:", err);
-      showNotification("Failed to delete comment", "error");
+      showNotification(t("comments.notifications.deleteError"), "error");
     }
   };
 
@@ -107,10 +111,10 @@ const Comments: React.FC<CommentsProps> = ({ entityId, entityType }) => {
           comment.id === commentId ? { ...comment, content } : comment
         )
       );
-      showNotification("Comment updated successfully", "success");
+      showNotification(t("comments.notifications.updateSuccess"), "success");
     } catch (err) {
       console.error("Error updating comment:", err);
-      showNotification("Failed to update comment", "error");
+      showNotification(t("comments.notifications.updateError"), "error");
     }
   };
 
@@ -129,7 +133,7 @@ const Comments: React.FC<CommentsProps> = ({ entityId, entityType }) => {
   return (
     <Paper elevation={0} sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
-        Comments
+        {t("comments.title")}
       </Typography>
 
       {loading ? (
@@ -138,7 +142,7 @@ const Comments: React.FC<CommentsProps> = ({ entityId, entityType }) => {
         </Box>
       ) : error || comments.length === 0 ? (
         <ListItem>
-          <ListItemText primary="There's no comment yet!" />
+          <ListItemText primary={t("comments.noComments")} />
         </ListItem>
       ) : (
         <List sx={{ mb: 3 }}>
@@ -155,34 +159,47 @@ const Comments: React.FC<CommentsProps> = ({ entityId, entityType }) => {
         </List>
       )}
 
-      {/* Add Comment Form */}
-      <Box sx={{ display: "flex", alignItems: "flex-start", mt: 2 }}>
-        <Avatar
-          sx={{ mr: 2, mt: 1, width: 40, height: 40 }}
-          alt={user?.firstName || ""}
-          src="/static/images/avatar/7.jpg"
-        />
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Add a comment..."
-          multiline
-          rows={2}
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          sx={{ mr: 2 }}
-          disabled={submitting}
-        />
-        <Button
-          variant="contained"
-          endIcon={<Send />}
-          onClick={handleCommentSubmit}
-          disabled={!commentText.trim() || submitting}
-          sx={{ mt: 1 }}
-        >
-          {submitting ? <CircularProgress size={24} /> : "Post"}
-        </Button>
-      </Box>
+      {/* Add Comment Form - Only show for logged in users */}
+      {user ? (
+        <Box sx={{ display: "flex", alignItems: "flex-start", mt: 2 }}>
+          <Avatar
+            sx={{ mr: 2, mt: 1, width: 40, height: 40 }}
+            alt={user?.firstName || ""}
+            src="/static/images/avatar/7.jpg"
+          />
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder={t("comments.addComment")}
+            multiline
+            rows={2}
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            sx={{ mr: 2 }}
+            disabled={submitting}
+          />
+          <Button
+            variant="contained"
+            endIcon={<Send />}
+            onClick={handleCommentSubmit}
+            disabled={!commentText.trim() || submitting}
+            sx={{ mt: 1 }}
+          >
+            {submitting ? <CircularProgress size={24} /> : t("comments.post")}
+          </Button>
+        </Box>
+      ) : (
+        <Box sx={{ mt: 2, p: 2, bgcolor: "background.paper", borderRadius: 1 }}>
+          <Typography variant="body2" color="text.secondary" align="center">
+            {t("comments.loginPrompt")}
+          </Typography>
+          <Typography sx={{ textAlign: "center", mt: 1 }}>
+            <Link component={RouterLink} to="/sign-in" color="primary">
+              {t("header.signIn")}
+            </Link>
+          </Typography>
+        </Box>
+      )}
 
       <Snackbar
         open={notification !== null}

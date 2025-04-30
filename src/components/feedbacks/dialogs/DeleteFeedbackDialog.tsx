@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { API } from "../../../services/api.service";
 import NotificationSnackbar from "../../universal/notification/NotificationSnackbar";
+import { useTranslation } from "react-i18next";
 
 interface DeleteFeedbackDialogProps {
   open: boolean;
@@ -30,6 +31,7 @@ const DeleteFeedbackDialog: React.FC<DeleteFeedbackDialogProps> = ({
     message: string;
     severity: "success" | "error" | "info" | "warning";
   }>({ open: false, message: "", severity: "success" });
+  const { t } = useTranslation();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -37,7 +39,7 @@ const DeleteFeedbackDialog: React.FC<DeleteFeedbackDialogProps> = ({
       await API.feedbacks.delete(feedbackId);
       setSnackbar({
         open: true,
-        message: "Feedback deleted successfully",
+        message: t("feedbacks.dialogs.delete.success"),
         severity: "success",
       });
       setIsDeleting(false);
@@ -47,7 +49,7 @@ const DeleteFeedbackDialog: React.FC<DeleteFeedbackDialogProps> = ({
       console.error("Error deleting feedback:", err);
       setSnackbar({
         open: true,
-        message: "Failed to delete feedback. Please try again.",
+        message: t("feedbacks.dialogs.delete.error"),
         severity: "error",
       });
       setIsDeleting(false);
@@ -61,16 +63,15 @@ const DeleteFeedbackDialog: React.FC<DeleteFeedbackDialogProps> = ({
   return (
     <>
       <Dialog open={open} onClose={!isDeleting ? onClose : undefined}>
-        <DialogTitle>Delete Feedback</DialogTitle>
+        <DialogTitle>{t("feedbacks.dialogs.delete.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this feedback? This action cannot be
-            undone.
+            {t("feedbacks.dialogs.delete.message")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isDeleting}>
-            Cancel
+            {t("feedbacks.dialogs.delete.cancel")}
           </Button>
           <Button
             onClick={handleDelete}
@@ -79,7 +80,9 @@ const DeleteFeedbackDialog: React.FC<DeleteFeedbackDialogProps> = ({
             disabled={isDeleting}
             endIcon={isDeleting ? <CircularProgress size={20} /> : null}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting
+              ? t("feedbacks.dialogs.delete.deleting")
+              : t("feedbacks.dialogs.delete.delete")}
           </Button>
         </DialogActions>
       </Dialog>

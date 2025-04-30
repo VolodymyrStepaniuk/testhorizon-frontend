@@ -10,6 +10,7 @@ import {
 import { FeedbackCreateRequest } from "../../models/feedback/FeedbackCreateRequest";
 import { FeedbackResponse } from "../../models/feedback/FeedbackResponse";
 import { FeedbackUpdateRequest } from "../../models/feedback/FeedbackUpdateRequest";
+import { useTranslation } from "react-i18next";
 
 interface FeedbackFormProps {
   initialFeedback?: FeedbackResponse;
@@ -28,6 +29,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
   const [comment, setComment] = useState<string>(
     initialFeedback?.comment || ""
   );
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (initialFeedback) {
@@ -56,7 +58,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
           alignItems: "center",
         }}
       >
-        <Typography component="legend">Your Rating</Typography>
+        <Typography component="legend">{t("feedbacks.form.rating")}</Typography>
         <Rating
           name="feedback-rating"
           value={rating}
@@ -72,8 +74,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
         multiline
         rows={4}
         margin="normal"
-        label="Comment (Optional)"
-        placeholder="Share your experience with TestHorizon..."
+        label={t("feedbacks.form.comment")}
+        placeholder={t("feedbacks.form.placeholder")}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />
@@ -89,7 +91,9 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({
           loading ? <CircularProgress size={20} color="inherit" /> : null
         }
       >
-        {initialFeedback ? "Update Feedback" : "Submit Feedback"}
+        {initialFeedback
+          ? t("feedbacks.form.update")
+          : t("feedbacks.form.submit")}
       </Button>
     </Box>
   );

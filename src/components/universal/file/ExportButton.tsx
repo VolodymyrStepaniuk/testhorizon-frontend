@@ -10,9 +10,10 @@ import {
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import TableViewIcon from "@mui/icons-material/TableView";
 import CodeIcon from "@mui/icons-material/Code";
-import { API } from "../../services/api.service";
-import { ExportFormat } from "../../models/enum/exportFormat";
-import { ExportEntityType } from "../../models/enum/exportEntityTypes";
+import { useTranslation } from "react-i18next";
+import { ExportEntityType } from "../../../models/enum/exportEntityTypes";
+import { ExportFormat } from "../../../models/enum/exportFormat";
+import { API } from "../../../services/api.service";
 
 interface ExportButtonProps {
   entityType: ExportEntityType;
@@ -33,13 +34,14 @@ interface ExportButtonProps {
 const ExportButton: React.FC<ExportButtonProps> = ({
   entityType,
   entityId,
-  buttonText = "Export",
+  buttonText,
   variant = "outlined",
   color = "primary",
   size = "medium",
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [loading, setLoading] = useState<ExportFormat | null>(null);
+  const { t } = useTranslation();
 
   const open = Boolean(anchorEl);
 
@@ -94,7 +96,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
         startIcon={<FileDownloadIcon />}
         onClick={handleClick}
       >
-        {buttonText}
+        {buttonText || t("exportButton.button")}
       </Button>
 
       <Menu
@@ -121,7 +123,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
               <TableViewIcon fontSize="small" />
             )}
           </ListItemIcon>
-          <ListItemText>CSV Format</ListItemText>
+          <ListItemText>{t("exportButton.csvFormat")}</ListItemText>
         </MenuItem>
 
         <MenuItem
@@ -135,7 +137,7 @@ const ExportButton: React.FC<ExportButtonProps> = ({
               <CodeIcon fontSize="small" />
             )}
           </ListItemIcon>
-          <ListItemText>XML Format</ListItemText>
+          <ListItemText>{t("exportButton.xmlFormat")}</ListItemText>
         </MenuItem>
       </Menu>
     </>

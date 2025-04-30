@@ -19,7 +19,6 @@ import {
   formatEnumWithoutLowerUnderline,
 } from "../../../../utils/format.utils";
 
-// Styled chip for severity levels with different colors
 const SeverityChip = styled(Chip)<{ severity: BugReportSeverity }>(
   ({ severity }) => ({
     backgroundColor:

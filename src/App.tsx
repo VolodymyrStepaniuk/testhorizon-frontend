@@ -28,6 +28,11 @@ import TestCasePage from "./pages/testcases/TestCasePage.tsx";
 import UserAdminPanel from "./pages/user/panel/UserAdminPanel.tsx";
 import FeedbackPage from "./pages/feedbacks/FeedbackPage.tsx";
 import Layout from "./components/layout/Layout.tsx";
+import Blog from "./pages/blog/PostsPage.tsx";
+import "./i18n";
+import PostCreatePage from "./pages/blog/PostCreatePage.tsx";
+import PostPage from "./pages/blog/PostPage.tsx";
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -53,6 +58,7 @@ function App() {
                   <Route path="/tests" element={<TestsPage />} />
                   <Route path="/bug-reports" element={<BugReportsPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/blog" element={<Blog />} />
                   <Route path="/users" element={<UserAdminPanel />} />
                   <Route path="/feedbacks" element={<FeedbackPage />} />
                   <Route path="/rating" element={<RatingPage />} />
@@ -67,10 +73,12 @@ function App() {
                     path="/bug-reports/new"
                     element={<BugReportCreatePage />}
                   />
+                  <Route path="/blog/new" element={<PostCreatePage />} />
                   <Route path="/projects/:id" element={<ProjectPage />} />
                   <Route path="/bug-reports/:id" element={<BugReportPage />} />
                   <Route path="/tests/:id" element={<TestPage />} />
                   <Route path="/test-cases/:id" element={<TestCasePage />} />
+                  <Route path="/blog/:id" element={<PostPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Layout>

@@ -20,6 +20,7 @@ import { TestUpdateRequest } from "../../../../models/test/TestUpdateRequest";
 import { API } from "../../../../services/api.service";
 import { TestType } from "../../../../models/enum/testTypes";
 import { formatEnumWithLowerUnderline } from "../../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface UpdateTestDialogProps {
   open: boolean;
@@ -34,6 +35,7 @@ const UpdateTestDialog: React.FC<UpdateTestDialogProps> = ({
   test,
   onTestUpdated,
 }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<TestUpdateRequest>({
     title: test.title,
     description: test.description || "",
@@ -72,20 +74,20 @@ const UpdateTestDialog: React.FC<UpdateTestDialogProps> = ({
       onClose();
     } catch (err) {
       setIsSubmitting(false);
-      setError("Failed to update test. Please try again.");
+      setError(t("tests.header.update.error"));
       console.error("Error updating test:", err);
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Edit Test</DialogTitle>
+      <DialogTitle>{t("tests.header.update.title")}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             <TextField
               name="title"
-              label="Test Title"
+              label={t("tests.header.update.testTitle")}
               value={formData.title}
               onChange={handleInputChange}
               fullWidth
@@ -94,7 +96,7 @@ const UpdateTestDialog: React.FC<UpdateTestDialogProps> = ({
 
             <TextField
               name="description"
-              label="Description"
+              label={t("tests.header.update.description")}
               value={formData.description}
               onChange={handleInputChange}
               multiline
@@ -104,7 +106,7 @@ const UpdateTestDialog: React.FC<UpdateTestDialogProps> = ({
 
             <TextField
               name="instructions"
-              label="Instructions"
+              label={t("tests.header.update.instructions")}
               value={formData.instructions}
               onChange={handleInputChange}
               multiline
@@ -114,20 +116,22 @@ const UpdateTestDialog: React.FC<UpdateTestDialogProps> = ({
 
             <TextField
               name="githubUrl"
-              label="GitHub URL"
+              label={t("tests.header.update.githubUrl")}
               value={formData.githubUrl}
               onChange={handleInputChange}
               fullWidth
             />
 
             <FormControl fullWidth>
-              <InputLabel id="type-label">Test Type</InputLabel>
+              <InputLabel id="type-label">
+                {t("tests.header.update.testType")}
+              </InputLabel>
               <Select
                 labelId="type-label"
                 name="type"
                 value={formData.type}
                 onChange={handleSelectChange}
-                label="Test Type"
+                label={t("tests.header.update.testType")}
                 required
               >
                 {Object.values(TestType).map((type) => (
@@ -143,7 +147,7 @@ const UpdateTestDialog: React.FC<UpdateTestDialogProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t("tests.header.update.cancel")}
           </Button>
           <Button
             type="submit"
@@ -152,7 +156,9 @@ const UpdateTestDialog: React.FC<UpdateTestDialogProps> = ({
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            {isSubmitting ? "Updating..." : "Update Test"}
+            {isSubmitting
+              ? t("tests.header.update.updating")
+              : t("tests.header.update.update")}
           </Button>
         </DialogActions>
       </form>

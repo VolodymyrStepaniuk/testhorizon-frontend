@@ -11,19 +11,18 @@ import {
   Grid,
   Paper,
   CircularProgress,
-  Alert,
-  IconButton,
   Autocomplete,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
-import { FiUpload, FiTrash2 } from "react-icons/fi";
 import { TestCaseCreateRequest } from "../../models/testcase/TestCaseCreateRequest";
 import { TestCasePriority } from "../../models/enum/testCasePriorities";
 import { API } from "../../services/api.service";
 import { ProjectInfo } from "../../models/info/ProjectInfo";
 import { FileEntityType } from "../../models/enum/fileEntityType";
-import { formatEnumWithoutLowerUnderline } from "../../utils/format.utils";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../utils/i18n.utils";
+import FileAttachmentUploader from "../../components/universal/file/FileAttachmentUploader";
 
 const StyledPaper = styled(Paper)(() => ({
   padding: "2rem",
@@ -31,20 +30,10 @@ const StyledPaper = styled(Paper)(() => ({
   marginBottom: "2rem",
 }));
 
-const UploadBox = styled(Box)(() => ({
-  border: "2px dashed #ccc",
-  borderRadius: "8px",
-  padding: "2rem",
-  textAlign: "center",
-  cursor: "pointer",
-  transition: "border 0.3s ease",
-  "&:hover": {
-    border: "2px dashed #1976d2",
-  },
-}));
-
 const TestCaseCreatePage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<TestCaseCreateRequest>({
     projectId: 0,
     title: "",
@@ -118,14 +107,16 @@ const TestCaseCreatePage: React.FC = () => {
     switch (name) {
       case "title":
         newErrors.title = !value
-          ? "Title is required"
+          ? t("testCasePages.create.titleRequired")
           : value.length > 100
-          ? "Title must be less than 100 characters"
+          ? t("testCasePages.create.titleLength")
           : "";
         break;
       case "projectId":
         newErrors.projectId =
-          !value || value === 0 ? "Project is required" : "";
+          !value || value === 0
+            ? t("testCasePages.create.projectRequired")
+            : "";
         break;
       default:
         break;
@@ -200,7 +191,7 @@ const TestCaseCreatePage: React.FC = () => {
           align="center"
           sx={{ mb: 2, fontWeight: "bold" }}
         >
-          Create new Test Case
+          {t("testCasePages.create.title")}
         </Typography>
 
         <form onSubmit={handleSubmit}>
@@ -208,7 +199,7 @@ const TestCaseCreatePage: React.FC = () => {
             {/* Project */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Project Name
+                {t("testCasePages.create.projectName")}
               </Typography>
               <Autocomplete
                 options={projects}
@@ -236,7 +227,7 @@ const TestCaseCreatePage: React.FC = () => {
                     <TextField
                       {...newParams}
                       variant="outlined"
-                      placeholder="Select a project"
+                      placeholder={t("testCasePages.create.selectProject")}
                       error={!!errors.projectId}
                       helperText={errors.projectId}
                     />
@@ -248,13 +239,13 @@ const TestCaseCreatePage: React.FC = () => {
             {/* Title */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Title
+                {t("testCasePages.create.testCaseTitle")}
               </Typography>
               <TextField
                 fullWidth
                 required
                 name="title"
-                placeholder="Test Case Title"
+                placeholder={t("testCasePages.create.titlePlaceholder")}
                 value={formData.title}
                 onChange={handleInputChange}
                 error={!!errors.title}
@@ -265,12 +256,12 @@ const TestCaseCreatePage: React.FC = () => {
             {/* Description */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Description
+                {t("testCasePages.create.description")}
               </Typography>
               <TextField
                 fullWidth
                 name="description"
-                placeholder="Test Case Description"
+                placeholder={t("testCasePages.create.descriptionPlaceholder")}
                 multiline
                 rows={4}
                 value={formData.description}
@@ -281,12 +272,12 @@ const TestCaseCreatePage: React.FC = () => {
             {/* Preconditions */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Preconditions
+                {t("testCasePages.create.preconditions")}
               </Typography>
               <TextField
                 fullWidth
                 name="preconditions"
-                placeholder="Test Case Preconditions"
+                placeholder={t("testCasePages.create.preconditionsPlaceholder")}
                 multiline
                 rows={4}
                 value={formData.preconditions}
@@ -297,12 +288,12 @@ const TestCaseCreatePage: React.FC = () => {
             {/* Input Data */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Input Data
+                {t("testCasePages.create.inputData")}
               </Typography>
               <TextField
                 fullWidth
                 name="inputData"
-                placeholder="Test Case Input Data"
+                placeholder={t("testCasePages.create.inputDataPlaceholder")}
                 multiline
                 rows={4}
                 value={formData.inputData}
@@ -313,11 +304,11 @@ const TestCaseCreatePage: React.FC = () => {
             {/* Steps */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Test Steps (one step per line)
+                {t("testCasePages.create.steps")}
               </Typography>
               <TextField
                 fullWidth
-                placeholder="Test Steps"
+                placeholder={t("testCasePages.create.stepsPlaceholder")}
                 multiline
                 rows={6}
                 value={formData.steps.join("\n")}
@@ -352,7 +343,7 @@ const TestCaseCreatePage: React.FC = () => {
             {/* Priority */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Priority
+                {t("testCasePages.create.priority")}
               </Typography>
               <FormControl fullWidth variant="outlined">
                 <Select
@@ -366,7 +357,7 @@ const TestCaseCreatePage: React.FC = () => {
                 >
                   {Object.values(TestCasePriority).map((priority) => (
                     <MenuItem key={priority} value={priority}>
-                      {formatEnumWithoutLowerUnderline(priority)}
+                      {translateEnum("enums.testCase.priority", priority)}
                     </MenuItem>
                   ))}
                 </Select>
@@ -374,47 +365,11 @@ const TestCaseCreatePage: React.FC = () => {
             </Grid>
 
             {/* File Upload */}
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
-                Upload Files
-              </Typography>
-              <label htmlFor="file-upload">
-                <UploadBox>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    multiple
-                    onChange={handleFileUpload}
-                    style={{ display: "none" }}
-                  />
-                  <FiUpload size={24} style={{ marginBottom: "1rem" }} />
-                  <Typography>
-                    Drag and drop files here or click to upload
-                  </Typography>
-                </UploadBox>
-              </label>
-              {files.length > 0 && (
-                <Box mt={2}>
-                  {files.map((file, index) => (
-                    <Alert
-                      key={index}
-                      icon={false}
-                      sx={{ mb: 1 }}
-                      action={
-                        <IconButton
-                          size="small"
-                          onClick={() => removeFile(index)}
-                        >
-                          <FiTrash2 />
-                        </IconButton>
-                      }
-                    >
-                      {file.name}
-                    </Alert>
-                  ))}
-                </Box>
-              )}
-            </Grid>
+            <FileAttachmentUploader
+              files={files}
+              onFileUpload={handleFileUpload}
+              onFileRemove={removeFile}
+            />
 
             {/* Buttons */}
             <Grid item xs={12}>
@@ -424,7 +379,7 @@ const TestCaseCreatePage: React.FC = () => {
                   onClick={handleReset}
                   disabled={loading}
                 >
-                  Reset
+                  {t("testCasePages.create.reset")}
                 </Button>
                 <Button
                   variant="contained"
@@ -434,7 +389,7 @@ const TestCaseCreatePage: React.FC = () => {
                   {loading ? (
                     <CircularProgress size={24} />
                   ) : (
-                    "Create Test Case"
+                    t("testCasePages.create.submit")
                   )}
                 </Button>
               </Box>

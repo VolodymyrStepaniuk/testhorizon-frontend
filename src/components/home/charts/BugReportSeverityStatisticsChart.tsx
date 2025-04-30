@@ -9,6 +9,7 @@ import { Box } from "@mui/material";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import { useBugReportsQuery } from "../../../queries/BugReportQuery";
 import { formatEnumWithoutLowerUnderline } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface BugReportCount {
   type: BugReportSeverity;
@@ -19,6 +20,7 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
   currentUserRole,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const colorPalette = [
     theme.palette.primary.dark,
     theme.palette.secondary.main,
@@ -29,11 +31,11 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
   const renderCaptionTypography = () => {
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
-        return "Total number of bug reports by severity for all projects in the system";
+        return t("charts.bugReportSeverity.captions.admin");
       case AuthorityName.DEVELOPER:
-        return "Total number of bug reports by severity for my projects";
+        return t("charts.bugReportSeverity.captions.developer");
       case AuthorityName.TESTER:
-        return "Total number of my bug reports by severity";
+        return t("charts.bugReportSeverity.captions.tester");
       default:
         return <Box>Access Denied</Box>;
     }
@@ -66,7 +68,7 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
   }));
 
   if (isLoadingBugReports) {
-    return <Box>Loading...</Box>;
+    return <Box>{t("charts.bugReportSeverity.loading")}</Box>;
   }
 
   return (
@@ -78,7 +80,7 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
           gutterBottom
           sx={{ fontWeight: 700 }}
         >
-          Bug report statistics by severity
+          {t("charts.bugReportSeverity.title")}
           <Typography
             variant="caption"
             sx={{ color: "text.secondary", mb: 2, display: "block" }}
@@ -92,7 +94,7 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
           xAxis={[
             {
               scaleType: "band",
-              data: ["Severity counts"],
+              data: [t("charts.bugReportSeverity.severityCounts")],
             },
           ]}
           series={seriesData}

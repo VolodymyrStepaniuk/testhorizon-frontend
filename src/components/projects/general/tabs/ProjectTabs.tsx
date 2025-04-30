@@ -5,6 +5,7 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { API } from "../../../../services/api.service";
 import TabPanel from "../../../universal/tabs/TabPanel";
+import { useTranslation } from "react-i18next";
 
 import OverviewTab from "./OverviewTab";
 import TestCasesTab from "./TestCasesTab";
@@ -33,6 +34,7 @@ const ProjectTabs = ({ project, isAdmin, isOwner }: ProjectTabsProps) => {
     tests: false,
     bugs: false,
   });
+  const { t } = useTranslation();
 
   const fetchData = async (type: string) => {
     setLoading((prev) => ({ ...prev, [type]: true }));
@@ -79,11 +81,17 @@ const ProjectTabs = ({ project, isAdmin, isOwner }: ProjectTabsProps) => {
         variant="scrollable"
         scrollButtons="auto"
       >
-        <Tab icon={<Description />} label="Overview" />
-        <Tab icon={<TaskAltIcon />} label="Test Cases" />
-        <Tab icon={<PlayArrowIcon />} label="Tests" />
-        <Tab icon={<BugReport />} label="Bug Reports" />
-        <Tab icon={<InsertDriveFile />} label="Attachments" />
+        <Tab icon={<Description />} label={t("projects.tabs.overview.title")} />
+        <Tab
+          icon={<TaskAltIcon />}
+          label={t("projects.tabs.testCases.title")}
+        />
+        <Tab icon={<PlayArrowIcon />} label={t("projects.tabs.tests.title")} />
+        <Tab icon={<BugReport />} label={t("projects.tabs.bugReports.title")} />
+        <Tab
+          icon={<InsertDriveFile />}
+          label={t("projects.tabs.attachments.title")}
+        />
       </Tabs>
 
       <TabPanel value={tabValue} index={0}>

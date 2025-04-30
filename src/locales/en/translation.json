@@ -1,0 +1,1201 @@
+{
+  "header": {
+    "aboutUs": "About Us",
+    "testimonials": "Testimonials",
+    "highlights": "Highlights",
+    "faq": "FAQ",
+    "blog": "Blog",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "home": "Home",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Test! Learn!",
+    "titleHighlight": "Become a pro!",
+    "description": "The automated system for training software testers will help you gain real experience in software testing. Practice, find bugs, write reports, tests and improve your testing skills in real-world scenarios!"
+  },
+  "highlights": {
+    "title": "Highlights",
+    "subtitle": "Find out why our product stands out: flexibility, reliability, user-friendly interface, and innovation. Get the opportunity to improve your testing skills through real-life, hands-on tasks.",
+    "items": [
+      {
+        "title": "A practical approach",
+        "description": "Focus on real tasks without unnecessary complexity - only useful experience and practice."
+      },
+      {
+        "title": "Reliability in every test",
+        "description": "Gain access to a stable and durable platform designed for ongoing practice."
+      },
+      {
+        "title": "Convenient learning experience",
+        "description": "Master software testing with an intuitive and easy-to-use interface."
+      },
+      {
+        "title": "Innovative opportunities",
+        "description": "Practice any type of test at your own time and pace, without being tied to any schedules or requirements."
+      },
+      {
+        "title": "Precision in every detail",
+        "description": "Our system is designed to maximise learning efficiency, with every element contributing to your development."
+      },
+      {
+        "title": "Adaptable performance",
+        "description": "Our system is highly customizable to meet your specific requirements, enabling you to enhance your testing skills effectively."
+      }
+    ]
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Empowering the next generation of testing professionals",
+    "features": {
+      "whoWeAre": {
+        "title": "Who We Are",
+        "description": "A community of aspiring testers, collaborating to gain practical experience and improve their skills through real-world projects."
+      },
+      "whatWeDo": {
+        "title": "What We Do",
+        "description": "We provide a platform for beginners to share their projects and collaborate with others, gaining hands-on experience in software testing."
+      },
+      "ourVision": {
+        "title": "Our Vision",
+        "description": "To create the largest platform where beginners can learn and grow through real-world testing opportunities, building a solid foundation for their careers."
+      }
+    }
+  },
+  "logoCollection": {
+    "title": "Companies where you can get a job after gaining experience"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "subtitle": "Find out why users choose our system for educational and practical software testing. Evaluate the effectiveness, reliability and convenience of the platform. Join us for quality training, innovative solutions, and comprehensive support.",
+    "noTestimonials": "No testimonials available yet.",
+    "loadError": "Failed to load testimonials. Please try again later.",
+    "defaultComment": "Great product!"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "questions": [
+      {
+        "question": "How can I upload my project to the platform?",
+        "answer": "To upload your project, simply log in to your account with the «Developer» role, go to the «Projects» section and follow the steps to create your project!"
+      },
+      {
+        "question": "How can I test the projects shared by others?",
+        "answer": "First, you should go to the «Projects» tab. Then click on a project to start testing and follow the instructions provided by the project owner."
+      },
+      {
+        "question": "Can I provide feedback on a project I've tested?",
+        "answer": "Yes, when testing a project, you can leave feedback by rating the project and leaving comments. This helps both project authors and other testers to improve their work."
+      },
+      {
+        "question": "Is there a limit to the number of projects I can test?",
+        "answer": "There is no limit! You can test as many projects as you like and gain experience from various domains. The more projects you test, the more you learn."
+      }
+    ]
+  },
+  "footer": {
+    "aboutUs": {
+      "title": "About Us",
+      "description": "We strive to provide effective solutions for hands-on software testing, helping users around the world to improve their skills."
+    },
+    "quickLinks": {
+      "title": "Quick Links",
+      "home": "Home",
+      "services": "Services",
+      "products": "Products",
+      "contact": "Contact"
+    },
+    "contactInfo": {
+      "title": "Contact Info",
+      "address": "144 Zamarstynivska Street, Lviv 79000",
+      "phone": "+38 068 300 56 54",
+      "email": "volodymyr.stepaniuk04@gmail.com"
+    },
+    "followUs": {
+      "title": "Follow Us",
+      "facebook": "Facebook",
+      "twitter": "Twitter",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "signIn": {
+    "title": "Sign in",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "rememberMe": "Remember me",
+    "signInButton": "Sign in",
+    "forgotPassword": "Forgot your password?",
+    "validation": {
+      "emailRequired": "Please enter a valid email address.",
+      "passwordRequired": "Password must be at least 8 characters long."
+    },
+    "errors": {
+      "default": "Failed to sign in"
+    }
+  },
+  "forgotPassword": {
+    "title": "Reset password",
+    "description": "Enter your account's email address, and we'll send you a link to reset your password.",
+    "emailPlaceholder": "Email address",
+    "cancelButton": "Cancel",
+    "sendButton": "Send",
+    "successMessage": "If an account with this email exists in our system, an email with further instructions will be sent to it."
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "newPassword": "New Password",
+    "passwordPlaceholder": "••••••••",
+    "repeatPassword": "Repeat New Password",
+    "resetButton": "Reset Password",
+    "invalidLink": "Invalid reset link. Please request a new one.",
+    "success": "Password successfully reset. Please sign in with your new password.",
+    "error": "Failed to reset password. Please try again.",
+    "validation": {
+      "requirementsNotMet": "Password must contain uppercase, lowercase, number and special character",
+      "lengthError": "Password length must be between {min} and {max} characters",
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
+  "signUp": {
+    "title": "Sign up",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Jon",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Snow",
+    "role": "Role",
+    "tester": "Tester",
+    "developer": "Developer",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "signUpButton": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "validation": {
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequirements": "Password must contain uppercase, lowercase, number and special character",
+      "passwordLength": "Password length must be between {min} and {max} characters",
+      "nameFormat": "Only letters, spaces and hyphens allowed",
+      "nameLength": "Name length must be between {min} and {max} characters"
+    },
+    "errors": {
+      "default": "Registration failed. Please try again."
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "description": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
+    "homeButton": "Home Page"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Learn something new with our blog!",
+    "search": "Search…",
+    "categories": {
+      "all": "All categories"
+    },
+    "createPost": "Create New Post",
+    "clearFilters": "Clear filters",
+    "author": "Author",
+    "writtenBy": "Written by",
+    "authorJoined": "Joined",
+    "authorPostCount": "Posts",
+    "otherPostsByAuthor": "Other Posts by This Author",
+    "viewAllAuthorPosts": "View All Posts",
+    "relatedPosts": "Related Posts",
+    "share": "Share",
+    "delete": {
+      "title": "Delete Post",
+      "confirmation": "Are you sure you want to delete the post \"{{postTitle}}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "success": "Post deleted successfully",
+      "error": "Failed to delete post. Please try again."
+    },
+    "update": {
+      "title": "Edit Post",
+      "postTitle": "Post Title",
+      "description": "Description",
+      "content": "Content",
+      "category": "Category",
+      "cancel": "Cancel",
+      "update": "Update Post",
+      "updating": "Updating...",
+      "error": "Failed to update post. Please try again."
+    },
+    "postsTitle": "Blog Posts",
+    "postsSubtitle": "Discover insights and tips from our community of QA professionals",
+    "showingResults": "Showing {{count}} results",
+    "forSearch": "for search",
+    "inCategory": "in category",
+    "noResults": "No posts found",
+    "tryDifferentSearch": "Try different search terms or categories.",
+    "noResultsForSearch": "No posts found matching \"{{search}}\"",
+    "noResultsForCategory": "No posts found in category \"{{category}}\"",
+    "noResultsForCategoryAndSearch": "No posts found in category \"{{category}}\" matching \"{{search}}\"",
+    "noPostsAvailable": "No posts are currently available.",
+    "noFeaturedPosts": "No featured posts available.",
+    "noLatestPosts": "No latest posts available.",
+    "backToPosts": "Back to posts",
+    "postNotFound": "Post not found",
+    "relatedTopics": "Related Topics",
+    "viewAll": "View All"
+  },
+  "latestPosts": {
+    "title": "Latest Posts",
+    "viewAll": "View All"
+  },
+  "postPages": {
+    "create": {
+      "title": "Create New Post",
+      "postTitle": "Post Title",
+      "postTitlePlaceholder": "Enter post title",
+      "titleRequired": "Title is required",
+      "titleLength": "Title must be less than 100 characters",
+      "category": "Category",
+      "categoryRequired": "Category is required",
+      "description": "Add short description...",
+      "descriptionPlaceholder": "Enter a short description of your post",
+      "descriptionRequired": "Summary is required",
+      "content": "Content",
+      "contentPlaceholder": "Start writing your post content here...",
+      "contentRequired": "Content is required",
+      "addHeaderImage": "Add Header Image",
+      "changeHeaderImage": "Change Header Image",
+      "insertImage": "Insert Image",
+      "reset": "Reset",
+      "submit": "Publish Post",
+      "successMessage": "Post created successfully!",
+      "errorMessage": "Failed to create post. Please try again.",
+      "partialSuccess": "Post created but some files failed to upload."
+    },
+    "details": {
+      "loadError": "Failed to load post. Please try again later.",
+      "notFound": "Post not found or no longer available."
+    },
+    "edit": {
+      "title": "Edit Post",
+      "updateSuccess": "Post updated successfully!",
+      "updateError": "Failed to update post. Please try again."
+    }
+  },
+  "menu": {
+    "home": "Home",
+    "testCases": "Test cases",
+    "tests": "Tests",
+    "projects": "Projects",
+    "bugReports": "Bug reports",
+    "rating": "Rating",
+    "blog": "Blog",
+    "users": "Users",
+    "about": "About",
+    "feedback": "Feedback",
+    "help": "Help"
+  },
+  "home": {
+    "overview": "Overview",
+    "tables": {
+      "bugReports": {
+        "title": "Title",
+        "projectName": "Project Name",
+        "reporter": "Reporter",
+        "severity": "Severity",
+        "status": "Status",
+        "createdAt": "Created At"
+      },
+      "testCases": {
+        "title": "Title",
+        "author": "Author",
+        "projectName": "Project Name",
+        "priority": "Priority",
+        "createdAt": "Created At"
+      },
+      "tests": {
+        "title": "Title",
+        "type": "Type",
+        "githubUrl": "Github URL",
+        "author": "Author",
+        "projectName": "Project Name",
+        "createdAt": "Created At"
+      }
+    }
+  },
+  "dataGrid": {
+    "rowsPerPage": "Rows per page:",
+    "pageStatus": "{{from}}-{{to}} of {{count}}",
+    "rowsSelected": "{{count}} selected"
+  },
+  "dashboard": {
+    "administrator": {
+      "projects": "Projects in the system",
+      "loadingProjects": "Loading projects...",
+      "noProjects": "There's no projects in the system yet.",
+      "tests": "Tests in the system",
+      "testCases": "Test cases in the system",
+      "bugReports": "Bug reports in the system"
+    },
+    "tester": {
+      "myTests": "My tests",
+      "myTestCases": "My test cases",
+      "myBugReports": "My bug reports"
+    },
+    "developer": {
+      "myProjects": "My Projects",
+      "loadingProjects": "Loading projects...",
+      "noProjects": "You don't have any projects yet.",
+      "testsForProjects": "Tests for my projects",
+      "testCasesForProjects": "Test cases for my projects",
+      "bugReportsForProjects": "Bug reports for my projects"
+    }
+  },
+  "projects": {
+    "list": {
+      "noProjects": "No projects found"
+    },
+    "card": {
+      "project": "Project",
+      "viewProject": "View Project",
+      "viewSourceCode": "View Source Code",
+      "created": "Created:",
+      "updated": "Updated:"
+    },
+    "details": {
+      "title": "Project Details",
+      "owner": "Owner",
+      "repositoryLink": "Repository Link",
+      "created": "Created",
+      "lastUpdated": "Last updated"
+    },
+    "tabs": {
+      "overview": {
+        "title": "Overview",
+        "description": "Description",
+        "noDescription": "No description provided.",
+        "instructions": "Instructions",
+        "noInstructions": "No instructions provided."
+      },
+      "testCases": {
+        "title": "Test Cases",
+        "noTestCases": "No test cases yet."
+      },
+      "tests": {
+        "title": "Tests",
+        "noTests": "No tests yet."
+      },
+      "bugReports": {
+        "title": "Bug Reports",
+        "noBugReports": "No bugs reported yet."
+      },
+      "attachments": {
+        "title": "Attachments"
+      }
+    },
+    "header": {
+      "back": "Back",
+      "settings": "Settings"
+    },
+    "update": {
+      "title": "Edit Project",
+      "projectTitle": "Project Title",
+      "description": "Description",
+      "status": "Status",
+      "instructions": "Instructions",
+      "cancel": "Cancel",
+      "update": "Update Project",
+      "updating": "Updating...",
+      "error": "Failed to update project. Please try again."
+    },
+    "delete": {
+      "title": "Delete Project",
+      "confirmation": "Are you sure you want to delete the project \"{projectTitle}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "success": "Project deleted successfully",
+      "error": "Failed to delete project. Please try again."
+    }
+  },
+  "charts": {
+    "bugReportSeverity": {
+      "title": "Bug report statistics by severity",
+      "loading": "Loading...",
+      "severityCounts": "Severity counts",
+      "captions": {
+        "admin": "Total number of bug reports by severity for all projects in the system",
+        "developer": "Total number of bug reports by severity for my projects",
+        "tester": "Total number of my bug reports by severity"
+      }
+    },
+    "bugReportStatus": {
+      "title": "Bug report statistics by status",
+      "loading": "Loading...",
+      "statusCounts": "Status counts",
+      "captions": {
+        "admin": "Total number of bug reports by status for all projects in the system",
+        "developer": "Total number of bug reports by status for my projects",
+        "tester": "Total number of my bug reports by status"
+      }
+    },
+    "projectStatistics": {
+      "title": "Project statistics",
+      "loading": "Loading...",
+      "totalCounts": "Total counts",
+      "tests": "Tests",
+      "testCases": "Test Cases",
+      "bugReports": "Bug Reports",
+      "captions": {
+        "admin": "Total number of Tests, Test Cases and Bug Reports in the system",
+        "developer": "Total number of Tests, Test Cases and Bug Reports in my projects",
+        "tester": "Total number of my Tests, Test Cases and Bug Reports"
+      }
+    },
+    "testCaseStatistics": {
+      "title": "Test case statistics",
+      "loading": "Loading...",
+      "testCaseCounts": "Test case counts",
+      "captions": {
+        "admin": "Total number of test cases for all projects in the system",
+        "developer": "Total number of test cases for my projects",
+        "tester": "Total number of my test cases"
+      }
+    },
+    "testStatistics": {
+      "title": "Test statistics",
+      "loading": "Loading...",
+      "testCounts": "Test counts",
+      "captions": {
+        "admin": "Total number of tests for all projects in the system",
+        "developer": "Total number of tests for my projects",
+        "tester": "Total number of my tests"
+      }
+    }
+  },
+  "exportButton": {
+    "button": "Export",
+    "csvFormat": "CSV Format",
+    "xmlFormat": "XML Format"
+  },
+  "avatarMenu": {
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "files": {
+    "title": "Files",
+    "upload": "Upload File",
+    "noFiles": "No files uploaded yet.",
+    "loadError": "Failed to load files",
+    "uploadError": "Failed to upload files",
+    "deleteError": "Failed to delete file",
+    "deleteTooltip": "Delete file"
+  },
+  "rating": {
+    "button": "Rate User",
+    "dialog": {
+      "title": "Rate User for {entityType}: {entityTitle}",
+      "adjustPoints": "Adjust rating points (-10 to +10):",
+      "commentLabel": "Comment (optional)",
+      "pointsImpact": "This will {action} {points} points {direction} the user's rating.",
+      "add": "add",
+      "subtract": "subtract",
+      "to": "to",
+      "from": "from",
+      "cancel": "Cancel",
+      "submit": "Submit Rating",
+      "submitting": "Submitting...",
+      "success": "Rating successfully updated",
+      "error": "Failed to update rating"
+    }
+  },
+  "settingsMenu": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "emailConfirmation": {
+    "title": "Email Confirmation",
+    "description": "Please enter the 6-digit confirmation code sent to your email address to complete your account registration.",
+    "placeholder": "Enter 6-digit code",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm",
+    "defaultError": "Verification failed. Please try again."
+  },
+  "userProfile": {
+    "personalDetails": "Personal Details",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "changePassword": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "updatePassword": "Update Password",
+      "validation": {
+        "passwordLength": "Password must be at least 8 characters",
+        "passwordMismatch": "Passwords do not match"
+      }
+    }
+  },
+  "userRatings": {
+    "table": {
+      "rank": "Rank",
+      "user": "User",
+      "rating": "Rating",
+      "testsCreated": "Tests Created",
+      "testCasesCreated": "Test Cases Created",
+      "bugReportsCreated": "Bug Reports Created"
+    }
+  },
+  "userAdmin": {
+    "dataGrid": {
+      "id": "ID",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "userRole": "User Role",
+      "email": "Email",
+      "rating": "Rating",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Actions",
+      "editTooltip": "Edit User",
+      "deleteTooltip": "Delete User",
+      "noAuthorities": "No authorities assigned"
+    },
+    "createDialog": {
+      "title": "Create New User",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "userRole": "User Role",
+      "firstNameError": "First name is required",
+      "lastNameError": "Last name is required",
+      "emailError": "Valid email is required",
+      "passwordError": "Password must be at least {min} characters",
+      "cancel": "Cancel",
+      "createButton": "Create User",
+      "creatingButton": "Creating...",
+      "error": "Failed to create user. Please try again."
+    },
+    "editDialog": {
+      "title": "Edit User",
+      "cancel": "Cancel",
+      "updateButton": "Update User",
+      "updatingButton": "Updating...",
+      "error": "Failed to update user. Please try again."
+    },
+    "deleteDialog": {
+      "title": "Delete User",
+      "confirmMessage": "Are you sure you want to delete the user \"{firstName} {lastName}\" with email \"{email}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "deleteButton": "Delete User",
+      "deletingButton": "Deleting...",
+      "error": "Failed to delete user. Please try again."
+    },
+    "panel": {
+      "title": "User Management",
+      "addButton": "Add New User",
+      "notifications": {
+        "createSuccess": "User created successfully",
+        "updateSuccess": "User updated successfully",
+        "deleteSuccess": "User deleted successfully",
+        "loadError": "Failed to load users"
+      }
+    }
+  },
+  "tests": {
+    "card": {
+      "project": "Project:",
+      "testCase": "Test Case:",
+      "viewTest": "View Test",
+      "viewSourceCode": "View Source Code",
+      "created": "Created:",
+      "updated": "Updated:"
+    },
+    "details": {
+      "title": "Test Details",
+      "author": "Author",
+      "project": "Project",
+      "testCase": "Test Case",
+      "github": "GitHub",
+      "repositoryLink": "Repository Link",
+      "created": "Created",
+      "lastUpdated": "Last updated",
+      "tabs": {
+        "overview": "Overview",
+        "testCase": "Test Case",
+        "attachments": "Attachments",
+        "description": "Description",
+        "noDescription": "No description provided.",
+        "instructions": "Instructions",
+        "noInstructions": "No instructions provided.",
+        "relatedTestCase": "Test Case related to this test",
+        "noTestCase": "No test case available."
+      }
+    },
+    "header": {
+      "back": "Back",
+      "settings": "Settings",
+      "delete": {
+        "title": "Delete Test",
+        "confirmation": "Are you sure you want to delete this test? This action cannot be undone.",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "deleting": "Deleting...",
+        "success": "Test deleted successfully",
+        "error": "Failed to delete test"
+      },
+      "update": {
+        "title": "Edit Test",
+        "testTitle": "Test Title",
+        "description": "Description",
+        "instructions": "Instructions",
+        "githubUrl": "GitHub URL",
+        "testType": "Test Type",
+        "cancel": "Cancel",
+        "update": "Update Test",
+        "updating": "Updating...",
+        "error": "Failed to update test. Please try again."
+      }
+    }
+  },
+  "testCases": {
+    "header": {
+      "back": "Back",
+      "settings": "Settings",
+      "delete": {
+        "title": "Delete Test Case",
+        "confirmation": "Are you sure you want to delete this test case? This action cannot be undone and will remove all associated data.",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "deleting": "Deleting...",
+        "success": "Test case deleted successfully",
+        "error": "Failed to delete test case"
+      },
+      "update": {
+        "title": "Edit Test Case",
+        "testCaseTitle": "Test Case Title",
+        "description": "Description",
+        "preconditions": "Preconditions",
+        "inputData": "Input Data",
+        "steps": "Test Steps (one per line)",
+        "stepsHelp": "Enter each test step on a new line",
+        "priority": "Priority",
+        "cancel": "Cancel",
+        "update": "Update Test Case",
+        "updating": "Updating...",
+        "error": "Failed to update test case. Please try again."
+      }
+    },
+    "card": {
+      "project": "Project:",
+      "viewTestCase": "View Test Case",
+      "created": "Created:",
+      "updated": "Updated:"
+    },
+    "details": {
+      "title": "Test Case Details",
+      "author": "Author",
+      "project": "Project",
+      "created": "Created",
+      "lastUpdated": "Last updated"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "tests": "Tests",
+      "attachments": "Attachments",
+      "description": "Description",
+      "noDescription": "No description provided.",
+      "preconditions": "Preconditions",
+      "noPreconditions": "No preconditions specified.",
+      "inputData": "Input Data",
+      "noInputData": "No input data provided.",
+      "testSteps": "Test Steps",
+      "step": "Step",
+      "noTestSteps": "No test steps provided.",
+      "testsBasedOnThisTestCase": "Tests Based on this Test Case",
+      "noTests": "No tests have been created based on this test case yet."
+    }
+  },
+  "testCasePages": {
+    "list": {
+      "title": "Test Cases",
+      "search": "Search test cases by title or description...",
+      "priority": "Priority",
+      "all": "All",
+      "createNew": "Create New",
+      "loading": "Loading test cases...",
+      "noTestCases": "No test cases found"
+    },
+    "details": {
+      "loading": "Loading test case data...",
+      "loadError": "Failed to load test case data. Please try again later.",
+      "notFound": "Test case not found or no longer available."
+    },
+    "create": {
+      "title": "Create New Test Case",
+      "projectName": "Project Name",
+      "selectProject": "Select a project",
+      "projectRequired": "Project is required",
+      "testCaseTitle": "Title",
+      "titlePlaceholder": "Test Case Title",
+      "titleRequired": "Title is required",
+      "titleLength": "Title must be less than 100 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Test Case Description",
+      "preconditions": "Preconditions",
+      "preconditionsPlaceholder": "Test Case Preconditions",
+      "inputData": "Input Data",
+      "inputDataPlaceholder": "Test Case Input Data",
+      "steps": "Test Steps (one step per line)",
+      "stepsPlaceholder": "Test Steps",
+      "priority": "Priority",
+      "uploadFiles": "Upload Files",
+      "dropFiles": "Drag and drop files here or click to upload",
+      "reset": "Reset",
+      "submit": "Create Test Case"
+    }
+  },
+  "testPages": {
+    "list": {
+      "title": "Tests",
+      "search": "Search tests by title or description...",
+      "testType": "Test Type",
+      "all": "All",
+      "createNew": "Create New",
+      "loading": "Loading tests...",
+      "noTests": "No tests found"
+    },
+    "details": {
+      "loading": "Loading test data...",
+      "loadError": "Failed to load test data. Please try again later.",
+      "notFound": "Test not found or no longer available."
+    },
+    "create": {
+      "title": "Create New Test",
+      "projectName": "Project Name",
+      "selectProject": "Select a project",
+      "projectRequired": "Project is required",
+      "testCase": "Test Case",
+      "optionalTestCase": "Optional test case",
+      "testTitle": "Title",
+      "titlePlaceholder": "Enter title",
+      "titleRequired": "Title is required",
+      "titleLength": "Title must be less than 100 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter test description here...",
+      "instructions": "Instructions",
+      "instructionsPlaceholder": "Enter test instructions here...",
+      "githubUrl": "GitHub URL",
+      "githubUrlPlaceholder": "Enter GitHub URL",
+      "githubUrlRequired": "GitHub URL is required",
+      "githubUrlInvalid": "Please enter a valid GitHub URL",
+      "testType": "Test Type",
+      "selectTestType": "Select test type",
+      "uploadFiles": "Upload Files",
+      "dropFiles": "Drag and drop files here or click to upload",
+      "reset": "Reset",
+      "submit": "Submit"
+    }
+  },
+  "notebook": {
+    "widget": {
+      "title": "Notebooks"
+    },
+    "list": {
+      "title": "My Notebooks",
+      "newButton": "New Notebook",
+      "empty": "No notebooks found. Create your first notebook to get started!",
+      "deleteDialog": {
+        "title": "Delete Notebook",
+        "message": "Are you sure you want to delete the notebook \"{title}\"? This will also delete all notes inside this notebook. This action cannot be undone.",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "deleting": "Deleting..."
+      }
+    },
+    "editor": {
+      "createTitle": "Create Notebook",
+      "editTitle": "Edit Notebook",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Enter a title for your notebook",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Add a description for your notebook (optional)",
+      "cancel": "Cancel",
+      "save": "Save Notebook",
+      "saving": "Saving..."
+    },
+    "note": {
+      "list": {
+        "title": "Notes",
+        "newButton": "New Note",
+        "empty": "No notes in this notebook yet. Create your first note!",
+        "deleteDialog": {
+          "title": "Delete Note",
+          "message": "Are you sure you want to delete this note? This action cannot be undone.",
+          "cancel": "Cancel",
+          "delete": "Delete",
+          "deleting": "Deleting..."
+        }
+      },
+      "editor": {
+        "createTitle": "New Note",
+        "editTitle": "Edit Note",
+        "titleLabel": "Title",
+        "titlePlaceholder": "Enter a title for your note",
+        "contentLabel": "Content",
+        "contentPlaceholder": "Write your note content here...",
+        "cancel": "Cancel",
+        "save": "Save Note",
+        "saving": "Saving..."
+      },
+      "viewer": {
+        "lastUpdated": "Last updated:",
+        "noContent": "No content",
+        "back": "Back to notes",
+        "editTooltip": "Edit note",
+        "deleteTooltip": "Delete note"
+      }
+    },
+    "navigation": {
+      "notebooks": "Notebooks"
+    },
+    "common": {
+      "updated": "Updated:",
+      "backToBlog": "Back to Blog",
+      "edit": "Edit",
+      "share": "Share",
+      "loading": "Loading..."
+    }
+  },
+  "comments": {
+    "title": "Comments",
+    "noComments": "There's no comment yet!",
+    "addComment": "Add a comment...",
+    "post": "Post",
+    "notifications": {
+      "deleteSuccess": "Comment deleted successfully",
+      "deleteError": "Failed to delete comment",
+      "updateSuccess": "Comment updated successfully",
+      "updateError": "Failed to update comment"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "loginPrompt": "Please sign in to leave a comment."
+  },
+  "feedbacks": {
+    "userFeedbacks": "Your Feedbacks",
+    "allFeedbacks": "All Feedbacks",
+    "noFeedbacks": "No feedbacks available.",
+    "noUserFeedbacks": "You haven't submitted any feedback yet.",
+    "noComment": "No comment provided",
+    "form": {
+      "rating": "Your Rating",
+      "comment": "Comment (Optional)",
+      "placeholder": "Share your experience with TestHorizon...",
+      "submit": "Submit Feedback",
+      "update": "Update Feedback"
+    },
+    "dialogs": {
+      "update": {
+        "title": "Edit Feedback",
+        "cancel": "Cancel",
+        "updating": "Updating...",
+        "updateButton": "Update Feedback",
+        "error": "Failed to update feedback. Please try again."
+      },
+      "delete": {
+        "title": "Delete Feedback",
+        "message": "Are you sure you want to delete this feedback? This action cannot be undone.",
+        "cancel": "Cancel",
+        "deleting": "Deleting...",
+        "delete": "Delete",
+        "success": "Feedback deleted successfully",
+        "error": "Failed to delete feedback. Please try again."
+      }
+    }
+  },
+  "bugReports": {
+    "card": {
+      "viewBugReport": "View Bug Report",
+      "environment": "Environment",
+      "project": "Project",
+      "created": "Created",
+      "updated": "Updated"
+    },
+    "details": {
+      "title": "Bug Report Details",
+      "reporter": "Reporter",
+      "project": "Project",
+      "created": "Created",
+      "lastUpdated": "Last updated"
+    },
+    "tabs": {
+      "description": "Description",
+      "attachments": "Attachments",
+      "descriptionTab": {
+        "title": "Description",
+        "noDescription": "No description.",
+        "environment": "Environment",
+        "noEnvironment": "No environment information provided."
+      }
+    },
+    "header": {
+      "back": "Back",
+      "settings": "Settings",
+      "notifications": {
+        "updateSuccess": "Bug report updated successfully"
+      }
+    },
+    "update": {
+      "title": "Edit Bug Report",
+      "bugTitle": "Title",
+      "description": "Description",
+      "environment": "Environment",
+      "severity": "Severity",
+      "status": "Status",
+      "cancel": "Cancel",
+      "update": "Update Bug Report",
+      "updating": "Updating...",
+      "error": "Failed to update bug report. Please try again."
+    },
+    "delete": {
+      "title": "Delete Bug Report",
+      "confirmation": "Are you sure you want to delete the bug report \"{title}\"? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "success": "Bug report deleted successfully",
+      "error": "Failed to delete bug report. Please try again."
+    }
+  },
+  "bugReportPages": {
+    "list": {
+      "title": "Bug Reports",
+      "search": "Search bug reports by title...",
+      "severity": "Severity",
+      "status": "Status",
+      "all": "All",
+      "createNew": "Create New",
+      "loading": "Loading bug reports...",
+      "noBugs": "No bug reports found"
+    },
+    "details": {
+      "loading": "Loading bug report data...",
+      "loadError": "Failed to load bug report data. Please try again later.",
+      "notFound": "Bug report not found or no longer available."
+    },
+    "create": {
+      "title": "Create Bug Report",
+      "projectName": "Project Name",
+      "selectProject": "Select a project",
+      "projectRequired": "Project is required",
+      "bugTitle": "Title",
+      "bugTitlePlaceholder": "Bug Report Title",
+      "titleRequired": "Title is required",
+      "titleLength": "Title must be less than 100 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Detailed Bug Description",
+      "descriptionRequired": "Description is required",
+      "environment": "Environment",
+      "environmentPlaceholder": "Environment Details (OS, Browser, Version, etc.)",
+      "severity": "Severity",
+      "uploadFiles": "Upload Files",
+      "uploadDescription": "Attach screenshots, logs, or other relevant files",
+      "dropFiles": "Drag and drop files here or click to upload",
+      "reset": "Reset",
+      "submit": "Submit Bug Report"
+    }
+  },
+  "projectPages": {
+    "list": {
+      "title": "Projects",
+      "search": "Search projects by name or description...",
+      "status": "Status",
+      "all": "All",
+      "createNew": "Create New",
+      "loading": "Loading projects...",
+      "noProjects": "No projects found"
+    },
+    "details": {
+      "loading": "Loading project data...",
+      "loadError": "Failed to load project data. Please try again later.",
+      "notFound": "Project not found or no longer available."
+    },
+    "create": {
+      "title": "Create New Project",
+      "projectTitle": "Title",
+      "titlePlaceholder": "Project Title",
+      "titleRequired": "Title is required",
+      "titleLength": "Title must be less than 100 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Project Description",
+      "instructions": "Instructions",
+      "instructionsPlaceholder": "Project Instructions",
+      "githubUrl": "GitHub URL",
+      "urlPlaceholder": "https://github.com/username/repository",
+      "urlRequired": "GitHub URL is required",
+      "urlInvalid": "Please enter a valid URL",
+      "uploadFiles": "Upload Files",
+      "dropFiles": "Drag and drop files here or click to upload",
+      "reset": "Reset",
+      "submit": "Create Project"
+    }
+  },
+  "feedbackPage": {
+    "title": "TestHorizon Feedback",
+    "submitSection": "Submit Your Feedback",
+    "notifications": {
+      "submitSuccess": "Feedback submitted successfully!",
+      "submitError": "Failed to submit feedback. Please try again.",
+      "updateSuccess": "Feedback updated successfully!",
+      "deleteSuccess": "Feedback deleted successfully!"
+    }
+  },
+  "helpAndSupport": {
+    "title": "Frequently Asked Questions",
+    "categories": {
+      "projectCreation": "Project Creation",
+      "bugReporting": "Bug Reporting & Test Execution",
+      "projectManagement": "Project Management",
+      "accountManagement": "Account Management"
+    },
+    "contactInfo": "If you have further questions, please contact us at",
+    "email": "support@testhorizon.com",
+    "faqData": {
+      "projectCreation": [
+        {
+          "question": "How do I create a new project?",
+          "answer": "To create a new project, navigate to the Projects section in the main menu, click the 'Create New' button, and fill in the required fields including title, description, instructions, and GitHub link. You can also attach relevant files to your project."
+        },
+        {
+          "question": "What information is required to set up a project?",
+          "answer": "To set up a project, you need to provide a title, project description (optional), instructions for testers (optional), and a GitHub repository link. Files can be added after the project is created."
+        },
+        {
+          "question": "Can I change the project status after creation?",
+          "answer": "Yes, you can change the project status to 'Active', 'Inactive', or 'Paused' at any time by going to the project details and selecting the edit option from the settings menu."
+        }
+      ],
+      "bugReporting": [
+        {
+          "question": "How do I create a bug report?",
+          "answer": "To create a bug report, navigate to the relevant project, then click 'Create Bug Report'. Fill out the form with a detailed description of the issue, including steps to reproduce, screenshots, and environment information."
+        },
+        {
+          "question": "How can I update the status of a bug report?",
+          "answer": "Project owners or administrators can update bug report statuses. Open the specific bug report and select the 'Edit' option from the settings menu. In the form, you can change the status to 'Opened', 'In Progress', 'Resolved', or 'Closed'."
+        },
+        {
+          "question": "What do the different bug severity levels mean?",
+          "answer": "We use 4 severity levels: 'Low' for minor issues that don't impact functionality; 'Medium' for issues that cause inconvenience but don't block work; 'High' for issues that seriously disrupt functionality; and 'Critical' for issues that completely block system operation or cause data loss."
+        }
+      ],
+      "projectManagement": [
+        {
+          "question": "How do I add test cases to a project?",
+          "answer": "Navigate to the project details and in the 'Test Cases' tab, click 'Create New'. Fill out the required fields including preconditions, test steps, and input data. Test cases can also be created via the main 'Test Cases' menu."
+        },
+        {
+          "question": "How can I attach files to a project?",
+          "answer": "On the project details page, navigate to the 'Attachments' tab. There you'll see an 'Upload File' button that allows you to attach relevant files. Various file formats are supported, including images, documents, and archives."
+        },
+        {
+          "question": "Can I delete a project?",
+          "answer": "Yes, the project owner or an administrator can delete a project. Navigate to the project details, open the settings menu, and select 'Delete'. Be careful as this action is irreversible and will remove all associated data."
+        }
+      ],
+      "accountManagement": [
+        {
+          "question": "How do I change my password?",
+          "answer": "To change your password, go to your Profile page, select the 'Change Password' tab, enter your current password and your new password, then confirm the change."
+        },
+        {
+          "question": "How can I update my personal information?",
+          "answer": "Go to your Profile page where you can edit your personal details, including your first and last name. After making changes, click 'Save Changes'."
+        },
+        {
+          "question": "What does the user rating mean?",
+          "answer": "The user rating reflects your contribution and activity on the platform. You earn points for creating tests, test cases, bug reports, as well as through ratings from other users for the quality of your work."
+        }
+      ]
+    }
+  },
+  "profilePage": {
+    "personalInfo": "Personal Info",
+    "changePassword": "Change Password",
+    "profileUpdated": "Profile updated successfully!",
+    "updateFailed": "Failed to update profile",
+    "passwordUpdated": "Password updated successfully!",
+    "passwordUpdateFailed": "Failed to update password. Please check your current password.",
+    "profilePictureUpdated": "Profile picture updated!",
+    "profilePictureUpdateFailed": "Failed to update profile picture",
+    "loading": "Loading user data..."
+  },
+  "userRating": {
+    "yourProfile": "Your Rating Profile",
+    "rating": "Rating:",
+    "rank": "Rank #{{number}}",
+    "title": "User Ratings",
+    "failedToLoad": "Failed to load user ratings. Please try again later."
+  },
+  "enums": {
+    "user": {
+      "authority": {
+        "DEVELOPER": "Developer",
+        "TESTER": "Tester",
+        "ADMIN": "Administrator"
+      }
+    },
+    "bugReport": {
+      "severity": {
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "HIGH": "High",
+        "CRITICAL": "Critical"
+      },
+      "status": {
+        "OPENED": "Opened",
+        "IN_PROGRESS": "In progress",
+        "RESOLVED": "Resolved",
+        "CLOSED": "Closed"
+      }
+    },
+    "project": {
+      "status": {
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive",
+        "PAUSED": "Paused"
+      }
+    },
+    "testCase": {
+      "priority": {
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "HIGH": "High"
+      }
+    },
+    "post": {
+      "category": {
+        "AUTOMATION_QA": "Automation QA",
+        "MANUAL_TESTING": "Manual Testing",
+        "API_TESTING": "API Testing",
+        "MOBILE_TESTING": "Mobile Testing",
+        "PERFORMANCE_TESTING": "Performance Testing",
+        "SECURITY_TESTING": "Security Testing",
+        "OTHER": "Other"
+      }
+    }
+  }
+}

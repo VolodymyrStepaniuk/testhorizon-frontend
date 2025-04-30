@@ -10,12 +10,14 @@ import TestCaseDetails from "../../components/testcases/general/TestCaseDetails"
 import TestCaseTabs from "../../components/testcases/general/tabs/TestCaseTabs";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import { AuthorityName } from "../../models/enum/authorityNames";
+import { useTranslation } from "react-i18next";
 
 const TestCasePage: React.FC = () => {
   const [testCase, setTestCase] = useState<TestCaseResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  const { t } = useTranslation();
 
   const { id } = useParams<{ id: string }>();
 
@@ -56,13 +58,13 @@ const TestCasePage: React.FC = () => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching test case data:", err);
-        setError("Failed to load test case data. Please try again later.");
+        setError(t("testCasePages.details.loadError"));
         setLoading(false);
       }
     };
 
     fetchTestCaseData();
-  }, [id]);
+  }, [id, t]);
 
   if (loading) {
     return (
@@ -76,7 +78,7 @@ const TestCasePage: React.FC = () => {
       >
         <CircularProgress />
         <Typography variant="h6" sx={{ ml: 2 }}>
-          Loading test case data...
+          {t("testCasePages.details.loading")}
         </Typography>
       </Box>
     );
@@ -93,9 +95,7 @@ const TestCasePage: React.FC = () => {
   if (!testCase) {
     return (
       <Box sx={{ p: 3 }}>
-        <Alert severity="info">
-          Test case not found or no longer available.
-        </Alert>
+        <Alert severity="info">{t("testCasePages.details.notFound")}</Alert>
       </Box>
     );
   }

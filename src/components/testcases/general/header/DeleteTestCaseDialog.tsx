@@ -11,6 +11,7 @@ import {
 import { API } from "../../../../services/api.service";
 import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../../../universal/notification/NotificationSnackbar";
+import { useTranslation } from "react-i18next";
 
 interface DeleteTestCaseDialogProps {
   open: boolean;
@@ -30,6 +31,7 @@ const DeleteTestCaseDialog: React.FC<DeleteTestCaseDialogProps> = ({
     severity: "success" as "success" | "error" | "info" | "warning",
   });
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -37,7 +39,7 @@ const DeleteTestCaseDialog: React.FC<DeleteTestCaseDialogProps> = ({
       await API.testCases.delete(testCaseId);
       setSnackbar({
         open: true,
-        message: "Test case deleted successfully",
+        message: t("testCases.header.delete.success"),
         severity: "success",
       });
       setIsDeleting(false);
@@ -49,7 +51,7 @@ const DeleteTestCaseDialog: React.FC<DeleteTestCaseDialogProps> = ({
       console.error("Error deleting test case:", error);
       setSnackbar({
         open: true,
-        message: "Failed to delete test case. Please try again.",
+        message: t("testCases.header.delete.error"),
         severity: "error",
       });
       setIsDeleting(false);
@@ -63,16 +65,15 @@ const DeleteTestCaseDialog: React.FC<DeleteTestCaseDialogProps> = ({
   return (
     <>
       <Dialog open={open} onClose={!isDeleting ? onClose : undefined}>
-        <DialogTitle>Delete Test Case</DialogTitle>
+        <DialogTitle>{t("testCases.header.delete.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this test case? This action cannot
-            be undone and will remove all associated data.
+            {t("testCases.header.delete.confirmation")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isDeleting}>
-            Cancel
+            {t("testCases.header.delete.cancel")}
           </Button>
           <Button
             onClick={handleDelete}
@@ -81,7 +82,9 @@ const DeleteTestCaseDialog: React.FC<DeleteTestCaseDialogProps> = ({
             disabled={isDeleting}
             endIcon={isDeleting ? <CircularProgress size={20} /> : null}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting
+              ? t("testCases.header.delete.deleting")
+              : t("testCases.header.delete.delete")}
           </Button>
         </DialogActions>
       </Dialog>

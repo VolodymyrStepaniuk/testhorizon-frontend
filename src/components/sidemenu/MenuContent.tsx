@@ -18,65 +18,78 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
-
-const secondaryListItems = [
-  { text: "About", icon: <InfoRoundedIcon />, path: "/", id: "about" },
-  {
-    text: "Feedback",
-    icon: <FeedbackIcon />,
-    path: "/feedbacks",
-    id: "",
-  },
-  {
-    text: "Help",
-    icon: <HelpRoundedIcon />,
-    path: "/help",
-    id: "",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function MenuContent() {
   const navigate = useNavigate();
   const authorities = getAutoritiesFromToken();
   const currentUserRole = authorities[0] as AuthorityName;
+  const { t } = useTranslation();
 
   const mainListItems = [
-    { text: "Home", icon: <HomeRoundedIcon />, path: "/home", id: "" },
+    { text: t("menu.home"), icon: <HomeRoundedIcon />, path: "/home", id: "" },
     {
-      text: "Test cases",
+      text: t("menu.testCases"),
       icon: <TaskAltIcon />,
       path: "/test-cases",
       id: "",
     },
-    { text: "Tests", icon: <PlayArrowIcon />, path: "/tests", id: "" },
+    { text: t("menu.tests"), icon: <PlayArrowIcon />, path: "/tests", id: "" },
     {
-      text: "Projects",
+      text: t("menu.projects"),
       icon: <AssignmentRoundedIcon />,
       path: "/projects",
       id: "",
     },
     {
-      text: "Bug reports",
+      text: t("menu.bugReports"),
       icon: <BugReportIcon />,
       path: "/bug-reports",
       id: "",
     },
     {
-      text: "Rating",
+      text: t("menu.rating"),
       icon: <TrendingUpIcon />,
       path: "/rating",
+      id: "",
+    },
+    {
+      text: t("menu.blog"),
+      icon: <AssignmentRoundedIcon />,
+      path: "/blog",
       id: "",
     },
   ];
 
   if (currentUserRole === AuthorityName.ADMIN) {
     mainListItems.push({
-      text: "Users",
+      text: t("menu.users"),
       icon: <SupervisorAccountIcon />,
       path: "/users",
       id: "",
     });
   }
+
+  const secondaryListItems = [
+    {
+      text: t("menu.about"),
+      icon: <InfoRoundedIcon />,
+      path: "/",
+      id: "about",
+    },
+    {
+      text: t("menu.feedback"),
+      icon: <FeedbackIcon />,
+      path: "/feedbacks",
+      id: "",
+    },
+    {
+      text: t("menu.help"),
+      icon: <HelpRoundedIcon />,
+      path: "/help",
+      id: "",
+    },
+  ];
 
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between" }}>

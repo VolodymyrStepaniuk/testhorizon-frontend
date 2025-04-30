@@ -33,7 +33,6 @@ export default function SideMenu() {
 
   const userFullName = user ? user?.firstName + " " + user?.lastName : null;
 
-  // Function to fetch user avatar
   const fetchUserAvatar = async (userId: number) => {
     try {
       const avatarFileName = "avatar";
@@ -51,7 +50,6 @@ export default function SideMenu() {
     }
   };
 
-  // Fetch user avatar when user data is available
   useEffect(() => {
     if (user && user.id) {
       fetchUserAvatar(user.id);

@@ -21,6 +21,7 @@ import { API } from "../../services/api.service";
 import { UserCreateRequest } from "../../models/user/UserCreateRequest";
 import EmailConfirmation from "../../components/signup/EmailConfirmation";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useTranslation } from "react-i18next";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -65,6 +66,8 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignUp() {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -86,7 +89,7 @@ export default function SignUp() {
     if (!email || !UNIVERSAL_VALIDATION.email.pattern.test(email)) {
       setFormErrors((prev) => ({
         ...prev,
-        email: { error: true, message: "Please enter a valid email address" },
+        email: { error: true, message: t("signUp.validation.emailInvalid") },
       }));
       return false;
     }
@@ -103,8 +106,7 @@ export default function SignUp() {
         ...prev,
         password: {
           error: true,
-          message:
-            "Password must contain uppercase, lowercase, number and special character",
+          message: t("signUp.validation.passwordRequirements"),
         },
       }));
       return false;
@@ -117,7 +119,10 @@ export default function SignUp() {
         ...prev,
         password: {
           error: true,
-          message: `Password length must be between ${UNIVERSAL_VALIDATION.password.minLength} and ${UNIVERSAL_VALIDATION.password.maxLength} characters`,
+          message: t("signUp.validation.passwordLength", {
+            min: UNIVERSAL_VALIDATION.password.minLength,
+            max: UNIVERSAL_VALIDATION.password.maxLength,
+          }),
         },
       }));
       return false;
@@ -138,7 +143,7 @@ export default function SignUp() {
         ...prev,
         [field]: {
           error: true,
-          message: "Only letters, spaces and hyphens allowed",
+          message: t("signUp.validation.nameFormat"),
         },
       }));
       return false;
@@ -151,7 +156,10 @@ export default function SignUp() {
         ...prev,
         [field]: {
           error: true,
-          message: `Name length must be between ${USER_VALIDATION.firstName.minLength} and ${USER_VALIDATION.firstName.maxLength} characters`,
+          message: t("signUp.validation.nameLength", {
+            min: USER_VALIDATION.firstName.minLength,
+            max: USER_VALIDATION.firstName.maxLength,
+          }),
         },
       }));
       return false;
@@ -206,9 +214,7 @@ export default function SignUp() {
       await API.auth.register(formData as UserCreateRequest);
       setShowConfirmationDialog(true);
     } catch (error: any) {
-      setApiError(
-        error.response?.data?.detail || "Registration failed. Please try again."
-      );
+      setApiError(error.response?.data?.detail || t("signUp.errors.default"));
     } finally {
       setIsLoading(false);
     }
@@ -245,7 +251,7 @@ export default function SignUp() {
               mt: { xs: 1, sm: 2 },
             }}
           >
-            Sign up
+            {t("signUp.title")}
           </Typography>
           <Box
             component="form"
@@ -261,7 +267,7 @@ export default function SignUp() {
                   fontWeight: 700,
                 }}
               >
-                First name
+                {t("signUp.firstName")}
               </FormLabel>
               <TextField
                 autoComplete="firstName"
@@ -269,7 +275,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="firstName"
-                placeholder="Jon"
+                placeholder={t("signUp.firstNamePlaceholder")}
                 value={formData.firstName}
                 onChange={handleInputChange}
                 error={formErrors.firstName.error}
@@ -286,7 +292,7 @@ export default function SignUp() {
                   fontWeight: 700,
                 }}
               >
-                Last name
+                {t("signUp.lastName")}
               </FormLabel>
               <TextField
                 autoComplete="lastName"
@@ -294,7 +300,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="lastName"
-                placeholder="Snow"
+                placeholder={t("signUp.lastNamePlaceholder")}
                 value={formData.lastName}
                 onChange={handleInputChange}
                 error={formErrors.lastName.error}
@@ -310,7 +316,7 @@ export default function SignUp() {
                   fontWeight: 700,
                 }}
               >
-                Role
+                {t("signUp.role")}
               </FormLabel>
               <Select
                 required
@@ -319,8 +325,8 @@ export default function SignUp() {
                 name="authorityName"
                 id="authorityName"
               >
-                <MenuItem value="TESTER">Tester</MenuItem>
-                <MenuItem value="DEVELOPER">Developer</MenuItem>
+                <MenuItem value="TESTER">{t("signUp.tester")}</MenuItem>
+                <MenuItem value="DEVELOPER">{t("signUp.developer")}</MenuItem>
               </Select>
             </FormControl>
             <FormControl>
@@ -332,13 +338,13 @@ export default function SignUp() {
                   fontWeight: 700,
                 }}
               >
-                Email
+                {t("signUp.email")}
               </FormLabel>
               <TextField
                 required
                 fullWidth
                 id="email"
-                placeholder="your@email.com"
+                placeholder={t("signUp.emailPlaceholder")}
                 name="email"
                 autoComplete="email"
                 variant="outlined"
@@ -358,13 +364,13 @@ export default function SignUp() {
                   fontWeight: 700,
                 }}
               >
-                Password
+                {t("signUp.password")}
               </FormLabel>
               <TextField
                 required
                 fullWidth
                 name="password"
-                placeholder="••••••••"
+                placeholder={t("signUp.passwordPlaceholder")}
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -391,7 +397,11 @@ export default function SignUp() {
                 fontWeight: 700,
               }}
             >
-              {isLoading ? <CircularProgress size={24} /> : "Sign up"}
+              {isLoading ? (
+                <CircularProgress size={24} />
+              ) : (
+                t("signUp.signUpButton")
+              )}
             </Button>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -401,13 +411,13 @@ export default function SignUp() {
                 mt: { xs: 0.5, sm: 1 },
               }}
             >
-              Already have an account?{" "}
+              {t("signUp.alreadyHaveAccount")}{" "}
               <Link
                 href="/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: "center", fontWeight: 700 }}
               >
-                Sign in
+                {t("signUp.signInLink")}
               </Link>
             </Typography>
           </Box>

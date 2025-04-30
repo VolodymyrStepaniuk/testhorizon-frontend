@@ -10,6 +10,7 @@ import { FileEntityType } from "../../../../models/enum/fileEntityType";
 import { API } from "../../../../services/api.service";
 import { TestCaseResponse } from "../../../../models/testcase/TestCaseResponse";
 import TestCaseTab from "./TestCaseTab";
+import { useTranslation } from "react-i18next";
 
 interface TestTabsProps {
   test: TestResponse;
@@ -21,6 +22,7 @@ const TestTabs: React.FC<TestTabsProps> = ({ test, isAdmin, isAuthor }) => {
   const [tabValue, setTabValue] = useState(0);
   const [testCase, setTestCase] = useState<TestCaseResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -55,9 +57,12 @@ const TestTabs: React.FC<TestTabsProps> = ({ test, isAdmin, isAuthor }) => {
         variant="scrollable"
         scrollButtons="auto"
       >
-        <Tab icon={<Description />} label="Overview" />
-        <Tab icon={<TaskAltIcon />} label="Test Case" />
-        <Tab icon={<InsertDriveFile />} label="Attachments" />
+        <Tab icon={<Description />} label={t("tests.details.tabs.overview")} />
+        <Tab icon={<TaskAltIcon />} label={t("tests.details.tabs.testCase")} />
+        <Tab
+          icon={<InsertDriveFile />}
+          label={t("tests.details.tabs.attachments")}
+        />
       </Tabs>
 
       <TabPanel value={tabValue} index={0}>

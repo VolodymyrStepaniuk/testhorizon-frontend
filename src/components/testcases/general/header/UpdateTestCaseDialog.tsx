@@ -19,7 +19,8 @@ import { TestCaseResponse } from "../../../../models/testcase/TestCaseResponse";
 import { TestCaseUpdateRequest } from "../../../../models/testcase/TestCaseUpdateRequest";
 import { API } from "../../../../services/api.service";
 import { TestCasePriority } from "../../../../models/enum/testCasePriorities";
-import { formatEnumWithLowerUnderline } from "../../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
+import { translateEnum } from "../../../../utils/i18n.utils";
 
 interface UpdateTestCaseDialogProps {
   open: boolean;
@@ -34,6 +35,8 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
   testCase,
   onTestCaseUpdated,
 }) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<TestCaseUpdateRequest>({
     title: testCase.title,
     description: testCase.description || "",
@@ -86,20 +89,20 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
       onClose();
     } catch (err) {
       setIsSubmitting(false);
-      setError("Failed to update test case. Please try again.");
+      setError(t("testCases.header.update.error"));
       console.error("Error updating test case:", err);
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Edit Test Case</DialogTitle>
+      <DialogTitle>{t("testCases.header.update.title")}</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
             <TextField
               name="title"
-              label="Test Case Title"
+              label={t("testCases.header.update.testCaseTitle")}
               value={formData.title}
               onChange={handleInputChange}
               fullWidth
@@ -108,7 +111,7 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
 
             <TextField
               name="description"
-              label="Description"
+              label={t("testCases.header.update.description")}
               value={formData.description}
               onChange={handleInputChange}
               multiline
@@ -118,7 +121,7 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
 
             <TextField
               name="preconditions"
-              label="Preconditions"
+              label={t("testCases.header.update.preconditions")}
               value={formData.preconditions}
               onChange={handleInputChange}
               multiline
@@ -128,7 +131,7 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
 
             <TextField
               name="inputData"
-              label="Input Data"
+              label={t("testCases.header.update.inputData")}
               value={formData.inputData}
               onChange={handleInputChange}
               multiline
@@ -138,28 +141,30 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
 
             <TextField
               name="steps"
-              label="Test Steps (one per line)"
+              label={t("testCases.header.update.steps")}
               value={stepsText}
               onChange={(e) => setStepsText(e.target.value)}
               multiline
               rows={5}
               fullWidth
-              helperText="Enter each test step on a new line"
+              helperText={t("testCases.header.update.stepsHelp")}
             />
 
             <FormControl fullWidth>
-              <InputLabel id="priority-label">Priority</InputLabel>
+              <InputLabel id="priority-label">
+                {t("testCases.header.update.priority")}
+              </InputLabel>
               <Select
                 labelId="priority-label"
                 name="priority"
                 value={formData.priority}
                 onChange={handleSelectChange}
-                label="Priority"
+                label={t("testCases.header.update.priority")}
                 required
               >
                 {Object.values(TestCasePriority).map((priority) => (
                   <MenuItem key={priority} value={priority}>
-                    {formatEnumWithLowerUnderline(priority)}
+                    {translateEnum("enums.testCase.priority", priority)}
                   </MenuItem>
                 ))}
               </Select>
@@ -170,7 +175,7 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {t("testCases.header.update.cancel")}
           </Button>
           <Button
             type="submit"
@@ -179,7 +184,9 @@ const UpdateTestCaseDialog: React.FC<UpdateTestCaseDialogProps> = ({
             disabled={isSubmitting}
             endIcon={isSubmitting ? <CircularProgress size={20} /> : null}
           >
-            {isSubmitting ? "Updating..." : "Update Test Case"}
+            {isSubmitting
+              ? t("testCases.header.update.updating")
+              : t("testCases.header.update.update")}
           </Button>
         </DialogActions>
       </form>

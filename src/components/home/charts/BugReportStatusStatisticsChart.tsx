@@ -9,6 +9,7 @@ import { Box } from "@mui/material";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import { useBugReportsQuery } from "../../../queries/BugReportQuery";
 import { formatEnumWithLowerUnderline } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface BugReportCount {
   type: BugReportStatus;
@@ -19,6 +20,7 @@ const BugReportStatusStatisticsChart: React.FC<UserRoleProps> = ({
   currentUserRole,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const colorPalette = [
     theme.palette.primary.dark,
     theme.palette.secondary.main,
@@ -29,11 +31,11 @@ const BugReportStatusStatisticsChart: React.FC<UserRoleProps> = ({
   const renderCaptionTypography = () => {
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
-        return "Total number of bug reports by status for all projects in the system";
+        return t("charts.bugReportStatus.captions.admin");
       case AuthorityName.DEVELOPER:
-        return "Total number of bug reports by status for my projects";
+        return t("charts.bugReportStatus.captions.developer");
       case AuthorityName.TESTER:
-        return "Total number of my bug reports by status";
+        return t("charts.bugReportStatus.captions.tester");
       default:
         return <Box>Access Denied</Box>;
     }
@@ -66,7 +68,7 @@ const BugReportStatusStatisticsChart: React.FC<UserRoleProps> = ({
   }));
 
   if (isLoadingBugReports) {
-    return <Box>Loading...</Box>;
+    return <Box>{t("charts.bugReportStatus.loading")}</Box>;
   }
 
   return (
@@ -78,7 +80,7 @@ const BugReportStatusStatisticsChart: React.FC<UserRoleProps> = ({
           gutterBottom
           sx={{ fontWeight: 700 }}
         >
-          Bug report statistics by status
+          {t("charts.bugReportStatus.title")}
         </Typography>
         <Typography
           variant="caption"
@@ -92,7 +94,7 @@ const BugReportStatusStatisticsChart: React.FC<UserRoleProps> = ({
           xAxis={[
             {
               scaleType: "band",
-              data: ["Status counts"],
+              data: [t("charts.bugReportStatus.statusCounts")],
             },
           ]}
           series={seriesData}

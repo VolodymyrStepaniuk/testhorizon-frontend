@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { TestCaseResponse } from "../../models/testcase/TestCaseResponse";
 import { formatDate, truncateText } from "../../utils/format.utils";
 import { TestCasePriorityChip } from "../../theme/customization/chips";
+import { useTranslation } from "react-i18next";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: "100%",
@@ -38,6 +39,7 @@ const TestCaseCard: React.FC<TestCaseResponse> = ({
   updatedAt,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleNavigateToTestCase = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -67,7 +69,7 @@ const TestCaseCard: React.FC<TestCaseResponse> = ({
 
         <Box sx={{ mb: 2 }}>
           <Typography variant="body2" color="text.secondary">
-            Project:{" "}
+            {t("testCases.card.project")}{" "}
             <Button
               variant="text"
               onClick={(e: MouseEvent<HTMLButtonElement>) => {
@@ -108,17 +110,17 @@ const TestCaseCard: React.FC<TestCaseResponse> = ({
               sx={{ fontWeight: "bold", padding: "8px 16px", height: "42px" }}
               size="large"
             >
-              View Test Case
+              {t("testCases.card.viewTestCase")}
             </Button>
           </Box>
         </Box>
 
         <Box sx={{ mt: 2, borderTop: "1px solid #e0e0e0", pt: 1 }}>
           <Typography variant="caption" color="text.secondary">
-            Created: {formatDate(createdAt)}
+            {t("testCases.card.created")} {formatDate(createdAt)}
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
-            Updated: {formatDate(updatedAt)}
+            {t("testCases.card.updated")} {formatDate(updatedAt)}
           </Typography>
         </Box>
       </CardContent>

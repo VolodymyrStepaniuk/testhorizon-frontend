@@ -17,6 +17,7 @@ import {
 import { FiEdit, FiHome, FiArrowLeft, FiTrash } from "react-icons/fi";
 import { NoteResponse } from "../../../models/notebook/note/NoteResponse";
 import { formatDate } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   notebook: { id: number; title: string };
@@ -37,6 +38,7 @@ const NoteViewer: React.FC<Props> = ({
 }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const { t } = useTranslation();
 
   const handleDeleteClick = () => {
     setDeleteDialogOpen(true);
@@ -80,7 +82,7 @@ const NoteViewer: React.FC<Props> = ({
             onClick={onHome}
             sx={{ textTransform: "none" }}
           >
-            Notebooks
+            {t("notebook.navigation.notebooks")}
           </Button>
           <Typography color="text.primary" variant="body2">
             {notebook.title}
@@ -123,7 +125,7 @@ const NoteViewer: React.FC<Props> = ({
               onClick={onEdit}
               size="small"
               sx={{ ml: 1 }}
-              title="Edit note"
+              title={t("notebook.note.viewer.editTooltip")}
             >
               <FiEdit />
             </IconButton>
@@ -132,7 +134,7 @@ const NoteViewer: React.FC<Props> = ({
               size="small"
               color="error"
               sx={{ ml: 0.5 }}
-              title="Delete note"
+              title={t("notebook.note.viewer.deleteTooltip")}
               disabled={isDeleting}
             >
               <FiTrash />
@@ -148,7 +150,7 @@ const NoteViewer: React.FC<Props> = ({
             lineHeight: 1,
           }}
         >
-          Last updated: {formatDate(note.updatedAt)}
+          {t("notebook.note.viewer.lastUpdated")} {formatDate(note.updatedAt)}
         </Typography>
 
         <Divider sx={{ my: 1 }} />
@@ -169,7 +171,7 @@ const NoteViewer: React.FC<Props> = ({
               lineHeight: 1.7,
             }}
           >
-            {formattedContent || "No content"}
+            {formattedContent || t("notebook.note.viewer.noContent")}
           </Typography>
         </Box>
 
@@ -182,7 +184,7 @@ const NoteViewer: React.FC<Props> = ({
             onClick={onBack}
             size="small"
           >
-            Back to notes
+            {t("notebook.note.viewer.back")}
           </Button>
         </Box>
       </Card>
@@ -193,11 +195,10 @@ const NoteViewer: React.FC<Props> = ({
         onClose={() => !isDeleting && setDeleteDialogOpen(false)}
         PaperProps={{ sx: { borderRadius: 1 } }}
       >
-        <DialogTitle>Delete Note</DialogTitle>
+        <DialogTitle>{t("notebook.note.list.deleteDialog.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this note? This action cannot be
-            undone.
+            {t("notebook.note.list.deleteDialog.message")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -205,7 +206,7 @@ const NoteViewer: React.FC<Props> = ({
             onClick={() => setDeleteDialogOpen(false)}
             disabled={isDeleting}
           >
-            Cancel
+            {t("notebook.note.list.deleteDialog.cancel")}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
@@ -213,7 +214,9 @@ const NoteViewer: React.FC<Props> = ({
             variant="contained"
             disabled={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting
+              ? t("notebook.note.list.deleteDialog.deleting")
+              : t("notebook.note.list.deleteDialog.delete")}
           </Button>
         </DialogActions>
       </Dialog>

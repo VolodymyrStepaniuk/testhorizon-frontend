@@ -13,6 +13,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuButton from "./MenuButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const MenuItem = styled(MuiMenuItem)({
   margin: "2px 0",
@@ -22,6 +23,7 @@ export default function OptionsMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { logout } = useAuth();
+  const { t } = useTranslation();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -78,22 +80,8 @@ export default function OptionsMenu() {
             },
           }}
         >
-          <AccountCircleIcon /> Profile
+          <AccountCircleIcon sx={{ mr: 0.5 }} /> {t("header.profile")}
         </MenuItem>
-        {/* <MenuItem
-          onClick={() => {
-            handleClose();
-            navigate("/settings");
-          }}
-          sx={{
-            [`& .${listItemIconClasses.root}`]: {
-              ml: "auto",
-              minWidth: 0,
-            },
-          }}
-        >
-          <SettingsIcon /> Settings
-        </MenuItem> */}
         <Divider />
         <MenuItem
           onClick={handleClose}
@@ -105,9 +93,11 @@ export default function OptionsMenu() {
           }}
         >
           <ListItemIcon>
-            <LogoutRoundedIcon fontSize="small" />
+            <LogoutRoundedIcon fontSize="small" sx={{ mr: 0.5 }} />
           </ListItemIcon>
-          <ListItemText onClick={handleLogout}>Logout</ListItemText>
+          <ListItemText onClick={handleLogout}>
+            {t("header.logout")}
+          </ListItemText>
         </MenuItem>
       </Menu>
     </React.Fragment>

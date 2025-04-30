@@ -16,6 +16,7 @@ import { TestResponse } from "../../models/test/TestResponse";
 import { formatDate, truncateText } from "../../utils/format.utils";
 import { FaGithub } from "react-icons/fa";
 import { TestTypeChip } from "../../theme/customization/chips";
+import { useTranslation } from "react-i18next";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: "100%",
@@ -44,6 +45,7 @@ const TestCard: React.FC<TestResponse> = memo(
     updatedAt,
   }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleGithubClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
@@ -80,7 +82,7 @@ const TestCard: React.FC<TestResponse> = memo(
 
           <Box sx={{ mb: 2 }}>
             <Typography variant="body2" color="text.secondary">
-              Project:{" "}
+              {t("tests.card.project")}{" "}
               <Button
                 variant="text"
                 onClick={(e: MouseEvent<HTMLButtonElement>) => {
@@ -94,7 +96,7 @@ const TestCard: React.FC<TestResponse> = memo(
             </Typography>
             {testCase && (
               <Typography variant="body2" color="text.secondary">
-                Test Case:{" "}
+                {t("tests.card.testCase")}{" "}
                 <Button
                   variant="text"
                   onClick={(e: MouseEvent<HTMLButtonElement>) => {
@@ -136,10 +138,10 @@ const TestCard: React.FC<TestResponse> = memo(
                 sx={{ fontWeight: "bold", padding: "8px 16px", height: "42px" }}
                 size="large"
               >
-                View Test
+                {t("tests.card.viewTest")}
               </Button>
               {githubUrl && (
-                <Tooltip title="View Source Code" arrow>
+                <Tooltip title={t("tests.card.viewSourceCode")} arrow>
                   <IconButton
                     aria-label="GitHub repository"
                     onClick={handleGithubClick}
@@ -155,10 +157,10 @@ const TestCard: React.FC<TestResponse> = memo(
 
           <Box sx={{ mt: 2, borderTop: "1px solid #e0e0e0", pt: 1 }}>
             <Typography variant="caption" color="text.secondary">
-              Created: {formatDate(createdAt)}
+              {t("tests.card.created")} {formatDate(createdAt)}
             </Typography>
             <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
-              Updated: {formatDate(updatedAt)}
+              {t("tests.card.updated")} {formatDate(updatedAt)}
             </Typography>
           </Box>
         </CardContent>

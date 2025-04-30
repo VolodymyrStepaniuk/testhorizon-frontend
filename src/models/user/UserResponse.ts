@@ -1,3 +1,4 @@
+import { AuthorityName } from "../enum/authorityNames";
 import { Links } from "../Links";
 
 export interface UserResponse {
@@ -6,6 +7,7 @@ export interface UserResponse {
   firstName: string;
   lastName: string;
   totalRating: number;
+  authorities: AuthorityName[];
   createdAt: string;
   updatedAt: string;
   _links: Links;

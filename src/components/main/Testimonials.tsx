@@ -11,6 +11,7 @@ import Rating from "@mui/material/Rating";
 import CircularProgress from "@mui/material/CircularProgress";
 import { API } from "../../services/api.service";
 import { FeedbackResponse } from "../../models/feedback/FeedbackResponse";
+import { useTranslation } from "react-i18next";
 
 // Helper function to get initials for avatar fallback
 const getInitials = (name: string): string => {
@@ -25,6 +26,7 @@ export default function Testimonials() {
   const [feedbacks, setFeedbacks] = useState<FeedbackResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -38,14 +40,14 @@ export default function Testimonials() {
         }
       } catch (err) {
         console.error("Error fetching feedbacks:", err);
-        setError("Failed to load testimonials. Please try again later.");
+        setError(t("testimonials.loadError"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchFeedbacks();
-  }, []);
+  }, [t]);
 
   return (
     <Container
@@ -76,7 +78,7 @@ export default function Testimonials() {
             textAlign: "center",
           }}
         >
-          Testimonials
+          {t("testimonials.title")}
         </Typography>
         <Typography
           variant="body1"
@@ -86,10 +88,7 @@ export default function Testimonials() {
             textAlign: "center",
           }}
         >
-          Find out why users choose our system for educational and practical
-          software testing. Evaluate the effectiveness, reliability and
-          convenience of the platform. Join us for quality training, innovative
-          solutions, and comprehensive support.
+          {t("testimonials.subtitle")}
         </Typography>
       </Box>
 
@@ -98,7 +97,7 @@ export default function Testimonials() {
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : feedbacks.length === 0 ? (
-        <Typography>No testimonials available yet.</Typography>
+        <Typography>{t("testimonials.noTestimonials")}</Typography>
       ) : (
         <Grid container spacing={2}>
           {feedbacks.map((feedback, index) => (
@@ -123,7 +122,7 @@ export default function Testimonials() {
                     <Rating value={feedback.rating} readOnly precision={0.5} />
                   </Box>
                   <Typography variant="body1" sx={{ color: "text.secondary" }}>
-                    {feedback.comment || "Great product!"}
+                    {feedback.comment || t("testimonials.defaultComment")}
                   </Typography>
                 </CardContent>
                 <Box

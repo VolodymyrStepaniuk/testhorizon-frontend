@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { API } from "../../../services/api.service";
 import NotificationSnackbar from "../notification/NotificationSnackbar";
+import { useTranslation } from "react-i18next";
 
 interface RatingDialogProps {
   open: boolean;
@@ -42,6 +43,7 @@ const RatingDialog: React.FC<RatingDialogProps> = ({
     message: "",
     severity: "success",
   });
+  const { t } = useTranslation();
 
   const handleRatingChange = (_event: Event, newValue: number | number[]) => {
     setRatingPoints(newValue as number);
@@ -62,7 +64,7 @@ const RatingDialog: React.FC<RatingDialogProps> = ({
 
       setNotification({
         open: true,
-        message: "Rating successfully updated",
+        message: t("rating.dialog.success"),
         severity: "success",
       });
 
@@ -73,7 +75,7 @@ const RatingDialog: React.FC<RatingDialogProps> = ({
       console.error("Error updating rating:", error);
       setNotification({
         open: true,
-        message: "Failed to update rating",
+        message: t("rating.dialog.error"),
         severity: "error",
       });
     } finally {
@@ -92,12 +94,12 @@ const RatingDialog: React.FC<RatingDialogProps> = ({
     <>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle>
-          Rate User for {entityType}: {entityTitle}
+          {t("rating.dialog.title", { entityType, entityTitle })}
         </DialogTitle>
         <DialogContent>
           <Box sx={{ mt: 2 }}>
             <Typography gutterBottom>
-              Adjust rating points (-10 to +10):
+              {t("rating.dialog.adjustPoints")}
             </Typography>
             <Box sx={{ px: 2 }}>
               <Slider
@@ -120,7 +122,7 @@ const RatingDialog: React.FC<RatingDialogProps> = ({
 
           <TextField
             margin="normal"
-            label="Comment (optional)"
+            label={t("rating.dialog.commentLabel")}
             fullWidth
             multiline
             rows={4}
@@ -129,14 +131,22 @@ const RatingDialog: React.FC<RatingDialogProps> = ({
           />
 
           <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
-            This will {ratingPoints >= 0 ? "add" : "subtract"}{" "}
-            {Math.abs(ratingPoints)} points {ratingPoints >= 0 ? "to" : "from"}{" "}
-            the user's rating.
+            {t("rating.dialog.pointsImpact", {
+              action:
+                ratingPoints >= 0
+                  ? t("rating.dialog.add")
+                  : t("rating.dialog.subtract"),
+              points: Math.abs(ratingPoints),
+              direction:
+                ratingPoints >= 0
+                  ? t("rating.dialog.to")
+                  : t("rating.dialog.from"),
+            })}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary" disabled={loading}>
-            Cancel
+            {t("rating.dialog.cancel")}
           </Button>
           <Button
             onClick={handleSubmit}
@@ -144,7 +154,9 @@ const RatingDialog: React.FC<RatingDialogProps> = ({
             variant="contained"
             disabled={ratingPoints === 0 || loading}
           >
-            {loading ? "Submitting..." : "Submit Rating"}
+            {loading
+              ? t("rating.dialog.submitting")
+              : t("rating.dialog.submit")}
           </Button>
         </DialogActions>
       </Dialog>

@@ -11,6 +11,7 @@ import {
 import NotificationSnackbar from "../../../universal/notification/NotificationSnackbar";
 import { API } from "../../../../services/api.service";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface DeleteProjectDialogProps {
   open: boolean;
@@ -32,6 +33,7 @@ const DeleteProjectDialog: React.FC<DeleteProjectDialogProps> = ({
     severity: "success" as "success" | "error" | "info" | "warning",
   });
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -39,7 +41,7 @@ const DeleteProjectDialog: React.FC<DeleteProjectDialogProps> = ({
       await API.projects.delete(projectId);
       setSnackbar({
         open: true,
-        message: "Project deleted successfully",
+        message: t("projects.delete.success"),
         severity: "success",
       });
       setIsDeleting(false);
@@ -51,7 +53,7 @@ const DeleteProjectDialog: React.FC<DeleteProjectDialogProps> = ({
       console.error("Error deleting project:", err);
       setSnackbar({
         open: true,
-        message: "Failed to delete project. Please try again.",
+        message: t("projects.delete.error"),
         severity: "error",
       });
       setIsDeleting(false);
@@ -65,16 +67,15 @@ const DeleteProjectDialog: React.FC<DeleteProjectDialogProps> = ({
   return (
     <>
       <Dialog open={open} onClose={!isDeleting ? onClose : undefined}>
-        <DialogTitle>Delete Project</DialogTitle>
+        <DialogTitle>{t("projects.delete.title")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete the project "{projectTitle}"? This
-            action cannot be undone.
+            {t("projects.delete.confirmation", { projectTitle })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} disabled={isDeleting}>
-            Cancel
+            {t("projects.delete.cancel")}
           </Button>
           <Button
             onClick={handleDelete}
@@ -83,7 +84,9 @@ const DeleteProjectDialog: React.FC<DeleteProjectDialogProps> = ({
             disabled={isDeleting}
             endIcon={isDeleting ? <CircularProgress size={20} /> : null}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting
+              ? t("projects.delete.deleting")
+              : t("projects.delete.delete")}
           </Button>
         </DialogActions>
       </Dialog>

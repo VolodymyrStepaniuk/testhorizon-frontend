@@ -10,12 +10,15 @@ import {
 } from "@mui/material";
 import { TestCaseResponse } from "../../../models/testcase/TestCaseResponse";
 import { formatDate } from "../../../utils/format.utils";
+import { useTranslation } from "react-i18next";
 
 interface TestCaseDetailsProps {
   testCase: TestCaseResponse;
 }
 
 const TestCaseDetails: React.FC<TestCaseDetailsProps> = ({ testCase }) => {
+  const { t } = useTranslation();
+
   return (
     <Card
       variant="outlined"
@@ -26,12 +29,12 @@ const TestCaseDetails: React.FC<TestCaseDetailsProps> = ({ testCase }) => {
     >
       <CardContent sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>
-          Test Case Details
+          {t("testCases.details.title")}
         </Typography>
         <Grid container spacing={1}>
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Author
+              {t("testCases.details.author")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -49,7 +52,7 @@ const TestCaseDetails: React.FC<TestCaseDetailsProps> = ({ testCase }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Project
+              {t("testCases.details.project")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -68,7 +71,7 @@ const TestCaseDetails: React.FC<TestCaseDetailsProps> = ({ testCase }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Created
+              {t("testCases.details.created")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
@@ -79,7 +82,7 @@ const TestCaseDetails: React.FC<TestCaseDetailsProps> = ({ testCase }) => {
 
           <Grid item xs={4}>
             <Typography variant="body2" color="text.secondary">
-              Last updated
+              {t("testCases.details.lastUpdated")}
             </Typography>
           </Grid>
           <Grid item xs={8}>
