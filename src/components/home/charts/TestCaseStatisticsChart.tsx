@@ -8,7 +8,6 @@ import { UserRoleProps } from "../../../models/userProps";
 import { Box } from "@mui/material";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import { useTestCasesQuery } from "../../../queries/TestCaseQuery";
-import { formatEnumWithoutLowerUnderline } from "../../../utils/format.utils";
 import { useTranslation } from "react-i18next";
 
 interface TestCaseCount {
@@ -61,7 +60,7 @@ const TestCaseStatisticsChart: React.FC<UserRoleProps> = ({
 
   const seriesData = testCounts.map((tc) => ({
     id: tc.type,
-    label: formatEnumWithoutLowerUnderline(tc.type),
+    label: t(`enums.testCase.priority.${tc.type}`),
     data: [tc.count],
   }));
 

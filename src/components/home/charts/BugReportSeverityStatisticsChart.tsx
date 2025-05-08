@@ -8,7 +8,6 @@ import { UserRoleProps } from "../../../models/userProps";
 import { Box } from "@mui/material";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import { useBugReportsQuery } from "../../../queries/BugReportQuery";
-import { formatEnumWithoutLowerUnderline } from "../../../utils/format.utils";
 import { useTranslation } from "react-i18next";
 
 interface BugReportCount {
@@ -63,7 +62,7 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
 
   const seriesData = bugReportCounts.map((br) => ({
     id: br.type,
-    label: formatEnumWithoutLowerUnderline(br.type),
+    label: t(`enums.bugReport.severity.${br.type}`),
     data: [br.count],
   }));
 
