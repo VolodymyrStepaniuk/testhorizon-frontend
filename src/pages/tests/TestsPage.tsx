@@ -125,7 +125,7 @@ const TestsPage: React.FC = () => {
             </Select>
           </FormControl>
         </Box>
-        {currentUserRole !== AuthorityName.DEVELOPER && (
+        {currentUserRole !== AuthorityName.MENTOR && (
           <Button
             variant="contained"
             color="primary"

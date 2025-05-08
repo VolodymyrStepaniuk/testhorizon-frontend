@@ -175,7 +175,7 @@ export default function PostItem({
     if (onClick) {
       onClick();
     } else {
-      navigate(`/blog/posts/${post.id}`);
+      navigate(`/blog/${post.id}`);
     }
   };
 

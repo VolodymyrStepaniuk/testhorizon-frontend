@@ -15,7 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ProjectList from "./project/ProjectList";
 
-export default function DeveloperDashboard() {
+export default function MentorDashboard() {
   const { projects, isLoading } = useProjectsQuery();
   const { tests, isLoading: isLoadingTests } = useTestsQuery();
   const { testCases, isLoading: isLoadingTestCases } = useTestCasesQuery();
@@ -26,24 +26,24 @@ export default function DeveloperDashboard() {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ fontWeight: "bold" }} gutterBottom>
-          {t("dashboard.developer.myProjects")}
+          {t("dashboard.mentor.myProjects")}
         </Typography>
         {isLoading ? (
           <Typography variant="body1" color="text.secondary" sx={{ p: 2 }}>
-            {t("dashboard.developer.loadingProjects")}
+            {t("dashboard.mentor.loadingProjects")}
           </Typography>
         ) : projects && projects.length > 0 ? (
           <ProjectList />
         ) : (
           <Typography variant="body1" color="text.secondary" sx={{ p: 2 }}>
-            {t("dashboard.developer.noProjects")}
+            {t("dashboard.mentor.noProjects")}
           </Typography>
         )}
       </Grid>
 
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ fontWeight: "bold" }} gutterBottom>
-          {t("dashboard.developer.testsForProjects")}
+          {t("dashboard.mentor.testsForProjects")}
         </Typography>
         <Box sx={{ mb: 2 }}>
           <CustomizedDataGrid
@@ -56,7 +56,7 @@ export default function DeveloperDashboard() {
 
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ fontWeight: "bold" }} gutterBottom>
-          {t("dashboard.developer.testCasesForProjects")}
+          {t("dashboard.mentor.testCasesForProjects")}
         </Typography>
         <Box sx={{ mb: 2 }}>
           <CustomizedDataGrid
@@ -69,7 +69,7 @@ export default function DeveloperDashboard() {
 
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ fontWeight: "bold" }} gutterBottom>
-          {t("dashboard.developer.bugReportsForProjects")}
+          {t("dashboard.mentor.bugReportsForProjects")}
         </Typography>
         <Box sx={{ mb: 2 }}>
           <CustomizedDataGrid

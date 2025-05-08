@@ -33,8 +33,8 @@ const TestStatisticsChart: React.FC<UserRoleProps> = ({ currentUserRole }) => {
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
         return t("charts.testStatistics.captions.admin");
-      case AuthorityName.DEVELOPER:
-        return t("charts.testStatistics.captions.developer");
+      case AuthorityName.MENTOR:
+        return t("charts.testStatistics.captions.mentor");
       case AuthorityName.TESTER:
         return t("charts.testStatistics.captions.tester");
       default:

@@ -326,7 +326,7 @@ export default function SignUp() {
                 id="authorityName"
               >
                 <MenuItem value="TESTER">{t("signUp.tester")}</MenuItem>
-                <MenuItem value="DEVELOPER">{t("signUp.developer")}</MenuItem>
+                <MenuItem value="MENTOR">{t("signUp.mentor")}</MenuItem>
               </Select>
             </FormControl>
             <FormControl>

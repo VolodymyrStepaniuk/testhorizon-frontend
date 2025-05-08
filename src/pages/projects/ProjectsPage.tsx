@@ -17,7 +17,6 @@ import ProjectCard from "../../components/projects/ProjectCard";
 import { ProjectResponse } from "../../models/project/ProjectResponse";
 import { API } from "../../services/api.service";
 import { ProjectStatus } from "../../models/enum/projectStatuses";
-import { formatEnumWithoutLowerUnderline } from "../../utils/format.utils";
 import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
 import { useTranslation } from "react-i18next";

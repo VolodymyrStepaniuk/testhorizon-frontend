@@ -1,5 +1,5 @@
 export const AuthorityName = {
-  DEVELOPER: "DEVELOPER",
+  MENTOR: "MENTOR",
   TESTER: "TESTER",
   ADMIN: "ADMIN",
 } as const;

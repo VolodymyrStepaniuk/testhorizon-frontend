@@ -26,8 +26,8 @@ const ProjectStatisticsChart: React.FC<UserRoleProps> = ({
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
         return t("charts.projectStatistics.captions.admin");
-      case AuthorityName.DEVELOPER:
-        return t("charts.projectStatistics.captions.developer");
+      case AuthorityName.MENTOR:
+        return t("charts.projectStatistics.captions.mentor");
       case AuthorityName.TESTER:
         return t("charts.projectStatistics.captions.tester");
       default:

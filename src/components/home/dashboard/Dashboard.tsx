@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { UserRoleProps } from "../../../models/userProps";
 import { AuthorityName } from "../../../models/enum/authorityNames";
 import AdminDashboard from "./AdminDashboard";
-import DeveloperDashboard from "./DeveloperDashboard";
+import MentorDashboard from "./MentorDashboard";
 import TesterDashboard from "./TesterDashboard";
 
 const Dashboard: React.FC<UserRoleProps> = ({ currentUserRole }) => {
@@ -11,8 +11,8 @@ const Dashboard: React.FC<UserRoleProps> = ({ currentUserRole }) => {
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
         return <AdminDashboard />;
-      case AuthorityName.DEVELOPER:
-        return <DeveloperDashboard />;
+      case AuthorityName.MENTOR:
+        return <MentorDashboard />;
       case AuthorityName.TESTER:
         return <TesterDashboard />;
       default:

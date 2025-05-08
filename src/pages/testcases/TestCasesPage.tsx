@@ -18,7 +18,6 @@ import { TestCaseResponse } from "../../models/testcase/TestCaseResponse";
 import { API } from "../../services/api.service";
 import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
-import { formatEnumWithoutLowerUnderline } from "../../utils/format.utils";
 import { TestCasePriority } from "../../models/enum/testCasePriorities";
 import { useTranslation } from "react-i18next";
 import { translateEnum } from "../../utils/i18n.utils";
@@ -126,7 +125,7 @@ const TestCasePage: React.FC = () => {
             </Select>
           </FormControl>
         </Box>
-        {currentUserRole !== AuthorityName.DEVELOPER && (
+        {currentUserRole !== AuthorityName.MENTOR && (
           <Button
             variant="contained"
             color="primary"

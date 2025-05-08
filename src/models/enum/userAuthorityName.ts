@@ -1,5 +1,5 @@
 export const UserAuthorityName = {
-  DEVELOPER: "DEVELOPER",
+  MENTOR: "MENTOR",
   TESTER: "TESTER",
 } as const;
 export type UserAuthorityName =

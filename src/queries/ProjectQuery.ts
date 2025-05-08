@@ -12,8 +12,8 @@ export const useProjectsQuery = () => {
   const authorities = getAutoritiesFromToken();
 
   const isAdmin = authorities.includes(AuthorityName.ADMIN);
-  const isDeveloper = authorities.includes(AuthorityName.DEVELOPER);
-  const shouldFetchProjects = (isAdmin || isDeveloper) && user?.id;
+  const isMentor = authorities.includes(AuthorityName.MENTOR);
+  const shouldFetchProjects = (isAdmin || isMentor) && user?.id;
 
   const { data, isLoading } = useQuery<
     PaginatedResponse<ProjectResponse, "projects">

@@ -44,7 +44,7 @@ const EditUserDialog: React.FC<EditUserDialogProps> = ({
   const [selectedAuthority, setSelectedAuthority] = useState<AuthorityName>(
     user.authorities && user.authorities.length > 0
       ? user.authorities[0]
-      : AuthorityName.DEVELOPER
+      : AuthorityName.MENTOR
   );
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

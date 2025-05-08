@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API } from "../services/api.service";
-import { TestResponse } from "../models/test/TestResponse"; // ваш інтерфейс для тесту
+import { TestResponse } from "../models/test/TestResponse";
 import { PaginatedResponse } from "../models/pagination";
 import { AuthorityName } from "../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../utils/auth.utils";
@@ -14,16 +14,16 @@ export const useTestsQuery = () => {
 
   const isAdmin = authorities.includes(AuthorityName.ADMIN);
   const isTester = authorities.includes(AuthorityName.TESTER);
-  const isDeveloper = authorities.includes(AuthorityName.DEVELOPER);
+  const isMentor = authorities.includes(AuthorityName.MENTOR);
 
   const { projects, isLoading: isProjectsLoading } = useProjectsQuery();
   const projectIds =
-    isDeveloper && !isProjectsLoading ? projects.map((p) => p.id) : [];
+    isMentor && !isProjectsLoading ? projects.map((p) => p.id) : [];
 
   const shouldFetchTests =
     !!user &&
     !isUserLoading &&
-    (isAdmin || isTester || (isDeveloper && !isProjectsLoading));
+    (isAdmin || isTester || (isMentor && !isProjectsLoading));
 
   const { data, isLoading } = useQuery<
     PaginatedResponse<TestResponse, "tests">
@@ -47,7 +47,7 @@ export const useTestsQuery = () => {
         return response.data;
       }
 
-      if (isDeveloper) {
+      if (isMentor) {
         if (!projectIds || projectIds.length === 0) {
           return emptyTestsResponse();
         }

@@ -21,7 +21,6 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const HelpAndSupport: React.FC = () => {
   const { t } = useTranslation();
 
-  // Categories to display
   const categories = [
     "projectCreation",
     "bugReporting",
@@ -45,9 +44,11 @@ const HelpAndSupport: React.FC = () => {
               >
                 {t(`helpAndSupport.categories.${category}`)}
               </Typography>
-              {t(`helpAndSupport.faqData.${category}`, {
-                returnObjects: true,
-              }).map((faq: any, index: number) => (
+              {(
+                t(`helpAndSupport.faqData.${category}`, {
+                  returnObjects: true,
+                }) as Array<{ question: string; answer: string }>
+              ).map((faq, index: number) => (
                 <Accordion key={index}>
                   <AccordionSummary expandIcon={<FaChevronDown />}>
                     <Typography>{faq.question}</Typography>

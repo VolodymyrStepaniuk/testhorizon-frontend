@@ -32,8 +32,8 @@ const BugReportStatusStatisticsChart: React.FC<UserRoleProps> = ({
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
         return t("charts.bugReportStatus.captions.admin");
-      case AuthorityName.DEVELOPER:
-        return t("charts.bugReportStatus.captions.developer");
+      case AuthorityName.MENTOR:
+        return t("charts.bugReportStatus.captions.mentor");
       case AuthorityName.TESTER:
         return t("charts.bugReportStatus.captions.tester");
       default:

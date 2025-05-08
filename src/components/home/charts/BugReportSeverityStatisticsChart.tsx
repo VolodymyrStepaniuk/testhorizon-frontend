@@ -32,8 +32,8 @@ const BugReportSeverityStatisticsChart: React.FC<UserRoleProps> = ({
     switch (currentUserRole) {
       case AuthorityName.ADMIN:
         return t("charts.bugReportSeverity.captions.admin");
-      case AuthorityName.DEVELOPER:
-        return t("charts.bugReportSeverity.captions.developer");
+      case AuthorityName.MENTOR:
+        return t("charts.bugReportSeverity.captions.mentor");
       case AuthorityName.TESTER:
         return t("charts.bugReportSeverity.captions.tester");
       default:

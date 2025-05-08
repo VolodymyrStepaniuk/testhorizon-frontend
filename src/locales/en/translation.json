@@ -79,7 +79,7 @@
     "questions": [
       {
         "question": "How can I upload my project to the platform?",
-        "answer": "To upload your project, simply log in to your account with the «Developer» role, go to the «Projects» section and follow the steps to create your project!"
+        "answer": "To upload your project, simply log in to your account with the «Mentor» role, go to the «Projects» section and follow the steps to create your project!"
       },
       {
         "question": "How can I test the projects shared by others?",
@@ -169,7 +169,7 @@
     "lastNamePlaceholder": "Snow",
     "role": "Role",
     "tester": "Tester",
-    "developer": "Developer",
+    "mentor": "Mentor",
     "email": "Email",
     "emailPlaceholder": "your@email.com",
     "password": "Password",
@@ -200,6 +200,7 @@
     "categories": {
       "all": "All categories"
     },
+    "back": "Back to posts",
     "createPost": "Create New Post",
     "clearFilters": "Clear filters",
     "author": "Author",
@@ -346,7 +347,7 @@
       "myTestCases": "My test cases",
       "myBugReports": "My bug reports"
     },
-    "developer": {
+    "mentor": {
       "myProjects": "My Projects",
       "loadingProjects": "Loading projects...",
       "noProjects": "You don't have any projects yet.",
@@ -429,7 +430,7 @@
       "severityCounts": "Severity counts",
       "captions": {
         "admin": "Total number of bug reports by severity for all projects in the system",
-        "developer": "Total number of bug reports by severity for my projects",
+        "mentor": "Total number of bug reports by severity for my projects",
         "tester": "Total number of my bug reports by severity"
       }
     },
@@ -439,7 +440,7 @@
       "statusCounts": "Status counts",
       "captions": {
         "admin": "Total number of bug reports by status for all projects in the system",
-        "developer": "Total number of bug reports by status for my projects",
+        "mentor": "Total number of bug reports by status for my projects",
         "tester": "Total number of my bug reports by status"
       }
     },
@@ -452,7 +453,7 @@
       "bugReports": "Bug Reports",
       "captions": {
         "admin": "Total number of Tests, Test Cases and Bug Reports in the system",
-        "developer": "Total number of Tests, Test Cases and Bug Reports in my projects",
+        "mentor": "Total number of Tests, Test Cases and Bug Reports in my projects",
         "tester": "Total number of my Tests, Test Cases and Bug Reports"
       }
     },
@@ -462,7 +463,7 @@
       "testCaseCounts": "Test case counts",
       "captions": {
         "admin": "Total number of test cases for all projects in the system",
-        "developer": "Total number of test cases for my projects",
+        "mentor": "Total number of test cases for my projects",
         "tester": "Total number of my test cases"
       }
     },
@@ -472,7 +473,7 @@
       "testCounts": "Test counts",
       "captions": {
         "admin": "Total number of tests for all projects in the system",
-        "developer": "Total number of tests for my projects",
+        "mentor": "Total number of tests for my projects",
         "tester": "Total number of my tests"
       }
     }
@@ -1153,7 +1154,7 @@
   "enums": {
     "user": {
       "authority": {
-        "DEVELOPER": "Developer",
+        "MENTOR": "Mentor",
         "TESTER": "Tester",
         "ADMIN": "Administrator"
       }

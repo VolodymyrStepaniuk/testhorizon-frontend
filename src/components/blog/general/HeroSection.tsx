@@ -1,9 +1,11 @@
-import { Container, Box, Typography, styled } from "@mui/material";
+import { Container, Box, Typography, styled, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { PostResponse } from "../../../models/post/PostResponse";
 import { FaClock } from "react-icons/fa";
 import { formatDistanceLocalized } from "../../../utils/format.utils";
 import CategoryChip from "../CardCategoryChip";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
 
 const HeroRoot = styled(Box)<{ bg: string }>(({ bg }) => ({
   position: "relative",
@@ -26,10 +28,21 @@ interface Props {
 }
 export default function HeroSection({ post, imageUrl }: Props) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   return (
     <HeroRoot bg={imageUrl}>
       <Container>
         <Box sx={{ position: "relative", zIndex: 1 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate(-1)}
+            variant="text"
+            sx={{ mb: 2, color: "#fff" }}
+          >
+            {t("blog.back")}
+          </Button>
+
           <Typography variant="h2" gutterBottom>
             {post.title}
           </Typography>

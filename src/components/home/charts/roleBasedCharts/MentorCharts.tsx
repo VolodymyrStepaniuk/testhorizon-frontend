@@ -6,7 +6,7 @@ import TestCaseStatisticsChart from "../TestCaseStatisticsChart";
 import TestStatisticsChart from "../TestStatisticsChart";
 import { UserRoleProps } from "../../../../models/userProps";
 
-const DeveloperCharts: React.FC<UserRoleProps> = ({ currentUserRole }) => {
+const MentorCharts: React.FC<UserRoleProps> = ({ currentUserRole }) => {
   return (
     <>
       <Grid item xs={12} md={6} sx={{ alignItems: "center" }}>
@@ -35,4 +35,4 @@ const DeveloperCharts: React.FC<UserRoleProps> = ({ currentUserRole }) => {
   );
 };
 
-export default DeveloperCharts;
+export default MentorCharts;

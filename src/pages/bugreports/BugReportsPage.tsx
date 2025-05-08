@@ -18,7 +18,6 @@ import { BugReportResponse } from "../../models/bugreport/BugReportResponse";
 import { API } from "../../services/api.service";
 import { AuthorityName } from "../../models/enum/authorityNames";
 import { getAutoritiesFromToken } from "../../utils/auth.utils";
-import { formatEnumWithLowerUnderline } from "../../utils/format.utils";
 import { BugReportSeverity } from "../../models/enum/bugReportSeverities";
 import { BugReportStatus } from "../../models/enum/bugReportStatuses";
 import { useTranslation } from "react-i18next";
@@ -154,7 +153,7 @@ const BugReportsPage: React.FC = () => {
             </Select>
           </FormControl>
         </Box>
-        {currentUserRole !== AuthorityName.DEVELOPER && (
+        {currentUserRole !== AuthorityName.MENTOR && (
           <Button
             variant="contained"
             color="primary"
