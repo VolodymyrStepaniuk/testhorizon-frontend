@@ -277,7 +277,7 @@ export const API = {
       ),
     registerUserByAdmin: (request: UserCreateRequest) =>
       apiClient.post<UserResponse>(
-        `${apiConfig.endpoints.auth}/register/admin`,
+        `${apiConfig.endpoints.auth}/admin/register-user`,
         request
       ),
   },

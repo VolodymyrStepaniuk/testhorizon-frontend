@@ -19,8 +19,10 @@ import { UpdatePasswordRequest } from "../../models/auth/UpdatePasswordRequest";
 import NotificationSnackbar from "../../components/universal/notification/NotificationSnackbar";
 import UserInformation from "../../components/user/UserInformation";
 import ChangePassword from "../../components/user/ChangePassword";
+import RatingHistory from "../../components/user/RatingHistory";
 import { FileEntityType } from "../../models/enum/fileEntityType";
 import { useTranslation } from "react-i18next";
+import { RatingResponse } from "../../models/rating/RatingResponse";
 
 const ProfileWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -83,6 +85,8 @@ const UserProfile: React.FC = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [ratingHistory, setRatingHistory] = useState<RatingResponse[]>([]);
+  const [loadingRatings, setLoadingRatings] = useState<boolean>(false);
 
   const [snackbar, setSnackbar] = useState<SnackbarState>({
     open: false,
@@ -161,6 +165,7 @@ const UserProfile: React.FC = () => {
 
         if (user.id) {
           fetchUserAvatar(user.id);
+          fetchUserRatings(user.id);
         }
       } catch (error) {
         console.error("Failed to fetch user data:", error);
@@ -175,6 +180,25 @@ const UserProfile: React.FC = () => {
     };
     fetchUserData();
   }, []);
+
+  const fetchUserRatings = async (userId: number) => {
+    try {
+      setLoadingRatings(true);
+      const response = await API.ratings.getAll({ userId });
+      if (response.data) {
+        setRatingHistory(response.data._embedded.ratings || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user ratings:", error);
+      setSnackbar({
+        open: true,
+        message: t("ratings.fetchError"),
+        severity: "error",
+      });
+    } finally {
+      setLoadingRatings(false);
+    }
+  };
 
   const handleInputChange =
     (field: keyof UserUpdateRequest) =>
@@ -378,6 +402,7 @@ const UserProfile: React.FC = () => {
               <Tabs value={activeTab} onChange={handleTabChange} centered>
                 <Tab label={t("profilePage.personalInfo")} />
                 <Tab label={t("profilePage.changePassword")} />
+                <Tab label={t("profilePage.ratingHistory")} />
               </Tabs>
             </Grid>
             {activeTab === 0 && (
@@ -425,6 +450,24 @@ const UserProfile: React.FC = () => {
                     handlePasswordChange(field)(event)
                   }
                   onSavePassword={handleSavePassword}
+                />
+              </Grid>
+            )}
+            {activeTab === 2 && (
+              <Grid
+                item
+                xs={12}
+                md={8}
+                lg={6}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                <RatingHistory
+                  ratings={ratingHistory}
+                  loading={loadingRatings}
                 />
               </Grid>
             )}

@@ -9,7 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon, { listItemIconClasses } from "@mui/material/ListItemIcon";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PersonIcon from "@mui/icons-material/Person";
 import MenuButton from "./MenuButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -80,7 +80,7 @@ export default function OptionsMenu() {
             },
           }}
         >
-          <AccountCircleIcon sx={{ mr: 0.5 }} /> {t("header.profile")}
+          <PersonIcon sx={{ mr: 0.5 }} /> {t("header.profile")}
         </MenuItem>
         <Divider />
         <MenuItem

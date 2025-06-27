@@ -135,7 +135,8 @@
       "passwordRequired": "Password must be at least 8 characters long."
     },
     "errors": {
-      "default": "Failed to sign in"
+      "default": "Failed to sign in",
+      "userNotFound": "User with email {{email}} not found"
     }
   },
   "forgotPassword": {
@@ -499,10 +500,10 @@
   "rating": {
     "button": "Rate User",
     "dialog": {
-      "title": "Rate User for {entityType}: {entityTitle}",
+      "title": "Rate User for {{entityType}}: {{entityTitle}}",
       "adjustPoints": "Adjust rating points (-10 to +10):",
       "commentLabel": "Comment (optional)",
-      "pointsImpact": "This will {action} {points} points {direction} the user's rating.",
+      "pointsImpact": "This will {{action}} {{points}} points {{direction}} the user's rating.",
       "add": "add",
       "subtract": "subtract",
       "to": "to",
@@ -554,7 +555,10 @@
       "testsCreated": "Tests Created",
       "testCasesCreated": "Test Cases Created",
       "bugReportsCreated": "Bug Reports Created"
-    }
+    },
+    "historyTitle": "Rating History",
+    "loading": "Loading history of ratings...",
+    "noRatings": "No rating history available."
   },
   "userAdmin": {
     "dataGrid": {
@@ -596,7 +600,7 @@
     },
     "deleteDialog": {
       "title": "Delete User",
-      "confirmMessage": "Are you sure you want to delete the user \"{firstName} {lastName}\" with email \"{email}\"? This action cannot be undone.",
+      "confirmMessage": "Are you sure you want to delete the user \"{{firstName}} {{lastName}}\" with email \"{{email}}\"? This action cannot be undone.",
       "cancel": "Cancel",
       "deleteButton": "Delete User",
       "deletingButton": "Deleting...",
@@ -818,7 +822,7 @@
       "empty": "No notebooks found. Create your first notebook to get started!",
       "deleteDialog": {
         "title": "Delete Notebook",
-        "message": "Are you sure you want to delete the notebook \"{title}\"? This will also delete all notes inside this notebook. This action cannot be undone.",
+        "message": "Are you sure you want to delete the notebook \"{{title}}\"? This will also delete all notes inside this notebook. This action cannot be undone.",
         "cancel": "Cancel",
         "delete": "Delete",
         "deleting": "Deleting..."
@@ -1136,6 +1140,7 @@
   "profilePage": {
     "personalInfo": "Personal Info",
     "changePassword": "Change Password",
+    "ratingHistory": "Rating History",
     "profileUpdated": "Profile updated successfully!",
     "updateFailed": "Failed to update profile",
     "passwordUpdated": "Password updated successfully!",

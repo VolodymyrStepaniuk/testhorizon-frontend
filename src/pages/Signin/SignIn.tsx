@@ -120,9 +120,18 @@ export default function SignIn() {
 
       navigate("/home");
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message || t("signIn.errors.default");
-      setSignInError(errorMessage);
+      // Check for specific error types
+      if (
+        error.response?.status === 404 ||
+        error.response?.data?.message?.includes("not found") ||
+        error.response?.data?.message?.includes("not exist")
+      ) {
+        setSignInError(t("signIn.errors.userNotFound", { email: email }));
+      } else {
+        const errorMessage =
+          error.response?.data?.message || t("signIn.errors.default");
+        setSignInError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
